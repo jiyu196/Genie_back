@@ -21,3 +21,9 @@
 * 요구사항 정의서 초안 작성 완료
 * 테이블 정의서 작성중 (현재 16개)
 * Spring Security 포함 백엔드 서버 구상
+* 
+### 📅 251211(목)
+* 오라클 클라우드 서버 신규 인스턴스 1개 추가
+* 서버 내 배포 디렉토리 설정 및 docker-infra 설정 및 컨테이너 생성(PostgreSQL, Redis)
+* docker-container genie_tune db 생성 (table 18개)
+* Java Spring Boot(Java 17, Spring Boot 3.5.8) 생성 및 db 정상 연결 확인
