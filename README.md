@@ -27,3 +27,7 @@
 * 서버 내 배포 디렉토리 설정 및 docker-infra 설정 및 컨테이너 생성(PostgreSQL, Redis)
 * docker-container genie_tune db 생성 (table 18개)
 * Java Spring Boot(Java 17, Spring Boot 3.5.8) 생성 및 db 정상 연결 확인
+* 
+### 📅 251212(금)
+* DDD 구조 토대 패키지 생성중
+* 금칙어 목록 DB ubuntu docker db(postgres) -> insert 시도 -> 데이터 형태 불완전 확인 및 중지 -> 데이터 재 조사 및 정리 요청(-> 인숙님)
