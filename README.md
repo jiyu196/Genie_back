@@ -31,3 +31,8 @@
 ### 📅 251212(금)
 * DDD 구조 토대 패키지 생성중
 * 금칙어 목록 DB ubuntu docker db(postgres) -> insert 시도 -> 데이터 형태 불완전 확인 및 중지 -> 데이터 재 조사 및 정리 요청(-> 인숙님)
+
+### 📅 251213(토)
+* Security Config 초안 작성 중 (커스텀 Filter 미등록)
+* JWT Util AccessToken 생성 로직 구현 (Test 실패 및 에러 수정 필요)
+* RefreshToken 관리 주체 설정 및 로직 구상 중
