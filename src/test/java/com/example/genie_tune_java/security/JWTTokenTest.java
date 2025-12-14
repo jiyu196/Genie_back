@@ -1,6 +1,8 @@
 package com.example.genie_tune_java.security;
 
-import com.example.genie_tune_java.common.util.JWTUtil;
+import com.example.genie_tune_java.domain.member.entity.Role;
+import com.example.genie_tune_java.security.util.JWTUtil;
+import io.jsonwebtoken.Claims;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,8 +20,16 @@ public class JWTTokenTest {
   public void generateJWTTokenTest() {
     log.info(jwtUtil);
     Assertions.assertNotNull(jwtUtil);
-    String accessToken = jwtUtil.createAccessToken(1L);
+    String accessToken = jwtUtil.createAccessToken(1L, Role.MEMBER.toString());
     log.info(accessToken);
     Assertions.assertNotNull(accessToken);
+  }
+
+  @Test
+  public void getClaimFromJWTTokenTest() {
+    String accessToken = jwtUtil.createAccessToken(1L, Role.MEMBER.toString());
+    Claims claims = jwtUtil.getClaims(accessToken);
+    Assertions.assertNotNull(claims);
+    log.info(claims);
   }
 }

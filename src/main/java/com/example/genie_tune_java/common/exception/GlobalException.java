@@ -1,7 +1,13 @@
 package com.example.genie_tune_java.common.exception;
 
+import lombok.Getter;
+
+@Getter
 public class GlobalException extends RuntimeException {
-  public GlobalException(String message) {
-    super(message);
+  private final ErrorCode errorCode;
+
+  public GlobalException(ErrorCode errorCode) {
+    super(errorCode.getMessage());
+    this.errorCode = errorCode;
   }
 }
