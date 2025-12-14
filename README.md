@@ -36,3 +36,9 @@
 * Security Config 초안 작성 중 (커스텀 Filter 미등록)
 * JWT Util AccessToken 생성 로직 구현 (Test 실패 및 에러 수정 필요)
 * RefreshToken 관리 주체 설정 및 로직 구상 중
+
+### 📅 251214(일)
+* JWTToken 기반 Security 초안(Security Config, JWTAuthenticationFilter, JWTUtil, CookieUtil,JWTPrincipal, JWTService 등) 작성 완료 (RefreshToken 미구현 -> 보안 비즈니스 로직 구상 중, 추후 Redis와 결합하여 로직 대규모 추가 예정)
+* JWTToken, HttpOnly 기반 ResponseCookie 생성 SpringBootTest 기반 코드로 성공 확인
+* Member Entity, Register 서비스 로직, 관련 DTO 2개(Request,Response), Controller, schema, MemberMapper(MapStruct 기반), PasswordEncoderConfig
+* GlobalExceptionHandler, ErrorCode, GlobalException 등 공통 사항 구현
