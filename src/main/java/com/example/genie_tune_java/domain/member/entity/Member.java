@@ -27,9 +27,10 @@ public class Member {
   private String bizNumber; // API 호출시 검증 필요
   @Column(nullable = false, unique = true)
   private String organizationName; //API 호출로 가져옴
-  //default 값 매칭 or 자동 매칭
+  //default 값 MEMBER 매칭
+  @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private boolean isAdmin;
+  private Role role;
   @Column(nullable = false)
   private LocalDateTime registeredAt;
   @Column
@@ -44,4 +45,7 @@ public class Member {
   @Column(nullable = false)
   private AccountStatus accountStatus;
 
+  public void savePassword(String encodedPassword) {
+    this.password = encodedPassword;
+  }
 }

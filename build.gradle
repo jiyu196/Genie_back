@@ -18,21 +18,36 @@ configurations {
   compileOnly {
     extendsFrom annotationProcessor
   }
+  all { // 이거 없으면 Log4j2 터짐
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+  }
 }
 
 repositories {
   mavenCentral()
 }
 
+
 dependencies {
+  // DB 조회 방식 (JPA)
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+  // API 호출 방식(GraphQL)
   implementation 'org.springframework.boot:spring-boot-starter-graphql'
+  //GraphiQL 기능
+  implementation("com.graphql-java:graphiql-spring-boot-starter:5.0.2")
+  // 내장 Security
   implementation 'org.springframework.boot:spring-boot-starter-security'
-  implementation 'org.springframework.boot:spring-boot-starter-web'
-  implementation 'org.springframework.boot:spring-boot-starter-webflux'
+  // 여기서 logging 제외 안하면 Log4j2 터짐
+  implementation('org.springframework.boot:spring-boot-starter-web')
+  //implementation 'org.springframework.boot:spring-boot-starter-webflux'
+  // 우리의 lombok
   compileOnly 'org.projectlombok:lombok'
-  runtimeOnly 'org.postgresql:postgresql'
   annotationProcessor 'org.projectlombok:lombok'
+  testImplementation 'org.projectlombok:lombok'
+  testAnnotationProcessor 'org.projectlombok:lombok'
+  //PostGre 의존성
+  runtimeOnly 'org.postgresql:postgresql'
+  //Test 관련 의존성
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'io.projectreactor:reactor-test'
   testImplementation 'org.springframework.graphql:spring-graphql-test'
@@ -40,6 +55,22 @@ dependencies {
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
   // Redis 추가
   implementation("org.springframework.boot:spring-boot-starter-data-redis:3.5.8")
+  // JWTToken 관련
+  implementation 'io.jsonwebtoken:jjwt-api:0.13.0'
+  runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.13.0'
+  runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.13.0'
+
+  //log4j2
+  implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.5.3'
+
+  //mapper interface를 통해 DTO <-> Entity 자동변환
+  implementation 'org.mapstruct:mapstruct:1.6.3'
+  annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+  annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
+  //백단 내에 간단한 유효성 검증 의존성 기능 추가
+  implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 }
 
 tasks.named('test') {

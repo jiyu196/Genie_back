@@ -1,0 +1,33 @@
+# 1-1. Register
+input MemberRegisterRequestDTO {
+  email: String!
+  password: String!
+  bizNumber: String!
+  organizationName: String!
+}
+
+enum RegisterStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+type MemberRegisterResponseDTO {
+  id: ID!
+  email: String!
+  bizNumber: String!
+  organizationName: String!
+  registerStatus: RegisterStatus!
+}
+# Error 방지용으로 Query 하나 임시로 만들었음
+type Query{
+  id: ID!
+}
+
+type Mutation {
+  register(input:MemberRegisterRequestDTO!): MemberRegisterResponseDTO
+}
+# 1-2 Register 취소시 로직
+
+# 2 Login 로직
