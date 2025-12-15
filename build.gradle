@@ -40,7 +40,7 @@ dependencies {
   testImplementation 'org.springframework.security:spring-security-test'
   // 여기서 logging 제외 안하면 Log4j2 터짐
   implementation'org.springframework.boot:spring-boot-starter-web'
-  implementation 'org.springframework.boot:spring-boot-starter-webflux'
+//implementation 'org.springframework.boot:spring-boot-starter-webflux'
   // 우리의 lombok
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'

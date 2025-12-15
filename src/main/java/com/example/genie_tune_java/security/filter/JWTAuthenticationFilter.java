@@ -35,6 +35,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     // 2. Token이 있을 경우, 사용자 정보 추출 (RefreshToken 관련 추후 추가)
     if (accessToken != null){
+      log.info("accessToken이 있는 경우 내부 로직");
       Long memberId = jwtUtil.getMemberId(accessToken);
       String role = jwtUtil.getMemberRole(accessToken);
     // 3. 추출한 정보를 Principal 객체에 담는다.

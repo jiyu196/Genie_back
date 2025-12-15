@@ -19,7 +19,6 @@ public class AuthController {
 
   @MutationMapping
   public MemberLoginResponseDTO login(@Argument("input") MemberLoginRequestDTO dto, DataFetchingEnvironment env) throws Exception {
-    HttpServletResponse response = env.getGraphQlContext().get(HttpServletResponse.class);
-    return authService.memberLogin(dto, response);
+    return authService.memberLogin(dto, env);
   }
 }

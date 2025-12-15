@@ -7,6 +7,7 @@ import com.example.genie_tune_java.domain.member.dto.MemberLoginResponseDTO;
 import com.example.genie_tune_java.domain.member.entity.Member;
 import com.example.genie_tune_java.domain.member.mapper.MemberMapper;
 import com.example.genie_tune_java.domain.member.repository.MemberRepository;
+import graphql.schema.DataFetchingEnvironment;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class AuthService {
   private final MemberMapper memberMapper;
   private final PasswordEncoder passwordEncoder;
 
-  public MemberLoginResponseDTO memberLogin(MemberLoginRequestDTO dto, HttpServletResponse response) throws Exception {
+  public MemberLoginResponseDTO memberLogin(MemberLoginRequestDTO dto, DataFetchingEnvironment env) throws Exception {
 
     // 1. 이메일 존재여부 확인
 
@@ -42,7 +43,9 @@ public class AuthService {
     // 3. ResponseCookie에 JWTToken (AccessToken) 담아서 설정
 
     ResponseCookie accessCookie = jwtService.generateAccessTokenWithCookie(loginMember);
-    response.addHeader(accessCookie.getName(), accessCookie.getValue());
+    HttpServletResponse response = env.getGraphQlContext().get(HttpServletResponse.class);
+
+    response.addHeader("Set-Cookie", accessCookie.getValue());
     // 4. MemberLoginResponseDTO 반환 (mapper 이용해서 반환)
     return memberMapper.toLoginResponseDTO(loginMember);
   }
