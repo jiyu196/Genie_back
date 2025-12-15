@@ -27,7 +27,6 @@ repositories {
   mavenCentral()
 }
 
-
 dependencies {
   // DB 조회 방식 (JPA)
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
