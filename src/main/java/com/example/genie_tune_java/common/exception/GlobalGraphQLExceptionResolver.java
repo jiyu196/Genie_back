@@ -6,10 +6,12 @@ import graphql.schema.DataFetchingEnvironment;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.graphql.execution.DataFetcherExceptionResolverAdapter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Map;
 
 @Log4j2
+@Component
 public class GlobalGraphQLExceptionResolver extends DataFetcherExceptionResolverAdapter {
 
   @Override
@@ -18,6 +20,7 @@ public class GlobalGraphQLExceptionResolver extends DataFetcherExceptionResolver
     if (ex instanceof GlobalException globalException) {
       // 2. 내부 ErrorCode 추출
       ErrorCode errorCode = globalException.getErrorCode();
+      log.info(errorCode.toString());
       // 3. GraphQL 응답 형식인 GraphQLError 생성 및 반환 (HTTP는 거의 200으로 반환하므로 에러 정보를 별도로 담아야 함
       return GraphQLError.newError()
               .message(errorCode.getMessage()) // errorCode 내 Message 반환 (사전 Enum에 정의)

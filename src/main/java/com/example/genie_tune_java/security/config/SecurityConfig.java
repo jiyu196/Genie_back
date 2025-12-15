@@ -41,7 +41,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .requestMatchers("/graphql").permitAll()
                     .requestMatchers("/graphiql/**", "/graphiql").permitAll()
-                    .anyRequest().permitAll() // Rest API 엔드포인트 차단
+                    .anyRequest().denyAll() // Rest API 엔드포인트 차단
             )
             .formLogin(f -> f.disable());
 

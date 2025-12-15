@@ -36,3 +36,16 @@
 * Security Config 초안 작성 중 (커스텀 Filter 미등록)
 * JWT Util AccessToken 생성 로직 구현 (Test 실패 및 에러 수정 필요)
 * RefreshToken 관리 주체 설정 및 로직 구상 중
+
+### 📅 251214(일)
+* JWTToken 기반 Security 초안(Security Config, JWTAuthenticationFilter, JWTUtil, CookieUtil,JWTPrincipal, JWTService 등) 작성 완료 (RefreshToken 미구현 -> 보안 비즈니스 로직 구상 중, 추후 Redis와 결합하여 로직 대규모 추가 예정)
+* JWTToken, HttpOnly 기반 ResponseCookie 생성 SpringBootTest 기반 코드로 성공 확인
+* Member Entity, Register 서비스 로직, 관련 DTO 2개(Request,Response), Controller, schema, MemberMapper(MapStruct 기반), PasswordEncoderConfig
+* GlobalExceptionHandler, ErrorCode, GlobalException 등 공통 사항 구현
+
+### 📅 251215(월)
+* Register 기능 구현 및 GraphiQL 기반 Test 완료 (Global Exception check 병행)
+* JWT Service (JWT 토큰 발급 및 Cookie 생성 Cookie Header에 JWT Token 심기) 로직 완성
+* Login 서비스 로직, Controller 구현 및 Mutation Schema 작성 기반 Junit Test 완료 (AuthService로 빼서 로그인 성공에 한해서 -> JWTToken 발급 및 이를 토대로 ResponseCookie 생성 -> Response Header에 add로 추가)
+* GraphQL 기반 Controller에서 Respons를 catch 할 수 있도록 설정해주는 WebGraphQlInterceptor를 구현한 custom Interceptor 작성
+
