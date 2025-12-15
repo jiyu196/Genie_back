@@ -39,7 +39,7 @@ public class Member {
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private RegisterStatus status;
-  
+
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private AccountStatus accountStatus;
