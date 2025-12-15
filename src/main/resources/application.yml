@@ -27,10 +27,16 @@ spring:
       hibernate:
         format_sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  graphql:
+    schema:
+      locations: classpath:graphql/**/
+    http:
+      path: /graphql
+    graphiql:
+      enabled: true
+      path: /graphiql
 
 jwt:
   secret: ${JWT_SECRET}
   access-token-expiration: ${JWT_ACCESS_EXPIRATION}
   refresh-token-expiration: ${JWT_REFRESH_EXPIRATION}
-
-
