@@ -42,3 +42,10 @@
 * JWTToken, HttpOnly 기반 ResponseCookie 생성 SpringBootTest 기반 코드로 성공 확인
 * Member Entity, Register 서비스 로직, 관련 DTO 2개(Request,Response), Controller, schema, MemberMapper(MapStruct 기반), PasswordEncoderConfig
 * GlobalExceptionHandler, ErrorCode, GlobalException 등 공통 사항 구현
+
+### 📅 251215(월)
+* Register 기능 구현 및 GraphiQL 기반 Test 완료 (Global Exception check 병행)
+* JWT Service (JWT 토큰 발급 및 Cookie 생성 Cookie Header에 JWT Token 심기) 로직 완성
+* Login 서비스 로직, Controller 구현 및 Mutation Schema 작성 기반 Junit Test 완료 (AuthService로 빼서 로그인 성공에 한해서 -> JWTToken 발급 및 이를 토대로 ResponseCookie 생성 -> Response Header에 add로 추가)
+* GraphQL 기반 Controller에서 Respons를 catch 할 수 있도록 설정해주는 WebGraphQlInterceptor를 구현한 custom Interceptor 작성
+
