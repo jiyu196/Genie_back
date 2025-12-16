@@ -1,9 +1,6 @@
 package com.example.genie_tune_java.domain.member.mapper;
 
-import com.example.genie_tune_java.domain.member.dto.MemberLoginRequestDTO;
-import com.example.genie_tune_java.domain.member.dto.MemberLoginResponseDTO;
-import com.example.genie_tune_java.domain.member.dto.MemberRegisterRequestDTO;
-import com.example.genie_tune_java.domain.member.dto.MemberRegisterResponseDTO;
+import com.example.genie_tune_java.domain.member.dto.*;
 import com.example.genie_tune_java.domain.member.entity.Member;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -23,5 +20,5 @@ public interface MemberMapper {
   //DTO에 있는 필드가 Entity에 전부 있으므로 Mapping을 붙이지 않아도 된다.
   MemberRegisterResponseDTO toRegisterResponseDTO(Member member);
 
-  MemberLoginResponseDTO toLoginResponseDTO(Member member);
+  MemberGetResponseDTO toMemberGetResponseDTO(Member member);
 }

@@ -46,7 +46,7 @@ public class JWTUtil {
 
 
   // 토큰 파싱 및 검증까지 포함된 로직 (성공하면 Claim 객체 반환)
-  public Claims getClaims(String token) {
+  private Claims getClaims(String token) {
       return Jwts.parser()
               .verifyWith(key)
               .build()

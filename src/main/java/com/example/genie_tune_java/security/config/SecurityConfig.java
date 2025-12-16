@@ -19,11 +19,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
   private final JWTAuthenticationFilter jwtAuthenticationFilter;
-
+  private final CORSConfig corsConfig;
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
     http
+            .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
             //내가 만든 Filter 등록(JWTAuthentication Filter) before
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             // graphql + jwt + 세션사용안함

@@ -2,14 +2,18 @@ package com.example.genie_tune_java.domain.member.service;
 
 import com.example.genie_tune_java.common.exception.ErrorCode;
 import com.example.genie_tune_java.common.exception.GlobalException;
+import com.example.genie_tune_java.domain.member.dto.MemberGetResponseDTO;
 import com.example.genie_tune_java.domain.member.dto.MemberRegisterRequestDTO;
 import com.example.genie_tune_java.domain.member.dto.MemberRegisterResponseDTO;
 import com.example.genie_tune_java.domain.member.entity.Member;
 import com.example.genie_tune_java.domain.member.mapper.MemberMapper;
 import com.example.genie_tune_java.domain.member.repository.MemberRepository;
+import com.example.genie_tune_java.security.dto.JWTPrincipal;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +45,13 @@ public class MemberServiceImpl implements MemberService {
     memberRepository.save(member);
 
     return memberMapper.toRegisterResponseDTO(member);
+  }
+
+  public MemberGetResponseDTO getMember() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    JWTPrincipal principal = (JWTPrincipal) authentication.getPrincipal();
+    log.info("principal :{}, getMemberId: {}",principal, principal.getMemberId());
+    Member loginMember = memberRepository.findById(principal.getMemberId()).orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
+    return memberMapper.toMemberGetResponseDTO(loginMember);
   }
 }
