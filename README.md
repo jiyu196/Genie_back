@@ -54,4 +54,7 @@
 * Member Login, Logout 백단 로직 구현 -> 프론트 Test용 React/TypeScript 프로젝트 생성 -> 정상 구현 확인
 * 국세청 사업자등록증 상태 조회 외부 API 연동 준비
 
+### 📅 251217(수)
+* WebClient 기반, 국세청 공공 API 연동 준비(WebClient Config, 관련 DTO(Request, Response 확인)
+
 
