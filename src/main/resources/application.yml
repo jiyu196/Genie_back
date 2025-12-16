@@ -60,3 +60,7 @@ jwt:
   secret: ${JWT_SECRET}
   access-token-expiration: ${JWT_ACCESS_EXPIRATION}
   refresh-token-expiration: ${JWT_REFRESH_EXPIRATION}
+
+nts:
+  api:
+    key: ${NTS_API_KEY}
