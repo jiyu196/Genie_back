@@ -49,3 +49,9 @@
 * Login 서비스 로직, Controller 구현 및 Mutation Schema 작성 기반 Junit Test 완료 (AuthService로 빼서 로그인 성공에 한해서 -> JWTToken 발급 및 이를 토대로 ResponseCookie 생성 -> Response Header에 add로 추가)
 * GraphQL 기반 Controller에서 Respons를 catch 할 수 있도록 설정해주는 WebGraphQlInterceptor를 구현한 custom Interceptor 작성
 
+### 📅 251216(화)
+* GraphQLInterCeptor 구현(API 요청시 Response, Request catch 하는 역할 -> JWTToken를 담은 쿠키 발급용)
+* Member Login, Logout 백단 로직 구현 -> 프론트 Test용 React/TypeScript 프로젝트 생성 -> 정상 구현 확인
+* 국세청 사업자등록증 상태 조회 외부 API 연동 준비
+
+
