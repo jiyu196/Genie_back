@@ -53,7 +53,7 @@ type MemberGetResponseDTO {
   role: Role!
 }
 
-# 에러 방지용 Query
+# Member 정보 조회 쿼리
 type Query{
   me: MemberGetResponseDTO
 }

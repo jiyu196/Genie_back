@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Getter
+@Table(name = "tbl_member")
 public class Member {
   //PK
   @Id
@@ -27,6 +28,8 @@ public class Member {
   private String bizNumber; // API 호출시 검증 필요
   @Column(nullable = false, unique = true)
   private String organizationName; //API 호출로 가져옴
+  @Column(nullable = false)
+  private String contactName;
 
   //DB가 자동
   @Column(nullable = false)
@@ -35,23 +38,27 @@ public class Member {
   // 삭제시에만 기록
   @Column
   private LocalDateTime deletedAt;
+  //승인 시점
+  @Column
+  private LocalDateTime approvedAt;
 
   //저장 상태
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   @Builder.Default
   private RegisterStatus registerStatus = RegisterStatus.PENDING;
+  //default 값 MEMBER 매칭
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  @Builder.Default
+  private Role role = Role.MEMBER;
+
   //계정상태
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   @Builder.Default
   private AccountStatus accountStatus = AccountStatus.ACTIVE;
 
-  //default 값 MEMBER 매칭
-  @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
-  @Builder.Default
-  private Role role = Role.MEMBER;
 
   //password 저장 메서드
   public void savePassword(String encodedPassword) {

@@ -7,6 +7,7 @@ import com.example.genie_tune_java.domain.member.entity.Role;
 import java.time.LocalDateTime;
 
 public record MemberGetResponseDTO(
-        String email, AccountStatus accountStatus, String bizNumber, String organizationName, RegisterStatus registerStatus, Role role,
-        LocalDateTime registeredAt, LocalDateTime deletedAt
+        String email, AccountStatus accountStatus, String bizNumber, String organizationName, String contactName,
+        RegisterStatus registerStatus, Role role,
+        LocalDateTime approvedAt, LocalDateTime deletedAt
 ) {}

@@ -46,6 +46,8 @@ logging:
     org.springframework.security.web.access.ExceptionTranslationFilter: DEBUG
     org.springframework.boot.web.servlet.error: DEBUG
     org.springframework.graphql: DEBUG
+    org.springframework.web.reactive.function.client: DEBUG
+    reactor.netty.http.client: DEBUG
 
 server:
   error:

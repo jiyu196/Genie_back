@@ -8,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.net.URI;
+
 
 @Component
 @RequiredArgsConstructor
@@ -17,8 +19,7 @@ public class NTSBusinessAPIClient {
   @Value("${nts.api.key}")
   private String serviceKey;
 
-  private static final String HOST = "api.odcloud.kr";
-  private static final String STATUS_PATH = "/api/nts-businessman/v1/status";
+  //String url = "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey?=" + serviceKey;
 
   /**
    * 사업자 상태 조회 (계속사업자 / 폐업자 / 휴업자)
@@ -26,14 +27,9 @@ public class NTSBusinessAPIClient {
   public BusinessStatusResponseDTO checkStatus(String bizNumber) {
 
     return webClient.post()
-            .uri(uriBuilder -> uriBuilder
-                    .scheme("https")
-                    .host(HOST)
-                    .path(STATUS_PATH)
-                    .queryParam("serviceKey", serviceKey)
-                    .build()
-            )
+            .uri(URI.create("https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=" + serviceKey))
             .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
             .bodyValue(new BusinessStatusRequestDTO(bizNumber))
             .retrieve()
             .bodyToMono(BusinessStatusResponseDTO.class)
