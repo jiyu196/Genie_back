@@ -7,12 +7,12 @@ input MemberRegisterRequestDTO {
 }
 # 등록 상태 Register ResponseDTO에 값 포함(상태에 따라 다른 페이지 보내줘야하므로)
 enum RegisterStatus {
-  PENDING APPROVED REJECTED CANCELLED
+  PENDING, APPROVED, REJECTED, CANCELLED
 }
 
 # 계정 상태에 따라 다른 페이지 보내줌
 enum AccountStatus {
-    ACTIVE INACTIVE DELETED
+    ACTIVE, INACTIVE, DELETED
 }
 
 type MemberRegisterResponseDTO {
@@ -29,17 +29,22 @@ type MemberRegisterResponseDTO {
 ## 2 Login 로직
 
 enum Role {
-  MEMBER SUBSCRIBER ADMIN
+  MEMBER, SUBSCRIBER, ADMIN
 }
 
-# Request DTO
+# LoginRequest DTO
 input MemberLoginRequestDTO {
   email: String!
   password: String!
 }
 
-# ResponseDTO
+# LoginResponseDTO
 type MemberLoginResponseDTO {
+  login: Boolean!
+}
+
+# 로그인 성공 이후 실제 멤버 정보 GetResponseDTO
+type MemberGetResponseDTO {
   email: String!
   accountStatus: AccountStatus!
   bizNumber: String!
@@ -48,15 +53,12 @@ type MemberLoginResponseDTO {
   role: Role!
 }
 
-# 에러 방지용 Query
+# Member 정보 조회 쿼리
 type Query{
-  id: String!
+  me: MemberGetResponseDTO
 }
 type Mutation {
   register(input:MemberRegisterRequestDTO!): MemberRegisterResponseDTO
   login(input:MemberLoginRequestDTO!): MemberLoginResponseDTO
+  logout: Boolean!
 }
-
-
-
-

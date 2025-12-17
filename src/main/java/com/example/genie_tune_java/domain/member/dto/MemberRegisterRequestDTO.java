@@ -11,6 +11,8 @@ public record MemberRegisterRequestDTO(
         @NotBlank
         String bizNumber,
         @NotBlank
-        String organizationName
+        String organizationName,
+        @NotBlank
+        String contactName
 ) {
 }

@@ -38,7 +38,7 @@ public class CookieUtil {
   }
   // Cookie를 삭제하는 로직은 동일한 이름의 쿠키에 maxAge를 0으로 만들어버리면 삭제가 된다.
   public ResponseCookie deleteAccessCookie() {
-    return ResponseCookie.from("Access_Cookie")
+    return ResponseCookie.from("Access_Cookie", "")
             .httpOnly(true)
             .secure(false)
             .path("/")
