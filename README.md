@@ -56,5 +56,9 @@
 
 ### 📅 251217(수)
 * WebClient 기반, 국세청 공공 API 연동 준비(WebClient Config, 관련 DTO(Request, Response 확인)
+* 국세청 공공 API 사업자등록정보 상태조회 Junit Test 완료
+* 비즈니스 로직- 사업자등록정보 상태조회 -> 정상영업시 회원가입창 전환, -> table 추가 생성
+* 프론트 - dto 1(프론트 -> 백) - dto 2 (백 -> 공공API요청용 DTO) - dto 3(공공API 응답용 dto) -> dto 4(공공API 응답용 dto -> Entity 등록용) -> dto 5(Entity-> 프론트 응답용 dto) 구조 설립
+* 관련하여 dto <-> entity 맵핑 issue, 필드명 issue 등 발생, 에러 수정하여 프론트 요청 및 연결 확인 완료
 
 
