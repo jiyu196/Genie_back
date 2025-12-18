@@ -58,7 +58,7 @@ public class BusinessNumberCheckService {
 
     boolean validation = realData.validationCode().equals("01");
 
-    return new BusinessValidationCheckResponseDTO(realData.bizNumber(),realData.requestParam().businessName() ,validation, realData.resultMessage());
+    return new BusinessValidationCheckResponseDTO(realData.bizNumber(), validation, realData.resultMessage(), realData.status().getBStt(), realData.status().getBSttCd());
 
   }
 

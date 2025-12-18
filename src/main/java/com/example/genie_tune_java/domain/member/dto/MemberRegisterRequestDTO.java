@@ -11,6 +11,10 @@ public record MemberRegisterRequestDTO(
         @NotBlank
         String bizNumber,
         @NotBlank
+        String representativeName,
+        @NotBlank
+        String openingDate,
+        @NotBlank
         String organizationName,
         @NotBlank
         String contactName
