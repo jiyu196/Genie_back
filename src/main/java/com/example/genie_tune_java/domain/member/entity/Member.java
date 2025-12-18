@@ -1,6 +1,7 @@
 package com.example.genie_tune_java.domain.member.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,6 +29,10 @@ public class Member {
   private String bizNumber; // API 호출시 검증 필요
   @Column(nullable = false, unique = true)
   private String organizationName; //API 호출로 가져옴
+  @Column(nullable = false)
+  String representativeName;
+  @Column(nullable = false)
+  String openingDate;
   @Column(nullable = false)
   private String contactName;
 
