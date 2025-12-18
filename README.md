@@ -61,4 +61,6 @@
 * 프론트 - dto 1(프론트 -> 백) - dto 2 (백 -> 공공API요청용 DTO) - dto 3(공공API 응답용 dto) -> dto 4(공공API 응답용 dto -> Entity 등록용) -> dto 5(Entity-> 프론트 응답용 dto) 구조 설립
 * 관련하여 dto <-> entity 맵핑 issue, 필드명 issue 등 발생, 에러 수정하여 프론트 요청 및 연결 확인 완료
 
-
+### 📅 251218(목)
+* 회원가입 비즈니스 로직 변경 (회원가입창 -> 사업자등록정보 진위확인 연동) -> 백단 로직 완료 (DTO, Service, Controller, schema 등 초안 작성)
+* Junit Test로 직접 test 완료
