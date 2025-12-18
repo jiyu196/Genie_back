@@ -1,6 +1,7 @@
 package com.example.genie_tune_java.common.exception;
 
 import lombok.Getter;
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpStatus;
 
 @Getter
@@ -27,8 +28,15 @@ public enum ErrorCode {
   MEMBER_DISABLED(HttpStatus.LOCKED, "잠긴 회원입니다. 관리자에게 문의하세요."),
   MEMBER_DELETED(HttpStatus.FORBIDDEN, "삭제된 회원입니다."),
   MEMBER_EXTRA_EMAIL_UNVERIFIED(HttpStatus.FORBIDDEN, "추가 이메일을 인증하지 않았습니다."),
-  TERMS_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 약관입니다.");
+  TERMS_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 약관입니다."),
 
+  // ==== 사업자 API 조회 관련 ====
+  BUSINESS_NUMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "사업자 상태정보가 유효하지 않습니다."),
+  BAD_JSON_REQUEST(HttpStatus.BAD_REQUEST, "값을 잘못 입력하셨습니다."),
+  REQUEST_DATA_MALFORMED(HttpStatus.LENGTH_REQUIRED, "필수 입력값이 누락되었습니다."),
+  TOO_LARGE_REQUEST(HttpStatus.PAYLOAD_TOO_LARGE, "요청 사업자 번호가 100개 이상입니다."),
+  INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 에러입니다."),
+  HTTP_ERROR(HttpStatus.SERVICE_UNAVAILABLE, "국세청 서버 에러입니다. 잠시 후에 다시 시도하여주시기 바랍니다.");
   private final HttpStatus status;
   private final String message;
 

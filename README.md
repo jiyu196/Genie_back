@@ -49,3 +49,18 @@
 * Login 서비스 로직, Controller 구현 및 Mutation Schema 작성 기반 Junit Test 완료 (AuthService로 빼서 로그인 성공에 한해서 -> JWTToken 발급 및 이를 토대로 ResponseCookie 생성 -> Response Header에 add로 추가)
 * GraphQL 기반 Controller에서 Respons를 catch 할 수 있도록 설정해주는 WebGraphQlInterceptor를 구현한 custom Interceptor 작성
 
+### 📅 251216(화)
+* GraphQLInterCeptor 구현(API 요청시 Response, Request catch 하는 역할 -> JWTToken를 담은 쿠키 발급용)
+* Member Login, Logout 백단 로직 구현 -> 프론트 Test용 React/TypeScript 프로젝트 생성 -> 정상 구현 확인
+* 국세청 사업자등록증 상태 조회 외부 API 연동 준비
+
+### 📅 251217(수)
+* WebClient 기반, 국세청 공공 API 연동 준비(WebClient Config, 관련 DTO(Request, Response 확인)
+* 국세청 공공 API 사업자등록정보 상태조회 Junit Test 완료
+* 비즈니스 로직- 사업자등록정보 상태조회 -> 정상영업시 회원가입창 전환, -> table 추가 생성
+* 프론트 - dto 1(프론트 -> 백) - dto 2 (백 -> 공공API요청용 DTO) - dto 3(공공API 응답용 dto) -> dto 4(공공API 응답용 dto -> Entity 등록용) -> dto 5(Entity-> 프론트 응답용 dto) 구조 설립
+* 관련하여 dto <-> entity 맵핑 issue, 필드명 issue 등 발생, 에러 수정하여 프론트 요청 및 연결 확인 완료
+
+### 📅 251218(목)
+* 회원가입 비즈니스 로직 변경 (회원가입창 -> 사업자등록정보 진위확인 연동) -> 백단 로직 완료 (DTO, Service, Controller, schema 등 초안 작성)
+* Junit Test로 직접 test 완료

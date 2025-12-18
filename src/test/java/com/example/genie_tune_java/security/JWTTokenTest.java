@@ -1,8 +1,8 @@
 package com.example.genie_tune_java.security;
 
 import com.example.genie_tune_java.domain.member.entity.Role;
+import com.example.genie_tune_java.security.status.TokenStatus;
 import com.example.genie_tune_java.security.util.JWTUtil;
-import io.jsonwebtoken.Claims;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,8 +28,8 @@ public class JWTTokenTest {
   @Test
   public void getClaimFromJWTTokenTest() {
     String accessToken = jwtUtil.createAccessToken(1L, Role.MEMBER.toString());
-    Claims claims = jwtUtil.getClaims(accessToken);
-    Assertions.assertNotNull(claims);
-    log.info(claims);
+    TokenStatus status = jwtUtil.checkToken(accessToken);
+    Assertions.assertEquals(TokenStatus.VALID, status);
+    log.info(status);
   }
 }
