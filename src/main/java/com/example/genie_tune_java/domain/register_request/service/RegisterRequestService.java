@@ -1,6 +1,5 @@
 package com.example.genie_tune_java.domain.register_request.service;
 
-import com.example.genie_tune_java.api.nts.dto.BusinessStatusDataDTO;
 import com.example.genie_tune_java.domain.register_request.dto.RegisterRequestCheckDTO;
 import com.example.genie_tune_java.domain.register_request.dto.RegisterRequestResponseDTO;
 

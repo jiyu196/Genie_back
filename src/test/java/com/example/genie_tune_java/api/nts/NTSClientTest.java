@@ -1,6 +1,8 @@
 package com.example.genie_tune_java.api.nts;
 
-import com.example.genie_tune_java.api.nts.dto.BusinessStatusResponseDTO;
+import com.example.genie_tune_java.api.nts.dto.status.BusinessStatusResponseDTO;
+import com.example.genie_tune_java.api.nts.dto.validation.BusinessValidationResponseDTO;
+import com.example.genie_tune_java.domain.member.dto.BusinessValidationCheckRequestDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,12 +22,20 @@ public class NTSClientTest {
   }
 
   @Test
-  void testGetNTSBusinessAPIClient() {
+  void testGetNTSBusinessStatusAPIClient() {
     BusinessStatusResponseDTO responseDTO = client.checkStatus("4008266479");
     Assertions.assertNotNull(responseDTO);
     log.info(responseDTO.statusCode());
     log.info(responseDTO.matchCnt());
     log.info(responseDTO.requestCnt());
+    responseDTO.data().forEach(log::info);
+  }
+
+  @Test
+  void testGetNTSBusinessValidationAPIClient() {
+    BusinessValidationResponseDTO responseDTO = client.checkValidation(new BusinessValidationCheckRequestDTO("", "" ,""));
+    Assertions.assertNotNull(responseDTO);
+    log.info(responseDTO.statusCode());
     responseDTO.data().forEach(log::info);
   }
 }
