@@ -24,7 +24,19 @@ type MemberRegisterResponseDTO {
   AccountStatus: AccountStatus!
 }
 
-# 1-2 Register 취소시 로직
+# 1-2 Register 내 사업자등록증 번호 조회 로직
+input BusinessValidationCheckRequestDTO {
+  bizNumber: String!
+  representativeName: String!
+  openingDate: String!
+}
+
+type BusinessValidationCheckResponseDTO {
+  bizNumber: String!
+  organizationName: String!
+  validation: Boolean!
+  validationMsg: String!
+}
 
 ## 2 Login 로직
 
@@ -58,6 +70,7 @@ type Query{
   me: MemberGetResponseDTO
 }
 type Mutation {
+  checkBizNumber(input:BusinessValidationCheckRequestDTO!): BusinessValidationCheckResponseDTO
   register(input:MemberRegisterRequestDTO!): MemberRegisterResponseDTO
   login(input:MemberLoginRequestDTO!): MemberLoginResponseDTO
   logout: Boolean!

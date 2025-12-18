@@ -1,4 +1,4 @@
-package com.example.genie_tune_java.api.nts.dto;
+package com.example.genie_tune_java.api.nts.dto.status;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

@@ -1,8 +1,7 @@
 package com.example.genie_tune_java.domain.member.controller;
 
-import com.example.genie_tune_java.domain.member.dto.MemberGetResponseDTO;
-import com.example.genie_tune_java.domain.member.dto.MemberRegisterRequestDTO;
-import com.example.genie_tune_java.domain.member.dto.MemberRegisterResponseDTO;
+import com.example.genie_tune_java.api.nts.service.BusinessNumberCheckService;
+import com.example.genie_tune_java.domain.member.dto.*;
 import com.example.genie_tune_java.domain.member.service.MemberService;
 import graphql.schema.DataFetchingEnvironment;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +16,12 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 public class MemberController {
   private final MemberService memberService;
+  private final BusinessNumberCheckService businessNumberCheckService;
+
+  @MutationMapping
+  public BusinessValidationCheckResponseDTO checkBizNumber(@Argument("input") BusinessValidationCheckRequestDTO dto) {
+    return businessNumberCheckService.checkBusinessValidation(dto);
+  }
 
   @MutationMapping
   public MemberRegisterResponseDTO register(@Argument("input") MemberRegisterRequestDTO dto) {

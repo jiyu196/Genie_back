@@ -10,4 +10,6 @@ public class GlobalException extends RuntimeException {
     super(errorCode.getMessage());
     this.errorCode = errorCode;
   }
+
+
 }

@@ -1,9 +1,16 @@
 package com.example.genie_tune_java.api.nts;
 
-import com.example.genie_tune_java.api.nts.dto.BusinessStatusRequestDTO;
-import com.example.genie_tune_java.api.nts.dto.BusinessStatusResponseDTO;
+import com.example.genie_tune_java.api.nts.dto.status.BusinessStatusRequestDTO;
+import com.example.genie_tune_java.api.nts.dto.status.BusinessStatusResponseDTO;
+import com.example.genie_tune_java.api.nts.dto.validation.BusinessValidationOutputData;
+import com.example.genie_tune_java.api.nts.dto.validation.BusinessValidationRequestDTO;
+import com.example.genie_tune_java.api.nts.dto.validation.BusinessValidationResponseDTO;
+import com.example.genie_tune_java.common.exception.ErrorCode;
+import com.example.genie_tune_java.common.exception.GlobalException;
+import com.example.genie_tune_java.domain.member.dto.BusinessValidationCheckRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -33,6 +40,23 @@ public class NTSBusinessAPIClient {
             .bodyValue(new BusinessStatusRequestDTO(bizNumber))
             .retrieve()
             .bodyToMono(BusinessStatusResponseDTO.class)
+            .block();
+  }
+
+  public BusinessValidationResponseDTO checkValidation(BusinessValidationCheckRequestDTO dto) {
+
+    return webClient.post()
+            .uri(URI.create("https://api.odcloud.kr/api/nts-businessman/v1/validate?serviceKey=" + serviceKey))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .bodyValue(new BusinessValidationRequestDTO(dto))
+            .retrieve()
+            .onStatus(HttpStatusCode::isError, response -> response.bodyToMono(String.class)
+                    .map(body -> new GlobalException(
+                            ErrorCode.HTTP_ERROR
+                    ))
+            )
+            .bodyToMono(BusinessValidationResponseDTO.class)
             .block();
   }
 }

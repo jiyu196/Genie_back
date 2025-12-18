@@ -1,7 +1,6 @@
 package com.example.genie_tune_java.domain.register_request.service;
 
-import com.example.genie_tune_java.api.nts.NTSBusinessAPIClient;
-import com.example.genie_tune_java.api.nts.service.BusinessStatusCheckService;
+import com.example.genie_tune_java.api.nts.service.BusinessNumberCheckService;
 import com.example.genie_tune_java.domain.register_request.dto.RegisterRequestCheckDTO;
 import com.example.genie_tune_java.domain.register_request.dto.RegisterRequestDTO;
 import com.example.genie_tune_java.domain.register_request.dto.RegisterRequestResponseDTO;
@@ -16,13 +15,13 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @RequiredArgsConstructor
 public class RegisterRequestServiceImpl implements RegisterRequestService {
-  private final BusinessStatusCheckService businessStatusCheckService;
+  private final BusinessNumberCheckService businessNumberCheckService;
   private final RegisterRequestRepository registerRequestRepository;
   private final RegisterRequestMapper registerRequestMapper;
 
   public RegisterRequestResponseDTO createRequest(RegisterRequestCheckDTO rrcDto) {
     log.info("rrcDto={}", rrcDto.bizNumber());
-    RegisterRequestDTO rrDto = businessStatusCheckService.checkBusinessStatus(rrcDto);
+    RegisterRequestDTO rrDto = businessNumberCheckService.checkBusinessStatus(rrcDto);
     log.info("bizNumber={} registerRequestStatus= {}", rrDto.bizNumber(), rrDto.registerRequestStatus());
     log.info("{} {}", rrDto.businessStatus(), rrDto.businessStatusCode());
     RegisterRequest registerRequest = registerRequestMapper.toEntity(rrDto);
