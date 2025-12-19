@@ -1,10 +1,7 @@
 package com.example.genie_tune_java.security.util;
 
 import com.example.genie_tune_java.security.status.TokenStatus;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -27,21 +24,30 @@ public class JWTUtil {
   }
   //AccessToken 만드는 로직
   public String createAccessToken(Long memberId, String memberRole) {
-    return generateJWTToken(memberId, "access", memberRole);
+    return generateJWTToken(memberId.toString(), "access", memberRole);
+  }
+  //RefreshToken 만드는 로직
+  public String createRefreshToken(String refreshTokenUuid, String memberRole) {
+    return generateJWTToken(refreshTokenUuid, "refresh", memberRole);
   }
 
   //Token 을 만드는 메서드 access 인지 refresh인지 입력하여 나눠서 발급한다.
-  private String generateJWTToken(Long memberId, String TokenCategory, String memberRole) {
+  private String generateJWTToken(String subValue, String TokenCategory, String memberRole) {
+    //access는 memberId, Role을 넣고
     Date now = new Date();
     Date expiryDate = new Date(now.getTime() + (TokenCategory.equals("access") ? accessTokenExpiration : refreshTokenExpiration));
-    return Jwts.builder()
-            .subject(memberId.toString())
+     JwtBuilder builder = Jwts.builder()
+            .subject(subValue)
             .claim("TokenCategory", TokenCategory)
-            .claim("MemberRole", memberRole)
             .issuedAt(now)
             .expiration(expiryDate)
-            .signWith(key)
-            .compact();
+            .signWith(key);
+
+     if (TokenCategory.equals("access")) {
+       builder.claim("MemberRole", memberRole);
+     }
+
+    return builder.compact();
   }
 
 
@@ -57,6 +63,7 @@ public class JWTUtil {
   public Long getMemberId(String token) {
     return Long.parseLong(getClaims(token).getSubject());
   }
+  public String getUuid(String token) {return getClaims(token).getSubject();}
   public String getMemberRole(String token) {
     return getClaims(token).get("MemberRole", String.class);
   }
