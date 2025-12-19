@@ -1,6 +1,6 @@
 package com.example.genie_tune_java.api.nts.dto.validation;
 
-import com.example.genie_tune_java.domain.member.dto.BusinessValidationCheckRequestDTO;
+import com.example.genie_tune_java.domain.member.dto.register.biz_check.BusinessValidationCheckRequestDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 

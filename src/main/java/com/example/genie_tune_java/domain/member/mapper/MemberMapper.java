@@ -1,6 +1,8 @@
 package com.example.genie_tune_java.domain.member.mapper;
 
 import com.example.genie_tune_java.domain.member.dto.*;
+import com.example.genie_tune_java.domain.member.dto.register.MemberRegisterRequestDTO;
+import com.example.genie_tune_java.domain.member.dto.register.MemberRegisterResponseDTO;
 import com.example.genie_tune_java.domain.member.entity.Member;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

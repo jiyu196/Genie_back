@@ -1,4 +1,4 @@
-package com.example.genie_tune_java.security.config;
+package com.example.genie_tune_java.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
