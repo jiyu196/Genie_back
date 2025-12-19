@@ -2,12 +2,11 @@ package com.example.genie_tune_java.api.nts;
 
 import com.example.genie_tune_java.api.nts.dto.status.BusinessStatusRequestDTO;
 import com.example.genie_tune_java.api.nts.dto.status.BusinessStatusResponseDTO;
-import com.example.genie_tune_java.api.nts.dto.validation.BusinessValidationOutputData;
 import com.example.genie_tune_java.api.nts.dto.validation.BusinessValidationRequestDTO;
 import com.example.genie_tune_java.api.nts.dto.validation.BusinessValidationResponseDTO;
 import com.example.genie_tune_java.common.exception.ErrorCode;
 import com.example.genie_tune_java.common.exception.GlobalException;
-import com.example.genie_tune_java.domain.member.dto.BusinessValidationCheckRequestDTO;
+import com.example.genie_tune_java.domain.member.dto.register.biz_check.BusinessValidationCheckRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;

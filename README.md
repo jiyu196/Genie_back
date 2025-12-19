@@ -62,5 +62,12 @@
 * 관련하여 dto <-> entity 맵핑 issue, 필드명 issue 등 발생, 에러 수정하여 프론트 요청 및 연결 확인 완료
 
 ### 📅 251218(목)
-* 회원가입 비즈니스 로직 변경 (회원가입창 -> 사업자등록정보 진위확인 연동) -> 백단 로직 완료 (DTO, Service, Controller, schema 등 초안 작성)
+* 회원가입 비즈니스 로직 변경 (회원가입창 -> 사업자등록정보 진위확인 연동 (추가 테이블 컬럼추가)) -> 백단 로직 완료 (DTO, Service, Controller, schema 등 초안 작성)
 * Junit Test로 직접 test 완료
+* (프론트 <-> 백) Register Test 및 사업자등록정보 진위확인 연동 Test 완료
+* Redis 관련 Config 및 Util 작성
+
+### 📅 251219(금)
+* 회원가입 내 Email 인증 로직 구현 (인증메일 발송 요청 -> Spring 단에서 Redis의 key:value 형태로 6자리 코드 발급 -> JavaMailSender 활용 인증코드 메일 발송 -> 인증코드 확인 및 프론트에 코드 입력 -> 
+코드 인증 요청 버튼 -> Spring단에서 RequestDTO의 Code 값과 Redis의 저장된 Code 값을 비교해서 일치하면 true 반환)
+* Junit Test로 메일 발송 완료, 프론트 단 연동 테스트 완료

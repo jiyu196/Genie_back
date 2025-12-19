@@ -4,12 +4,11 @@ import com.example.genie_tune_java.api.nts.NTSBusinessAPIClient;
 import com.example.genie_tune_java.api.nts.dto.status.BusinessStatusDataDTO;
 import com.example.genie_tune_java.api.nts.dto.status.BusinessStatusResponseDTO;
 import com.example.genie_tune_java.api.nts.dto.validation.BusinessValidationOutputData;
-import com.example.genie_tune_java.api.nts.dto.validation.BusinessValidationRequestDTO;
 import com.example.genie_tune_java.api.nts.dto.validation.BusinessValidationResponseDTO;
 import com.example.genie_tune_java.common.exception.ErrorCode;
 import com.example.genie_tune_java.common.exception.GlobalException;
-import com.example.genie_tune_java.domain.member.dto.BusinessValidationCheckRequestDTO;
-import com.example.genie_tune_java.domain.member.dto.BusinessValidationCheckResponseDTO;
+import com.example.genie_tune_java.domain.member.dto.register.biz_check.BusinessValidationCheckRequestDTO;
+import com.example.genie_tune_java.domain.member.dto.register.biz_check.BusinessValidationCheckResponseDTO;
 import com.example.genie_tune_java.domain.register_request.dto.RegisterRequestCheckDTO;
 import com.example.genie_tune_java.domain.register_request.dto.RegisterRequestDTO;
 import com.example.genie_tune_java.domain.register_request.entity.RegisterRequestStatus;
@@ -58,7 +57,7 @@ public class BusinessNumberCheckService {
 
     boolean validation = realData.validationCode().equals("01");
 
-    return new BusinessValidationCheckResponseDTO(realData.bizNumber(),realData.requestParam().businessName() ,validation, realData.resultMessage());
+    return new BusinessValidationCheckResponseDTO(realData.bizNumber(), validation, realData.resultMessage(), realData.status().getBStt(), realData.status().getBSttCd());
 
   }
 

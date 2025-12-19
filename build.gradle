@@ -71,6 +71,9 @@ dependencies {
   //백단 내에 간단한 유효성 검증 의존성 기능 추가
   implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+  //스프링에서 이메일을 보내주는 기능
+  implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 }
 
 tasks.named('test') {

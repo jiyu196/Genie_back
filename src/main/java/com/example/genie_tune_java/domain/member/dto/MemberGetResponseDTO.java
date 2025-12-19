@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 public record MemberGetResponseDTO(
         String email, AccountStatus accountStatus, String bizNumber, String organizationName, String contactName,
+        String openingDate, String representativeName,
         RegisterStatus registerStatus, Role role,
         LocalDateTime approvedAt, LocalDateTime deletedAt
 ) {}

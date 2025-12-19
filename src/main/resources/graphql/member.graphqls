@@ -3,7 +3,10 @@ input MemberRegisterRequestDTO {
   email: String!
   password: String!
   bizNumber: String!
+  representativeName: String!
+  openingDate: String!
   organizationName: String!
+  contactName: String!
 }
 # 등록 상태 Register ResponseDTO에 값 포함(상태에 따라 다른 페이지 보내줘야하므로)
 enum RegisterStatus {
@@ -16,12 +19,13 @@ enum AccountStatus {
 }
 
 type MemberRegisterResponseDTO {
-  id: ID!
   email: String!
   bizNumber: String!
   organizationName: String!
+  contactName: String!
+  registeredAt: String!
   registerStatus: RegisterStatus!
-  AccountStatus: AccountStatus!
+  accountStatus: AccountStatus!
 }
 
 # 1-2 Register 내 사업자등록증 번호 조회 로직
@@ -33,9 +37,31 @@ input BusinessValidationCheckRequestDTO {
 
 type BusinessValidationCheckResponseDTO {
   bizNumber: String!
-  organizationName: String!
   validation: Boolean!
-  validationMsg: String!
+  validationMsg: String
+  businessStatus: String!
+  businessStatusCode: String!
+}
+
+# 1-3 6자리 이메일 인증코드 발송
+input MemberVerifyEmailRequestDTO {
+  email: String!
+  type: String!
+}
+
+type MemberVerifyEmailResponseDTO {
+  result: Boolean!
+}
+
+# 1-4 인증코드 확인
+input MemberVerifyCodeRequestDTO {
+  email: String!
+  code: String!
+  type: String!
+}
+
+type MemberVerifyCodeResponseDTO {
+  result: Boolean!
 }
 
 ## 2 Login 로직
@@ -70,6 +96,8 @@ type Query{
   me: MemberGetResponseDTO
 }
 type Mutation {
+  sendVerificationEmail(input:MemberVerifyEmailRequestDTO!): MemberVerifyEmailResponseDTO
+  verifyCode(input: MemberVerifyCodeRequestDTO!): MemberVerifyCodeResponseDTO
   checkBizNumber(input:BusinessValidationCheckRequestDTO!): BusinessValidationCheckResponseDTO
   register(input:MemberRegisterRequestDTO!): MemberRegisterResponseDTO
   login(input:MemberLoginRequestDTO!): MemberLoginResponseDTO
