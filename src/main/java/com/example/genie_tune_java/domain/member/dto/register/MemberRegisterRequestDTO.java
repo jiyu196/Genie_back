@@ -1,4 +1,4 @@
-package com.example.genie_tune_java.domain.member.dto;
+package com.example.genie_tune_java.domain.member.dto.register;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

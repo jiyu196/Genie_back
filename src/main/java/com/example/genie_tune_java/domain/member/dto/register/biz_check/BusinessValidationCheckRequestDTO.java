@@ -1,4 +1,4 @@
-package com.example.genie_tune_java.domain.member.dto;
+package com.example.genie_tune_java.domain.member.dto.register.biz_check;
 
 // 프론트 가입 신청 창 -> 백단으로 보내주는 정보
 public record BusinessValidationCheckRequestDTO(
