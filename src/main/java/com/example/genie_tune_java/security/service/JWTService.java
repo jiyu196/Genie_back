@@ -17,7 +17,11 @@ public class JWTService {
 
   public ResponseCookie generateAccessTokenWithCookie(Member loginMember) {
     String accessToken = jwtUtil.createAccessToken(loginMember.getId(), loginMember.getRole().toString());
-    return cookieUtil.createAccessCookie(accessToken);
+    return cookieUtil.createCookie(accessToken, "Access_Cookie");
+  }
+  public ResponseCookie generateRefreshTokenWithCookie(String randomUuid) {
+    String refreshToken = jwtUtil.createRefreshToken(randomUuid, null);
+    return cookieUtil.createCookie(refreshToken, "Refresh_Cookie");
   }
 
 }
