@@ -25,7 +25,7 @@ public class CookieUtil {
     long LeftTime = (tokenExpiration.getTime() - System.currentTimeMillis())/ 1000;
     log.info("토큰 남은 시간: {} 남은 시간(초단위): {}", tokenExpiration, LeftTime);
     // key, value 형태로 cookie에 accessToken을 value(String)로 저장한다.
-    ResponseCookie accessCookie = ResponseCookie.from(category, token)
+    ResponseCookie cookie = ResponseCookie.from(category, token)
             .httpOnly(true)
             .secure(false)
             .path("/")
@@ -33,8 +33,8 @@ public class CookieUtil {
             // maxAge는 쿠키의 만료 시간을 초로 지정한다. 그래서 위의 Mills의 계산 값을 1000으로 나눈것
             .maxAge(LeftTime)
             .build();
-    log.info("만들어진 Cookie {}", accessCookie);
-    return accessCookie;
+    log.info("만들어진 Cookie {}", cookie);
+    return cookie;
   }
 
 
@@ -62,6 +62,4 @@ public class CookieUtil {
     //일단 Cookie 내에 Access_Cookie 없으면 null 반환
     return null;
   }
-
-
 }

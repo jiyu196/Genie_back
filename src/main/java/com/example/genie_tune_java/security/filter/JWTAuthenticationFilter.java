@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -75,20 +76,23 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     // 3. AccessToken이 없을 때는 아래 로직
     } else {
+      log.info("accessCookie 존재 x");
       //3-1. RefreshToken 유효성 검증
       if(jwtUtil.checkToken(refreshToken) == TokenStatus.VALID) {
+        log.info("refreshCookie 정상");
         //3-2. Redis에 저장된 value값을 꺼내서 조치 ex) 7:MEMBER -> [7, MEMBER] 형태로 변환
-        String[] redisValue = (redisUtil.get(jwtUtil.getUuid(refreshToken))).split(":");
+        String[] redisValue = (redisUtil.get("RT:" + jwtUtil.getUuid(refreshToken))).split(":");
         Long memberId = Long.parseLong(redisValue[0]);
         String role = redisValue[1];
         log.info("memberId: {} role: {}",memberId, role);
+
         // 3-3. redis 정보 토대로 accessToken 생성
         String newAccessToken = jwtUtil.createAccessToken(memberId, role);
         // 3-4. 새로운 accessToken 기반 -> AccessCookie 생성
-        cookieUtil.createCookie(newAccessToken, "ACCESS_COOKIE");
+        ResponseCookie accessCookie = cookieUtil.createCookie(newAccessToken, "ACCESS_COOKIE");
 
         // 3-5. 쿠키 브라우저 발급 로직 필요 아예 이 로직 자체를 authService로 빼야하나 고민 중
-
+        response.addHeader("Set-Cookie", accessCookie.toString());
 
         // 3-6. 인증 객체 생성
         JWTPrincipal principal = new JWTPrincipal(memberId, role);
