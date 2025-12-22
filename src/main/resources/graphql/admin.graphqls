@@ -1,0 +1,52 @@
+scalar DateTime
+type RegisterRequestResponseDTO {
+  # Member 정보
+  email: String!
+  organizationName: String!
+  bizNumber: String!
+  contactName: String!
+  role: Role!
+  accountStatus: AccountStatus!
+  approvedAt: DateTime
+
+  # RegisterRequest 정보
+  rejectReason: String
+  registerStatus: RegisterStatus!
+  createdAt: DateTime!
+  checkedAt: DateTime!
+}
+# 검색어 타입
+enum MemberSearchType {
+  BIZ_NUMBER          # 사업자등록증번호로 검색
+  EMAIL         # 이메일로 검색
+  ORGANIZATION_NAME  # 기관명으로 검색
+  REPRESENTATIVE_NAME # 대표자 명
+  ALL           # 전체 통합 검색
+}
+
+# 검색 및 필터 조건을 담는 객체
+input MemberSearchCondition {
+  searchType: MemberSearchType
+  keyword: String
+  registerStatus: RegisterStatus
+  role: Role
+}
+
+# 페이지 응답을 위한 타입 추가
+type MemberPageResponse {
+  content: [RegisterRequestResponseDTO!]!
+  totalPages: Int!
+  totalElements: Int!
+  currentPage: Int!
+  isFirst: Boolean!
+  isLast: Boolean!
+}
+
+extend type Query {
+  # page는 1부터 시작하도록 프론트와 약속
+  getAllMembers(
+    page: Int = 1,
+    size: Int = 10,
+    condition: MemberSearchCondition
+  ): MemberPageResponse!
+}

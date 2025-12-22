@@ -74,6 +74,9 @@ dependencies {
   //스프링에서 이메일을 보내주는 기능
   implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+  //Graphql에서 LocalDateTime 등의 type을 읽을 수 있도록 스칼라 로직을 짜주는 라이브러리
+  implementation 'com.graphql-java:graphql-java-extended-scalars:18.1'
+
 }
 
 tasks.named('test') {

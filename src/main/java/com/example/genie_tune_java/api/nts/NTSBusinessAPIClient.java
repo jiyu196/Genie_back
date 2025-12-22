@@ -30,17 +30,17 @@ public class NTSBusinessAPIClient {
   /**
    * 사업자 상태 조회 (계속사업자 / 폐업자 / 휴업자)
    */
-  public BusinessStatusResponseDTO checkStatus(String bizNumber) {
-
-    return webClient.post()
-            .uri(URI.create("https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=" + serviceKey))
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .bodyValue(new BusinessStatusRequestDTO(bizNumber))
-            .retrieve()
-            .bodyToMono(BusinessStatusResponseDTO.class)
-            .block();
-  }
+//  public BusinessStatusResponseDTO checkStatus(String bizNumber) {
+//
+//    return webClient.post()
+//            .uri(URI.create("https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=" + serviceKey))
+//            .contentType(MediaType.APPLICATION_JSON)
+//            .accept(MediaType.APPLICATION_JSON)
+//            .bodyValue(new BusinessStatusRequestDTO(bizNumber))
+//            .retrieve()
+//            .bodyToMono(BusinessStatusResponseDTO.class)
+//            .block();
+//  }
 
   public BusinessValidationResponseDTO checkValidation(BusinessValidationCheckRequestDTO dto) {
 
