@@ -91,7 +91,6 @@ type MemberGetResponseDTO {
   registerStatus: RegisterStatus!
   role: Role!
   approvedAt: String
-  deletedAt: String!
 }
 
 # Member 정보 조회 쿼리
