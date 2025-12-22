@@ -71,3 +71,10 @@
 * 회원가입 내 Email 인증 로직 구현 (인증메일 발송 요청 -> Spring 단에서 Redis의 key:value 형태로 6자리 코드 발급 -> JavaMailSender 활용 인증코드 메일 발송 -> 인증코드 확인 및 프론트에 코드 입력 -> 
 코드 인증 요청 버튼 -> Spring단에서 RequestDTO의 Code 값과 Redis의 저장된 Code 값을 비교해서 일치하면 true 반환)
 * Junit Test로 메일 발송 완료, 프론트 단 연동 테스트 완료
+* Member login 및 get 재확인(백단 <-> 프론트)
+* Redis 기반 RefreshToken, RefreshCookie 발급 로직 추가, JWTAuthenticationFilter 내 AccessToken 만료시 재발급 로직 미완성
+
+### 📅 251222(월)
+* RefreshToken 발급 -> ResponseCookie 발급 로직 구현, 프론트 Test 코드로 accessCookie 삭제시 RefreshCookie 보유-> 재발급 로직 check 완료
+* Admin 페이지 내 등록요청 회원 목록 조회 백단 로직 구현 완료(Pageable & keyword 검색어 처리 포함)
+  

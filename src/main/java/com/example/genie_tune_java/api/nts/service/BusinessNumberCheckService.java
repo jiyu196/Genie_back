@@ -9,9 +9,7 @@ import com.example.genie_tune_java.common.exception.ErrorCode;
 import com.example.genie_tune_java.common.exception.GlobalException;
 import com.example.genie_tune_java.domain.member.dto.register.biz_check.BusinessValidationCheckRequestDTO;
 import com.example.genie_tune_java.domain.member.dto.register.biz_check.BusinessValidationCheckResponseDTO;
-import com.example.genie_tune_java.domain.register_request.dto.RegisterRequestCheckDTO;
-import com.example.genie_tune_java.domain.register_request.dto.RegisterRequestDTO;
-import com.example.genie_tune_java.domain.register_request.entity.RegisterRequestStatus;
+import com.example.genie_tune_java.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -22,28 +20,34 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BusinessNumberCheckService {
   private final NTSBusinessAPIClient ntsClient;
+  private final MemberRepository memberRepository;
 
-  public RegisterRequestDTO checkBusinessStatus(RegisterRequestCheckDTO dto) {
-    //1. 사업자 등록번호 꺼내기
-    String bizNumber = dto.bizNumber();
-    //2. 외부에서 받은 dto의 필드를 꺼내서 API 호출용 DTO 생성 및 결과 값 반환
-    BusinessStatusResponseDTO responseDTO = ntsClient.checkStatus(bizNumber);
+//  public RegisterRequestDTO checkBusinessStatus(RegisterRequestCheckDTO dto) {
+//    //1. 사업자 등록번호 꺼내기
+//    String bizNumber = dto.bizNumber();
+//    //2. 외부에서 받은 dto의 필드를 꺼내서 API 호출용 DTO 생성 및 결과 값 반환
+//    BusinessStatusResponseDTO responseDTO = ntsClient.checkStatus(bizNumber);
+//
+//    //3. 추가로 필요한 값 꺼내기 & null Check
+//    BusinessStatusDataDTO data = responseDTO.data().get(0);
+//
+//    if(!StringUtils.hasText(data.getBStt()) || !StringUtils.hasText(data.getBSttCd())) {
+//      throw new GlobalException(ErrorCode.BUSINESS_NUMBER_NOT_FOUND);
+//    }
+//
+//    RegisterRequestStatus status = "01".equals(data.getBSttCd()) ? RegisterRequestStatus.PENDING : RegisterRequestStatus.REJECTED;
+//
+//    //4. API 반환 값을 Entity 등록용 RegisterRequestDTO로 반환
+//
+//    return new RegisterRequestDTO(bizNumber, data.getBStt(), data.getBSttCd(), status);
+//  }
 
-    //3. 추가로 필요한 값 꺼내기 & null Check
-    BusinessStatusDataDTO data = responseDTO.data().get(0);
+  public BusinessValidationCheckResponseDTO checkBusinessValidation(BusinessValidationCheckRequestDTO dto) {
 
-    if(!StringUtils.hasText(data.getBStt()) || !StringUtils.hasText(data.getBSttCd())) {
-      throw new GlobalException(ErrorCode.BUSINESS_NUMBER_NOT_FOUND);
+    //0. 중복 체크 기존 사업자 등록번호 조회 불가
+    if(memberRepository.existsByBizNumber(dto.bizNumber())) {
+      throw new GlobalException(ErrorCode.BIZ_NUMBER_DUPLICATED);
     }
-
-    RegisterRequestStatus status = "01".equals(data.getBSttCd()) ? RegisterRequestStatus.PENDING : RegisterRequestStatus.REJECTED;
-
-    //4. API 반환 값을 Entity 등록용 RegisterRequestDTO로 반환
-
-    return new RegisterRequestDTO(bizNumber, data.getBStt(), data.getBSttCd(), status);
-  }
-
-  public BusinessValidationCheckResponseDTO  checkBusinessValidation(BusinessValidationCheckRequestDTO dto) {
 
     //1.api 호출 및 결과 값 반환
     BusinessValidationResponseDTO bvrDto = ntsClient.checkValidation(dto);

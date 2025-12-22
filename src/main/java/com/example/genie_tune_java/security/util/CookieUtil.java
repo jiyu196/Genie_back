@@ -18,14 +18,14 @@ public class CookieUtil {
 
   private final JWTUtil jwtUtil;
 
-  public ResponseCookie createAccessCookie(String accessToken) {
+  public ResponseCookie createCookie(String token, String category) {
     //1. accessToken에 저장된 만료시간
-    Date tokenExpiration = jwtUtil.getExpiration(accessToken);
+    Date tokenExpiration = jwtUtil.getExpiration(token);
     // 2. JWTToken 기준 만료시간에서 현재 시스템에 저장된 시간을 빼서 남은 시간 계산 .getTime()도 1970년 1월 1일인가? 기준의 밀리세컨즈로 반환
     long LeftTime = (tokenExpiration.getTime() - System.currentTimeMillis())/ 1000;
     log.info("토큰 남은 시간: {} 남은 시간(초단위): {}", tokenExpiration, LeftTime);
     // key, value 형태로 cookie에 accessToken을 value(String)로 저장한다.
-    ResponseCookie accessCookie = ResponseCookie.from("Access_Cookie", accessToken)
+    ResponseCookie cookie = ResponseCookie.from(category, token)
             .httpOnly(true)
             .secure(false)
             .path("/")
@@ -33,12 +33,14 @@ public class CookieUtil {
             // maxAge는 쿠키의 만료 시간을 초로 지정한다. 그래서 위의 Mills의 계산 값을 1000으로 나눈것
             .maxAge(LeftTime)
             .build();
-    log.info("만들어진 Cookie {}", accessCookie);
-    return accessCookie;
+    log.info("만들어진 Cookie {}", cookie);
+    return cookie;
   }
+
+
   // Cookie를 삭제하는 로직은 동일한 이름의 쿠키에 maxAge를 0으로 만들어버리면 삭제가 된다.
-  public ResponseCookie deleteAccessCookie() {
-    return ResponseCookie.from("Access_Cookie", "")
+  public ResponseCookie deleteCookie(String category) {
+    return ResponseCookie.from(category, "")
             .httpOnly(true)
             .secure(false)
             .path("/")
@@ -47,12 +49,12 @@ public class CookieUtil {
             .build();
   }
 
-  public String getCookieValue(HttpServletRequest request) {
+  public String getCookieValue(HttpServletRequest request, String category) {
     Cookie[] cookies = request.getCookies();
     //Http Header에 저장해놓은 Cookie 배열이 존재하지 않으면 null을 반환하므로 null check 필요
     if(cookies != null) {
       for (Cookie ck : cookies) {
-        if(ck.getName().equals("Access_Cookie")) {
+        if(ck.getName().equals(category)) {
           return ck.getValue();
         }
       }
@@ -60,6 +62,4 @@ public class CookieUtil {
     //일단 Cookie 내에 Access_Cookie 없으면 null 반환
     return null;
   }
-
-
 }
