@@ -15,6 +15,6 @@ public class MailTest {
 
   @Test
   public void sendMail() throws MessagingException, UnsupportedEncodingException {
-    mailService.sendMail("kimchan9408@gmail.com", "55432");
+    mailService.sendMail("chankim94@naver.com", "554321");
   }
 }

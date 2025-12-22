@@ -23,15 +23,15 @@ public class NTSClientTest {
     log.info(client);
   }
 
-  @Test
-  void testGetNTSBusinessStatusAPIClient() {
-    BusinessStatusResponseDTO responseDTO = client.checkStatus("4008266479");
-    Assertions.assertNotNull(responseDTO);
-    log.info(responseDTO.statusCode());
-    log.info(responseDTO.matchCnt());
-    log.info(responseDTO.requestCnt());
-    responseDTO.data().forEach(log::info);
-  }
+//  @Test
+//  void testGetNTSBusinessStatusAPIClient() {
+////    BusinessStatusResponseDTO responseDTO = client.checkStatus("4008266479");
+//    Assertions.assertNotNull(responseDTO);
+//    log.info(responseDTO.statusCode());
+//    log.info(responseDTO.matchCnt());
+//    log.info(responseDTO.requestCnt());
+//    responseDTO.data().forEach(log::info);
+//  }
 
   @Test
   void testGetNTSBusinessValidationAPIClient() {

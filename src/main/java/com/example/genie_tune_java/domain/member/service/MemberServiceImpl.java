@@ -3,6 +3,9 @@ package com.example.genie_tune_java.domain.member.service;
 import com.example.genie_tune_java.common.exception.ErrorCode;
 import com.example.genie_tune_java.common.exception.GlobalException;
 import com.example.genie_tune_java.common.util.RedisUtil;
+import com.example.genie_tune_java.domain.admin.dto.manage_member.JoinHandleRequestDTO;
+import com.example.genie_tune_java.domain.admin.entity.RegisterRequest;
+import com.example.genie_tune_java.domain.admin.repository.RegisterRequestRepository;
 import com.example.genie_tune_java.domain.member.dto.MemberGetResponseDTO;
 import com.example.genie_tune_java.domain.member.dto.register.MemberRegisterRequestDTO;
 import com.example.genie_tune_java.domain.member.dto.register.MemberRegisterResponseDTO;
@@ -30,6 +33,7 @@ import java.io.UnsupportedEncodingException;
 @Log4j2
 public class MemberServiceImpl implements MemberService {
   private final MemberRepository memberRepository;
+  private final RegisterRequestRepository registerRequestRepository;
   private final MemberMapper memberMapper;
   private final PasswordEncoder passwordEncoder;
   private final MailService mailService;
@@ -43,17 +47,23 @@ public class MemberServiceImpl implements MemberService {
     if(memberRepository.existsByEmail(dto.email())) {
       throw new GlobalException(ErrorCode.EMAIL_DUPLICATED);
     }
-    //2. 사업자 등록증 중복 체크
+    //2. 사업자 단체명 중복 체크
     if(memberRepository.existsByOrganizationName(dto.organizationName())) {
       throw new GlobalException(ErrorCode.ORGANIZATION_NAME_DUPLICATED);
     }
-    //3. 사업자 등록증 번호 중복 체크 필요..한가?
-
+    //3. 사업자 등록번호 중복 체크
+    if(memberRepository.existsByBizNumber(dto.bizNumber())) {
+      throw new GlobalException(ErrorCode.BIZ_NUMBER_DUPLICATED);
+    }
+    //4. Member Entity 객체 생성 및 db 등록
     Member member = memberMapper.registerMember(dto);
     String encodedPassword = passwordEncoder.encode(dto.password());
     log.info(encodedPassword);
     member.savePassword(encodedPassword);
     memberRepository.save(member);
+
+    //5. Member Register Request Entity 객체 생성 및 db 등록
+    registerRequestRepository.save(RegisterRequest.createRequest(member));
 
     return memberMapper.toRegisterResponseDTO(member);
   }

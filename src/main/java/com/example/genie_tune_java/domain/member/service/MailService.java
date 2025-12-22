@@ -1,6 +1,7 @@
 package com.example.genie_tune_java.domain.member.service;
 
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -25,7 +26,7 @@ public class MailService {
 
     // 3. 보내는 사람 설정 (중요!)
     // "이메일주소", "표시될이름" 순서입니다.
-    helper.setFrom("genietune@gmail.com", "GenieTune");
+    helper.setFrom(new InternetAddress("genietune@gmail.com", "GenieTune"));
 
     // 4. 내용 (인증번호 등)
 
