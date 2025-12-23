@@ -77,4 +77,8 @@
 ### 📅 251222(월)
 * RefreshToken 발급 -> ResponseCookie 발급 로직 구현, 프론트 Test 코드로 accessCookie 삭제시 RefreshCookie 보유-> 재발급 로직 check 완료
 * Admin 페이지 내 등록요청 회원 목록 조회 백단 로직 구현 완료(Pageable & keyword 검색어 처리 포함)
+
+### 📅 251223(화)
+* Admin 페이지 내 회원가입 요청 회원 목록 조회(검색, 정렬, 페이지) 프론트 연결 확인
+* Admin 페이지 회원 목록 내 개별 item 클릭시 멤버 정보 조회 기능 프론트 연결 확인
   
