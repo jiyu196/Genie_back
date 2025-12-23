@@ -1,6 +1,7 @@
 package com.example.genie_tune_java.domain.admin.entity;
 
 import com.example.genie_tune_java.domain.member.entity.Member;
+import com.example.genie_tune_java.domain.member.entity.RegisterStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -43,5 +44,11 @@ public class RegisterRequest {
             .registerStatus(RegisterStatus.PENDING)
             .createdAt(LocalDateTime.now())
             .build();
+  }
+
+  public void handleRegisterRequest(RegisterStatus status, String rejectReason) {
+    this.registerStatus = status;
+    this.rejectReason = rejectReason;
+    this.checkedAt = LocalDateTime.now();
   }
 }

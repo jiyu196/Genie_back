@@ -22,6 +22,7 @@ public enum ErrorCode {
   // ==== 공통 ====
   UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증이 필요합니다."),
   FORBIDDEN(HttpStatus.FORBIDDEN, "권한이 없습니다."),
+  REQUIRED_FIELD_MISSING(HttpStatus.BAD_REQUEST, "필수 데이터가 누락되었습니다."),
 
   // ==== 회원관리 ====
   MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다."),

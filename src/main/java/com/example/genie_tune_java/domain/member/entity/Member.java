@@ -64,9 +64,13 @@ public class Member {
   @Builder.Default
   private AccountStatus accountStatus = AccountStatus.ACTIVE;
 
-
   //password 저장 메서드
   public void savePassword(String encodedPassword) {
     this.password = encodedPassword;
+  }
+
+  //가입상태 값 변경 메서드
+  public void changeRegisterStatus(RegisterStatus newStatus) {
+    this.registerStatus = newStatus;
   }
 }
