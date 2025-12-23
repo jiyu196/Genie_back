@@ -3,7 +3,6 @@ package com.example.genie_tune_java.domain.member.service;
 import com.example.genie_tune_java.common.exception.ErrorCode;
 import com.example.genie_tune_java.common.exception.GlobalException;
 import com.example.genie_tune_java.common.util.RedisUtil;
-import com.example.genie_tune_java.domain.admin.dto.manage_member.JoinHandleRequestDTO;
 import com.example.genie_tune_java.domain.admin.entity.RegisterRequest;
 import com.example.genie_tune_java.domain.admin.repository.RegisterRequestRepository;
 import com.example.genie_tune_java.domain.member.dto.MemberGetResponseDTO;
