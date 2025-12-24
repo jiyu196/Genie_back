@@ -12,6 +12,7 @@ import com.example.genie_tune_java.domain.member.dto.register.send_code.MemberVe
 import com.example.genie_tune_java.domain.member.dto.register.send_code.MemberVerifyEmailResponseDTO;
 import com.example.genie_tune_java.domain.member.dto.register.verify_code.MemberVerifyCodeRequestDTO;
 import com.example.genie_tune_java.domain.member.dto.register.verify_code.MemberVerifyCodeResponseDTO;
+import com.example.genie_tune_java.domain.member.dto.update.UpdateInfoRequestDTO;
 import com.example.genie_tune_java.domain.member.entity.Member;
 import com.example.genie_tune_java.domain.member.mapper.MemberMapper;
 import com.example.genie_tune_java.domain.member.repository.MemberRepository;
@@ -58,7 +59,7 @@ public class MemberServiceImpl implements MemberService {
     Member member = memberMapper.registerMember(dto);
     String encodedPassword = passwordEncoder.encode(dto.password());
     log.info(encodedPassword);
-    member.savePassword(encodedPassword);
+    member.updatePassword(encodedPassword);
     memberRepository.save(member);
 
     //5. Member Register Request Entity 객체 생성 및 db 등록
@@ -113,6 +114,10 @@ public class MemberServiceImpl implements MemberService {
     }
     redisUtil.delete(type + ":" + email);
     return new MemberVerifyCodeResponseDTO(true);
+  }
+
+  public MemberGetResponseDTO updateInfo(UpdateInfoRequestDTO dto) {
+    return null;
   }
 
 }
