@@ -58,31 +58,4 @@
 * WebClient 기반, 국세청 공공 API 연동 준비(WebClient Config, 관련 DTO(Request, Response 확인)
 * 국세청 공공 API 사업자등록정보 상태조회 Junit Test 완료
 * 비즈니스 로직- 사업자등록정보 상태조회 -> 정상영업시 회원가입창 전환, -> table 추가 생성
-* 프론트 - dto 1(프론트 -> 백) - dto 2 (백 -> 공공API요청용 DTO) - dto 3(공공API 응답용 dto) -> dto 4(공공API 응답용 dto -> Entity 등록용) -> dto 5(Entity-> 프론트 응답용 dto) 구조 설립
-* 관련하여 dto <-> entity 맵핑 issue, 필드명 issue 등 발생, 에러 수정하여 프론트 요청 및 연결 확인 완료
-
-### 📅 251218(목)
-* 회원가입 비즈니스 로직 변경 (회원가입창 -> 사업자등록정보 진위확인 연동 (추가 테이블 컬럼추가)) -> 백단 로직 완료 (DTO, Service, Controller, schema 등 초안 작성)
-* Junit Test로 직접 test 완료
-* (프론트 <-> 백) Register Test 및 사업자등록정보 진위확인 연동 Test 완료
-* Redis 관련 Config 및 Util 작성
-
-### 📅 251219(금)
-* 회원가입 내 Email 인증 로직 구현 (인증메일 발송 요청 -> Spring 단에서 Redis의 key:value 형태로 6자리 코드 발급 -> JavaMailSender 활용 인증코드 메일 발송 -> 인증코드 확인 및 프론트에 코드 입력 -> 
-코드 인증 요청 버튼 -> Spring단에서 RequestDTO의 Code 값과 Redis의 저장된 Code 값을 비교해서 일치하면 true 반환)
-* Junit Test로 메일 발송 완료, 프론트 단 연동 테스트 완료
-* Member login 및 get 재확인(백단 <-> 프론트)
-* Redis 기반 RefreshToken, RefreshCookie 발급 로직 추가, JWTAuthenticationFilter 내 AccessToken 만료시 재발급 로직 미완성
-
-### 📅 251222(월)
-* RefreshToken 발급 -> ResponseCookie 발급 로직 구현, 프론트 Test 코드로 accessCookie 삭제시 RefreshCookie 보유-> 재발급 로직 check 완료
-* Admin 페이지 내 등록요청 회원 목록 조회 백단 로직 구현 완료(Pageable & keyword 검색어 처리 포함)
-
-### 📅 251223(화)
-* Admin 페이지 내 회원가입 요청 회원 목록 조회(검색, 정렬, 페이지) 프론트 연결 확인
-* Admin 페이지 회원 목록 내 개별 item 클릭시 멤버 정보 조회 기능 프론트 연결 확인
-* back단 파트 발표 자료 준비
-
-### 📅 251224(수)
-* 프로젝트 중간 점검 발표, 기존 구현 기능 재점검
-* Member update 로직 구상 중
+* 프론트 - dto 1(프론트 -> 백) - dto 2 (백 -> 공공API요청용 DTO) - dto 3(공공API 응답용 dto) -> dto 4(공공API 응답용 dto -> Entity 등록용) -> dto 5(Entity-> 프론트 응답용 dto) 구조 성
