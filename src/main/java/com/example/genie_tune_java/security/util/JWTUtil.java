@@ -1,5 +1,7 @@
 package com.example.genie_tune_java.security.util;
 
+import com.example.genie_tune_java.domain.member.entity.AccountStatus;
+import com.example.genie_tune_java.domain.member.entity.RegisterStatus;
 import com.example.genie_tune_java.security.status.TokenStatus;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @Log4j2
@@ -23,16 +27,20 @@ public class JWTUtil {
     this.refreshTokenExpiration = jwtProperties.getRefreshTokenExpiration();
   }
   //AccessToken 만드는 로직
-  public String createAccessToken(Long memberId, String memberRole) {
-    return generateJWTToken(memberId.toString(), "access", memberRole);
+  public String createAccessToken(Long memberId, String memberRole, AccountStatus accountStatus, RegisterStatus registerStatus) {
+    Map<String, String> claims = new HashMap<>();
+    claims.put("MemberRole", memberRole);
+    claims.put("MemberStatus", accountStatus.name());
+    claims.put("RegisterStatus", registerStatus.name());
+    return generateJWTToken(memberId.toString(), "access", claims);
   }
   //RefreshToken 만드는 로직
-  public String createRefreshToken(String refreshTokenUuid, String memberRole) {
-    return generateJWTToken(refreshTokenUuid, "refresh", memberRole);
+  public String createRefreshToken(String refreshTokenUuid) {
+    return generateJWTToken(refreshTokenUuid, "refresh", null);
   }
 
   //Token 을 만드는 메서드 access 인지 refresh인지 입력하여 나눠서 발급한다.
-  private String generateJWTToken(String subValue, String TokenCategory, String memberRole) {
+  private String generateJWTToken(String subValue, String TokenCategory, Map<String, String> claims) {
     //access는 memberId, Role을 넣고
     Date now = new Date();
     Date expiryDate = new Date(now.getTime() + (TokenCategory.equals("access") ? accessTokenExpiration : refreshTokenExpiration));
@@ -44,7 +52,7 @@ public class JWTUtil {
             .signWith(key);
 
      if (TokenCategory.equals("access")) {
-       builder.claim("MemberRole", memberRole);
+       claims.forEach(builder::claim);
      }
 
     return builder.compact();
@@ -67,7 +75,12 @@ public class JWTUtil {
   public String getMemberRole(String token) {
     return getClaims(token).get("MemberRole", String.class);
   }
-
+  public String getMemberStatus(String token) {
+    return getClaims(token).get("MemberStatus", String.class);
+  }
+  public String getRegisterStatus(String token) {
+    return getClaims(token).get("RegisterStatus", String.class);
+  }
   // 파싱 및 검증을 통해서 토큰의 현재 상태를 확인
   public TokenStatus checkToken(String token) {
     try{

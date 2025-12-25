@@ -116,8 +116,13 @@ public class MemberServiceImpl implements MemberService {
     return new MemberVerifyCodeResponseDTO(true);
   }
 
+  @Transactional
   public MemberGetResponseDTO updateInfo(UpdateInfoRequestDTO dto) {
-    return null;
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    JWTPrincipal principal = (JWTPrincipal) authentication.getPrincipal();
+    Member member =  memberRepository.findById(principal.getMemberId()).orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
+    member.changeInfo(dto.representativeName(), dto.contactName());
+    return memberMapper.toMemberGetResponseDTO(member);
   }
 
 }

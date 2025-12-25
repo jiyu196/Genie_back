@@ -1,5 +1,7 @@
 package com.example.genie_tune_java.security.dto;
 
+import com.example.genie_tune_java.domain.member.entity.AccountStatus;
+import com.example.genie_tune_java.domain.member.entity.RegisterStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,8 @@ import java.util.List;
 public class JWTPrincipal {
   private Long memberId;
   private String role;
+  private String accountStatus;
+  private String registerStatus;
 
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return List.of(new SimpleGrantedAuthority("ROLE_" + role));
