@@ -25,7 +25,7 @@ public class SecurityCheckService {
     return Arrays.asList(roles).contains(principal.getRole());
   }
 
-  // 3. 복합 체크 (조합)
+  // 복합 체크 (조합)
   public boolean isNormalUser(JWTPrincipal principal) {
     // 기본 조건 충족 + (MEMBER 또는 SUBSCRIBER 또는 ADMIN 권한 보유)
     return isActive(principal) && isApproved(principal) &&
