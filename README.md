@@ -92,3 +92,6 @@
 * Member Update 로직(스키마 이외 구현 완료 -> 이후 프론트 연동 체크 예정)
 * JWT 기반 Access Token 내 claim 회원 상태, 회원 가입 요청 상태 2가지 추가
 * Security PreAuthorize 관련 Custom Bean, Custom Annotation 생성
+
+### 📅 251226(금)
+* Member Update 기능 (대표자명, 담당자명) 비밀번호 확인 및 변경 기능 추가, 프론트 체크 완료
