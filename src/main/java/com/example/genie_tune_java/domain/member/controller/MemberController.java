@@ -51,7 +51,7 @@ public class MemberController {
   }
 
   @QueryMapping // 내 정보 가져오기
-  @IsMemberUser
+  @PreAuthorize("@auth.isActive(principal)")
   public MemberGetResponseDTO me() {
     return memberService.getMember();
   }

@@ -81,7 +81,7 @@ type MemberLoginResponseDTO {
   login: Boolean!
 }
 
-# 로그인 성공 이후 실제 멤버 정보 GetResponseDTO
+# 3 로그인 성공 이후 실제 멤버 정보 GetResponseDTO, Update 이후에도 활용
 type MemberGetResponseDTO {
   email: String!
   accountStatus: AccountStatus!
@@ -92,6 +92,14 @@ type MemberGetResponseDTO {
   role: Role!
   approvedAt: String
 }
+
+# 4 Update
+
+input UpdateInfoRequestDTO {
+  representativeName: String!
+  contactName: String!
+}
+
 
 # Member 정보 조회 쿼리
 type Query{
@@ -104,4 +112,5 @@ type Mutation {
   register(input:MemberRegisterRequestDTO!): MemberRegisterResponseDTO
   login(input:MemberLoginRequestDTO!): MemberLoginResponseDTO
   logout: Boolean!
+  update(input:UpdateInfoRequestDTO!): MemberGetResponseDTO
 }
