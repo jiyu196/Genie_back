@@ -95,3 +95,7 @@
 
 ### 📅 251226(금)
 * Member Update 기능 (대표자명, 담당자명) 비밀번호 확인 및 변경 기능 추가, 프론트 체크 완료
+
+### 📅 251227(토)
+* 이메일 찾기, 비밀번호 찾기(초기화) 백단 로직 구현(프론트 체크 필요)
+* Member Table Column 2개 추가(isTempPassword(boolean), passwordUpdatedAt(LocalDateTime)) 및 Entity, Mapper, DTO 수정
