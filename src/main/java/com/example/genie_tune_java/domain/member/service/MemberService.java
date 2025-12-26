@@ -1,6 +1,10 @@
 package com.example.genie_tune_java.domain.member.service;
 
 import com.example.genie_tune_java.domain.member.dto.MemberGetResponseDTO;
+import com.example.genie_tune_java.domain.member.dto.find.FindEmailRequestDTO;
+import com.example.genie_tune_java.domain.member.dto.find.FindEmailResponseDTO;
+import com.example.genie_tune_java.domain.member.dto.find.ResetPasswordRequestDTO;
+import com.example.genie_tune_java.domain.member.dto.find.ResetPasswordResponseDTO;
 import com.example.genie_tune_java.domain.member.dto.register.MemberRegisterRequestDTO;
 import com.example.genie_tune_java.domain.member.dto.register.MemberRegisterResponseDTO;
 import com.example.genie_tune_java.domain.member.dto.register.send_code.MemberVerifyEmailRequestDTO;
@@ -15,7 +19,7 @@ import java.io.UnsupportedEncodingException;
 public interface MemberService {
   // Register
   MemberRegisterResponseDTO register(MemberRegisterRequestDTO dto);
-  // 1) 등록시 메일인증 코드 보내기
+  // 1) 등록시 & 비밀번호 찾기시 초기화하는 메일인증 코드 보내기
   MemberVerifyEmailResponseDTO sendVerificationCode(MemberVerifyEmailRequestDTO dto) throws MessagingException, UnsupportedEncodingException;
   // 2) 인증 코드 확인 요청
   MemberVerifyCodeResponseDTO checkVerificationCode(MemberVerifyCodeRequestDTO dto);
@@ -32,5 +36,11 @@ public interface MemberService {
   // 3) 새 비밀번호 변경
   NewPasswordResponseDTO saveNewPassword(NewPasswordRequestDTO dto);
   //Delete 필요
+
+  //findEmail
+  FindEmailResponseDTO findEmail(FindEmailRequestDTO dto);
+
+  //resetPassword
+  ResetPasswordResponseDTO resetPassword(ResetPasswordRequestDTO dto) throws MessagingException, UnsupportedEncodingException;
 
 }
