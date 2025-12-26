@@ -87,6 +87,7 @@ type MemberGetResponseDTO {
   accountStatus: AccountStatus!
   bizNumber: String!
   organizationName: String!
+  representativeName: String!
   contactName: String!
   registerStatus: RegisterStatus!
   role: Role!
@@ -100,6 +101,23 @@ input UpdateInfoRequestDTO {
   contactName: String!
 }
 
+# 4-1 password Update 용 기존 비밀번호 check
+input OldPasswordCheckRequestDTO {
+  oldPassword: String!
+}
+
+type OldPasswordCheckResponseDTO {
+  result: Boolean!
+}
+
+# 4-2 NewPassword 입력
+input NewPasswordRequestDTO {
+  newPassword: String!
+}
+
+type NewPasswordResponseDTO {
+  result: Boolean!
+}
 
 # Member 정보 조회 쿼리
 type Query{
@@ -113,4 +131,6 @@ type Mutation {
   login(input:MemberLoginRequestDTO!): MemberLoginResponseDTO
   logout: Boolean!
   update(input:UpdateInfoRequestDTO!): MemberGetResponseDTO
+  checkPassword(input: OldPasswordCheckRequestDTO!): OldPasswordCheckResponseDTO
+  saveNewPassword(input: NewPasswordRequestDTO!): NewPasswordResponseDTO
 }

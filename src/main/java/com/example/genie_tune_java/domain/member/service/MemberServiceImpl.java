@@ -12,19 +12,19 @@ import com.example.genie_tune_java.domain.member.dto.register.send_code.MemberVe
 import com.example.genie_tune_java.domain.member.dto.register.send_code.MemberVerifyEmailResponseDTO;
 import com.example.genie_tune_java.domain.member.dto.register.verify_code.MemberVerifyCodeRequestDTO;
 import com.example.genie_tune_java.domain.member.dto.register.verify_code.MemberVerifyCodeResponseDTO;
-import com.example.genie_tune_java.domain.member.dto.update.UpdateInfoRequestDTO;
+import com.example.genie_tune_java.domain.member.dto.update.*;
 import com.example.genie_tune_java.domain.member.entity.Member;
 import com.example.genie_tune_java.domain.member.mapper.MemberMapper;
 import com.example.genie_tune_java.domain.member.repository.MemberRepository;
 import com.example.genie_tune_java.security.dto.JWTPrincipal;
 import jakarta.mail.MessagingException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 
@@ -125,4 +125,33 @@ public class MemberServiceImpl implements MemberService {
     return memberMapper.toMemberGetResponseDTO(member);
   }
 
+  @Override
+  @Transactional(readOnly = true)
+  public OldPasswordCheckResponseDTO checkPassword(OldPasswordCheckRequestDTO dto) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    JWTPrincipal principal = (JWTPrincipal) authentication.getPrincipal();
+    Member member = memberRepository.findById(principal.getMemberId()).orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
+
+    if(!passwordEncoder.matches(dto.oldPassword(), member.getPassword())){
+      throw new GlobalException(ErrorCode.MEMBER_PASSWORD_INVALID);
+    }
+    return new OldPasswordCheckResponseDTO(true);
+  }
+
+  @Override
+  @Transactional
+  public NewPasswordResponseDTO saveNewPassword(NewPasswordRequestDTO dto) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    JWTPrincipal principal = (JWTPrincipal) authentication.getPrincipal();
+    Member member = memberRepository.findById(principal.getMemberId()).orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
+
+    // 새로 입력한 비밀번호가 기존 비밀번호와 같은 경우 Exception 투척
+    if(passwordEncoder.matches(dto.newPassword(), member.getPassword())){
+      throw new GlobalException(ErrorCode.SAME_OLD_PASSWORD);
+    }
+    // 엔티티 메서드로 update 시키기 (member 가입시랑 같은 password)
+    member.updatePassword(passwordEncoder.encode(dto.newPassword()));
+
+    return new NewPasswordResponseDTO(true);
+  }
 }

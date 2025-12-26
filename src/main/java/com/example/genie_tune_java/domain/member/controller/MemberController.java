@@ -10,7 +10,7 @@ import com.example.genie_tune_java.domain.member.dto.register.send_code.MemberVe
 import com.example.genie_tune_java.domain.member.dto.register.send_code.MemberVerifyEmailResponseDTO;
 import com.example.genie_tune_java.domain.member.dto.register.verify_code.MemberVerifyCodeRequestDTO;
 import com.example.genie_tune_java.domain.member.dto.register.verify_code.MemberVerifyCodeResponseDTO;
-import com.example.genie_tune_java.domain.member.dto.update.UpdateInfoRequestDTO;
+import com.example.genie_tune_java.domain.member.dto.update.*;
 import com.example.genie_tune_java.domain.member.service.MemberService;
 import com.example.genie_tune_java.security.util.IsMemberUser;
 import jakarta.mail.MessagingException;
@@ -60,6 +60,18 @@ public class MemberController {
   @IsMemberUser
   public MemberGetResponseDTO update(@Argument("input") UpdateInfoRequestDTO dto) {
     return memberService.updateInfo(dto);
+  }
+
+  @MutationMapping
+  @IsMemberUser
+  public OldPasswordCheckResponseDTO checkPassword(@Argument("input") OldPasswordCheckRequestDTO dto) {
+    return memberService.checkPassword(dto);
+  }
+
+  @MutationMapping
+  @IsMemberUser
+  public NewPasswordResponseDTO saveNewPassword(@Argument("input") NewPasswordRequestDTO dto) {
+    return memberService.saveNewPassword(dto);
   }
 
 }

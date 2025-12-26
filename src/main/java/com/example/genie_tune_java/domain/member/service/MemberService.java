@@ -7,17 +7,30 @@ import com.example.genie_tune_java.domain.member.dto.register.send_code.MemberVe
 import com.example.genie_tune_java.domain.member.dto.register.send_code.MemberVerifyEmailResponseDTO;
 import com.example.genie_tune_java.domain.member.dto.register.verify_code.MemberVerifyCodeRequestDTO;
 import com.example.genie_tune_java.domain.member.dto.register.verify_code.MemberVerifyCodeResponseDTO;
-import com.example.genie_tune_java.domain.member.dto.update.UpdateInfoRequestDTO;
+import com.example.genie_tune_java.domain.member.dto.update.*;
 import jakarta.mail.MessagingException;
 
 import java.io.UnsupportedEncodingException;
 
 public interface MemberService {
+  // Register
   MemberRegisterResponseDTO register(MemberRegisterRequestDTO dto);
-  MemberGetResponseDTO getMember();
+  // 1) 등록시 메일인증 코드 보내기
   MemberVerifyEmailResponseDTO sendVerificationCode(MemberVerifyEmailRequestDTO dto) throws MessagingException, UnsupportedEncodingException;
+  // 2) 인증 코드 확인 요청
   MemberVerifyCodeResponseDTO checkVerificationCode(MemberVerifyCodeRequestDTO dto);
-  MemberGetResponseDTO updateInfo(UpdateInfoRequestDTO dto);
 
+  //Get
+  // 조회 (단일 멤버)
+  MemberGetResponseDTO getMember();
+
+  //Update
+  // 1) 멤버 정보 수정(대표자 명, 담당자 명)
+  MemberGetResponseDTO updateInfo(UpdateInfoRequestDTO dto);
+  // 2) 기존 비밀번호 check
+  OldPasswordCheckResponseDTO checkPassword(OldPasswordCheckRequestDTO dto);
+  // 3) 새 비밀번호 변경
+  NewPasswordResponseDTO saveNewPassword(NewPasswordRequestDTO dto);
+  //Delete 필요
 
 }
