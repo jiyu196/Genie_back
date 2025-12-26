@@ -87,30 +87,82 @@ type MemberGetResponseDTO {
   accountStatus: AccountStatus!
   bizNumber: String!
   organizationName: String!
+  representativeName: String!
   contactName: String!
   registerStatus: RegisterStatus!
   role: Role!
   approvedAt: String
+  isTempPassword: Boolean!
+  passwordUpdatedAt: String!
 }
 
 # 4 Update
-
 input UpdateInfoRequestDTO {
   representativeName: String!
   contactName: String!
 }
 
+# 4-1 password Update 용 기존 비밀번호 check
+input OldPasswordCheckRequestDTO {
+  oldPassword: String!
+}
+
+type OldPasswordCheckResponseDTO {
+  result: Boolean!
+}
+
+# 4-2 NewPassword 입력
+input NewPasswordRequestDTO {
+  newPassword: String!
+}
+
+type NewPasswordResponseDTO {
+  result: Boolean!
+}
+
+# 5-1 Email 찾기
+input FindEmailRequestDTO {
+  bizNumber: String!
+  contactName: String!
+}
+
+type FindEmailResponseDTO {
+  email: String!
+}
+
+# 5-2 비밀번호 초기화(찾기)
+input ResetPasswordRequestDTO {
+  email: String!
+  bizNumber:String!
+  contactName: String!
+}
+
+type ResetPasswordResponseDTO {
+  result: Boolean!
+}
 
 # Member 정보 조회 쿼리
 type Query{
   me: MemberGetResponseDTO
 }
 type Mutation {
+  # 1. 회원가입
   sendVerificationEmail(input:MemberVerifyEmailRequestDTO!): MemberVerifyEmailResponseDTO
   verifyCode(input: MemberVerifyCodeRequestDTO!): MemberVerifyCodeResponseDTO
   checkBizNumber(input:BusinessValidationCheckRequestDTO!): BusinessValidationCheckResponseDTO
   register(input:MemberRegisterRequestDTO!): MemberRegisterResponseDTO
+  # 2. 로그인
   login(input:MemberLoginRequestDTO!): MemberLoginResponseDTO
+  # 3. 로그아웃
   logout: Boolean!
+  # 4. 정보수정
   update(input:UpdateInfoRequestDTO!): MemberGetResponseDTO
+  checkPassword(input: OldPasswordCheckRequestDTO!): OldPasswordCheckResponseDTO
+  saveNewPassword(input: NewPasswordRequestDTO!): NewPasswordResponseDTO
+
+  # 5. 이메일 찾기
+  findEmail(input:FindEmailRequestDTO!): FindEmailResponseDTO
+
+  #6. 비밀번호 초기화(찾기)
+  resetPassword(input:ResetPasswordRequestDTO!): ResetPasswordResponseDTO
 }

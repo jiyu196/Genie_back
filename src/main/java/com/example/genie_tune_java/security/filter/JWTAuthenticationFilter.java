@@ -93,7 +93,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         // 3-3. redis 정보 토대로 accessToken 생성
         String newAccessToken = jwtUtil.createAccessToken(memberId, role, loginMember.getAccountStatus(), loginMember.getRegisterStatus());
         // 3-4. 새로운 accessToken 기반 -> AccessCookie 생성
-        ResponseCookie accessCookie = cookieUtil.createCookie(newAccessToken, "ACCESS_COOKIE");
+        ResponseCookie accessCookie = cookieUtil.createCookie(newAccessToken, "Access_Cookie");
 
         // 3-5. 쿠키 브라우저 발급 로직 필요 아예 이 로직 자체를 authService로 빼야하나 고민 중
         response.addHeader("Set-Cookie", accessCookie.toString());

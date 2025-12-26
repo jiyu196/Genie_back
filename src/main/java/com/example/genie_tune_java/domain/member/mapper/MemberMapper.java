@@ -18,6 +18,8 @@ public interface MemberMapper {
   @Mapping(target = "registerStatus", ignore = true)
   @Mapping(target = "role", ignore = true)
   @Mapping(target = "accountStatus", ignore = true)
+  @Mapping(target = "isTempPassword", ignore = true)
+  @Mapping(target = "passwordUpdatedAt", ignore = true)
   Member registerMember(MemberRegisterRequestDTO dto);
 
   //DTO에 있는 필드가 Entity에 전부 있으므로 Mapping을 붙이지 않아도 된다.
