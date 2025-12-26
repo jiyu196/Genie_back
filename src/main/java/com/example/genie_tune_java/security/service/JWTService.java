@@ -16,11 +16,11 @@ public class JWTService {
   private final CookieUtil cookieUtil;
 
   public ResponseCookie generateAccessTokenWithCookie(Member loginMember) {
-    String accessToken = jwtUtil.createAccessToken(loginMember.getId(), loginMember.getRole().toString());
+    String accessToken = jwtUtil.createAccessToken(loginMember.getId(), loginMember.getRole().toString(), loginMember.getAccountStatus(), loginMember.getRegisterStatus());
     return cookieUtil.createCookie(accessToken, "Access_Cookie");
   }
   public ResponseCookie generateRefreshTokenWithCookie(String randomUuid) {
-    String refreshToken = jwtUtil.createRefreshToken(randomUuid, null);
+    String refreshToken = jwtUtil.createRefreshToken(randomUuid);
     return cookieUtil.createCookie(refreshToken, "Refresh_Cookie");
   }
 

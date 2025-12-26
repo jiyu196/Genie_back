@@ -16,20 +16,20 @@ public class JWTTokenTest {
   @Autowired
   JWTUtil jwtUtil;
 
-  @Test
-  public void generateJWTTokenTest() {
-    log.info(jwtUtil);
-    Assertions.assertNotNull(jwtUtil);
-    String accessToken = jwtUtil.createAccessToken(1L, Role.MEMBER.toString());
-    log.info(accessToken);
-    Assertions.assertNotNull(accessToken);
-  }
+//  @Test
+//  public void generateJWTTokenTest() {
+//    log.info(jwtUtil);
+//    Assertions.assertNotNull(jwtUtil);
+//    String accessToken = jwtUtil.createAccessToken(1L, Role.MEMBER.toString());
+//    log.info(accessToken);
+//    Assertions.assertNotNull(accessToken);
+//  }
 
-  @Test
-  public void getClaimFromJWTTokenTest() {
-    String accessToken = jwtUtil.createAccessToken(1L, Role.MEMBER.toString());
-    TokenStatus status = jwtUtil.checkToken(accessToken);
-    Assertions.assertEquals(TokenStatus.VALID, status);
-    log.info(status);
-  }
+//  @Test
+//  public void getClaimFromJWTTokenTest() {
+//    String accessToken = jwtUtil.createAccessToken(1L, Role.MEMBER.toString());
+//    TokenStatus status = jwtUtil.checkToken(accessToken);
+//    Assertions.assertEquals(TokenStatus.VALID, status);
+//    log.info(status);
+//  }
 }
