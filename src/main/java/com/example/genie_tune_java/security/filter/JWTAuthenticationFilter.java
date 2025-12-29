@@ -34,7 +34,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
   private final CookieUtil cookieUtil;
   private final JWTUtil jwtUtil;
   private final RedisUtil redisUtil;
-
+  private final MemberRepository memberRepository;
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     // 1. Cookie에서 JWT TOKEN 추출
@@ -59,10 +59,13 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
       // 2-2. accessToken에 저장되어 있는 pk랑 role 꺼내기
       Long memberId = jwtUtil.getMemberId(accessToken);
       String role = jwtUtil.getMemberRole(accessToken);
+      String accountStatus = jwtUtil.getMemberStatus(accessToken);
+      String registerStatus = jwtUtil.getRegisterStatus(accessToken);
+
       log.info("accessToken에서 값 추출 {} {}", memberId, role);
 
       // 2-3. 추출한 정보를 Principal 객체에 담는다.
-      JWTPrincipal principal = new JWTPrincipal(memberId, role);
+      JWTPrincipal principal = new JWTPrincipal(memberId, role, accountStatus, registerStatus);
 
       log.info("principal 생성 {}", principal);
     // 2-4. 그 이후 Authentication 객체 생성 credentials는 JWT Parser에서 검증했으므로 null을 집어넣는다. principal과 authority를 담는다.
@@ -84,18 +87,19 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         String[] redisValue = (redisUtil.get("RT:" + jwtUtil.getUuid(refreshToken))).split(":");
         Long memberId = Long.parseLong(redisValue[0]);
         String role = redisValue[1];
+        Member loginMember = memberRepository.findById(memberId).orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
         log.info("memberId: {} role: {}",memberId, role);
 
         // 3-3. redis 정보 토대로 accessToken 생성
-        String newAccessToken = jwtUtil.createAccessToken(memberId, role);
+        String newAccessToken = jwtUtil.createAccessToken(memberId, role, loginMember.getAccountStatus(), loginMember.getRegisterStatus());
         // 3-4. 새로운 accessToken 기반 -> AccessCookie 생성
-        ResponseCookie accessCookie = cookieUtil.createCookie(newAccessToken, "ACCESS_COOKIE");
+        ResponseCookie accessCookie = cookieUtil.createCookie(newAccessToken, "Access_Cookie");
 
         // 3-5. 쿠키 브라우저 발급 로직 필요 아예 이 로직 자체를 authService로 빼야하나 고민 중
         response.addHeader("Set-Cookie", accessCookie.toString());
 
         // 3-6. 인증 객체 생성
-        JWTPrincipal principal = new JWTPrincipal(memberId, role);
+        JWTPrincipal principal = new JWTPrincipal(memberId, role, loginMember.getAccountStatus().name(), loginMember.getRegisterStatus().name());
         Authentication authentication = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
         // 3-7. Security Context에 등록
         SecurityContextHolder.getContext().setAuthentication(authentication);

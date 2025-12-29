@@ -36,7 +36,7 @@ public class Member {
   @Column(nullable = false)
   private String contactName;
 
-  //DB가 자동
+  //가입 저장 요청 시점
   @Column(nullable = false)
   @Builder.Default
   private LocalDateTime registeredAt = LocalDateTime.now();
@@ -46,6 +46,15 @@ public class Member {
   //승인 시점
   @Column
   private LocalDateTime approvedAt;
+
+  //임시비밀번호 발급 여부
+  @Column
+  @Builder.Default
+  private boolean isTempPassword = false;
+
+  //비밀번호 변경 시점
+  @Column
+  private LocalDateTime passwordUpdatedAt;
 
   //저장 상태
   @Enumerated(EnumType.STRING)
@@ -64,9 +73,23 @@ public class Member {
   @Builder.Default
   private AccountStatus accountStatus = AccountStatus.ACTIVE;
 
-
-  //password 저장 메서드
-  public void savePassword(String encodedPassword) {
+  //password 저장 메서드 update 된 시점도 기록
+  public void updatePassword(String encodedPassword, LocalDateTime passwordUpdatedAt) {
     this.password = encodedPassword;
+    this.passwordUpdatedAt = passwordUpdatedAt;
+  }
+
+  //가입상태 값 변경 메서드
+  public void changeRegisterStatus(RegisterStatus newStatus) {
+    this.registerStatus = newStatus;
+  }
+
+  public void changeInfo(String representativeName, String contactName) {
+    this.representativeName = representativeName;
+    this.contactName = contactName;
+  }
+
+  public void checkIsTempPassword(boolean isTempPassword) {
+    this.isTempPassword = isTempPassword;
   }
 }

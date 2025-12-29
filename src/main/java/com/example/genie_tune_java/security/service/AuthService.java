@@ -3,8 +3,8 @@ package com.example.genie_tune_java.security.service;
 import com.example.genie_tune_java.common.exception.ErrorCode;
 import com.example.genie_tune_java.common.exception.GlobalException;
 import com.example.genie_tune_java.common.util.RedisUtil;
-import com.example.genie_tune_java.domain.member.dto.MemberLoginRequestDTO;
-import com.example.genie_tune_java.domain.member.dto.MemberLoginResponseDTO;
+import com.example.genie_tune_java.domain.member.dto.login.MemberLoginRequestDTO;
+import com.example.genie_tune_java.domain.member.dto.login.MemberLoginResponseDTO;
 import com.example.genie_tune_java.domain.member.entity.Member;
 import com.example.genie_tune_java.domain.member.repository.MemberRepository;
 import com.example.genie_tune_java.security.util.CookieUtil;
@@ -32,11 +32,7 @@ public class AuthService {
   public MemberLoginResponseDTO memberLogin(MemberLoginRequestDTO dto, DataFetchingEnvironment env) throws Exception {
 
     // 1. 이메일 존재여부 확인
-    Member loginMember = memberRepository.findByEmail(dto.email());
-
-    if(loginMember == null){
-      throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
-    }
+    Member loginMember = memberRepository.findByEmail(dto.email()).orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 
     // 2. Member Entity 꺼내서 비밀번호 검증
 

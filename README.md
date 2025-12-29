@@ -77,4 +77,25 @@
 ### 📅 251222(월)
 * RefreshToken 발급 -> ResponseCookie 발급 로직 구현, 프론트 Test 코드로 accessCookie 삭제시 RefreshCookie 보유-> 재발급 로직 check 완료
 * Admin 페이지 내 등록요청 회원 목록 조회 백단 로직 구현 완료(Pageable & keyword 검색어 처리 포함)
-  
+
+### 📅 251223(화)
+* Admin 페이지 내 회원가입 요청 회원 목록 조회(검색, 정렬, 페이지) 프론트 연결 확인
+* Admin 페이지 회원 목록 내 개별 item 클릭시 멤버 정보 조회 기능 프론트 연결 확인
+* back단 파트 발표 자료 준비
+
+### 📅 251224(수)
+* 프로젝트 중간 점검 발표, 기존 구현 기능 재점검
+* Member update 로직 구상 중
+
+### 📅 251225(목)
+* ReadMe 커밋 이후 오류로 인한 소실 복구
+* Member Update 로직(스키마 이외 구현 완료 -> 이후 프론트 연동 체크 예정)
+* JWT 기반 Access Token 내 claim 회원 상태, 회원 가입 요청 상태 2가지 추가
+* Security PreAuthorize 관련 Custom Bean, Custom Annotation 생성
+
+### 📅 251226(금)
+* Member Update 기능 (대표자명, 담당자명) 비밀번호 확인 및 변경 기능 추가, 프론트 체크 완료
+
+### 📅 251227(토)
+* 이메일 찾기, 비밀번호 찾기(초기화) 백단 로직 구현(프론트 체크 필요)
+* Member Table Column 2개 추가(isTempPassword(boolean), passwordUpdatedAt(LocalDateTime)) 및 Entity, Mapper, DTO 수정
