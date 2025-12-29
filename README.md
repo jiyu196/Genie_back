@@ -99,3 +99,9 @@
 ### 📅 251227(토)
 * 이메일 찾기, 비밀번호 찾기(초기화) 백단 로직 구현(프론트 체크 필요)
 * Member Table Column 2개 추가(isTempPassword(boolean), passwordUpdatedAt(LocalDateTime)) 및 Entity, Mapper, DTO 수정
+
+### 📅 251229(월)
+* 이메일 찾기, 비밀번호 찾기 프론트 연결 체크 완료
+* 회원 탈퇴 로직 추가 및 프론트 연결 체크 완료
+* 회원가입 로직 보완(이메일 중복체크 기능 추가, 약관 추가 및 약관-회원 관계 테이블 관련 Entity, DTO, Mapper 및  memberService 내 회원가입 로직 보완, 프론트 체크 필요)
+* ChatGPT Open API 연동 준비(로직 구상 중)
