@@ -14,9 +14,6 @@ type GetTermsResponseDTO {
 }
 
 extend type Query {
-
-}
-extend type Mutation {
   # 단일 약관 조회
   getTerm(input: GetTermsRequestDTO!): GetTermsResponseDTO
 }
