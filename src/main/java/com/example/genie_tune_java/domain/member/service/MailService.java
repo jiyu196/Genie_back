@@ -15,23 +15,18 @@ import java.io.UnsupportedEncodingException;
 public class MailService {
   private final JavaMailSender mailSender;
 
-  public void sendMail(String address, String text) throws MessagingException, UnsupportedEncodingException {
+  public void sendMail(String address, String subject, String text) throws MessagingException, UnsupportedEncodingException {
     MimeMessage mimeMessage = mailSender.createMimeMessage();
     MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
     // 1. 받는 사람
     helper.setTo(address);
-
     // 2. 제목
-    helper.setSubject("GenieTune 회원가입을 위한 인증코드 6자리를 보내드립니다.");
-
+    helper.setSubject(subject);
     // 3. 보내는 사람 설정 (중요!)
     // "이메일주소", "표시될이름" 순서입니다.
     helper.setFrom(new InternetAddress("genietune@gmail.com", "GenieTune"));
-
     // 4. 내용 (인증번호 등)
-
     helper.setText(text, true);
-
     mailSender.send(mimeMessage);
   }
 }

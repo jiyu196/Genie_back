@@ -83,13 +83,24 @@ public class Member {
   public void changeRegisterStatus(RegisterStatus newStatus) {
     this.registerStatus = newStatus;
   }
-
+  //Mypage 내 대표자명, 담당자명 변경 엔티티 메서드
   public void changeInfo(String representativeName, String contactName) {
     this.representativeName = representativeName;
     this.contactName = contactName;
   }
-
+  //임시비밀번호 발급시 임시비밀번호 여부 T/F로 boolean 값 저장
   public void checkIsTempPassword(boolean isTempPassword) {
     this.isTempPassword = isTempPassword;
+  }
+
+  //회원탈퇴 시, 멤버 상태 값 변경 엔티티 메서드
+  public void softDelete() {
+    this.accountStatus = AccountStatus.DELETED;
+    this.deletedAt = LocalDateTime.now();
+  }
+  //회원 복구 메서드, 관리자 페이지에서 관리
+  public void restore() {
+    this.accountStatus = AccountStatus.ACTIVE;
+    this.deletedAt = null;
   }
 }
