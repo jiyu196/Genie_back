@@ -7,6 +7,7 @@ input MemberRegisterRequestDTO {
   openingDate: String!
   organizationName: String!
   contactName: String!
+  agreedTermsCategory:[String!]
 }
 # 등록 상태 Register ResponseDTO에 값 포함(상태에 따라 다른 페이지 보내줘야하므로)
 enum RegisterStatus {
@@ -64,6 +65,15 @@ type MemberVerifyCodeResponseDTO {
   result: Boolean!
 }
 
+# 1-5 이메일 중복 체크
+input EmailCheckRequestDTO {
+  email: String!
+}
+
+type EmailCheckResponseDTO {
+  result: Boolean!
+}
+
 ## 2 Login 로직
 
 enum Role {
@@ -103,11 +113,11 @@ input UpdateInfoRequestDTO {
 }
 
 # 4-1 password Update 용 기존 비밀번호 check
-input OldPasswordCheckRequestDTO {
-  oldPassword: String!
+input PasswordCheckRequestDTO {
+  password: String!
 }
 
-type OldPasswordCheckResponseDTO {
+type PasswordCheckResponseDTO {
   result: Boolean!
 }
 
@@ -141,6 +151,15 @@ type ResetPasswordResponseDTO {
   result: Boolean!
 }
 
+#6 회원 탈퇴
+input DeleteRequestDTO {
+  message: String!
+}
+
+type DeleteResponseDTO {
+  result: Boolean!
+}
+
 # Member 정보 조회 쿼리
 type Query{
   me: MemberGetResponseDTO
@@ -150,6 +169,7 @@ type Mutation {
   sendVerificationEmail(input:MemberVerifyEmailRequestDTO!): MemberVerifyEmailResponseDTO
   verifyCode(input: MemberVerifyCodeRequestDTO!): MemberVerifyCodeResponseDTO
   checkBizNumber(input:BusinessValidationCheckRequestDTO!): BusinessValidationCheckResponseDTO
+  checkEmail(input:EmailCheckRequestDTO!): EmailCheckResponseDTO
   register(input:MemberRegisterRequestDTO!): MemberRegisterResponseDTO
   # 2. 로그인
   login(input:MemberLoginRequestDTO!): MemberLoginResponseDTO
@@ -157,7 +177,7 @@ type Mutation {
   logout: Boolean!
   # 4. 정보수정
   update(input:UpdateInfoRequestDTO!): MemberGetResponseDTO
-  checkPassword(input: OldPasswordCheckRequestDTO!): OldPasswordCheckResponseDTO
+  checkPassword(input: PasswordCheckRequestDTO!): PasswordCheckResponseDTO
   saveNewPassword(input: NewPasswordRequestDTO!): NewPasswordResponseDTO
 
   # 5. 이메일 찾기
@@ -165,4 +185,7 @@ type Mutation {
 
   #6. 비밀번호 초기화(찾기)
   resetPassword(input:ResetPasswordRequestDTO!): ResetPasswordResponseDTO
+
+  #7. 회원탈퇴
+  withdraw(input:DeleteRequestDTO!): DeleteResponseDTO
 }

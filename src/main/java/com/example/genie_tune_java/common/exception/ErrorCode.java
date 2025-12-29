@@ -31,6 +31,7 @@ public enum ErrorCode {
   MEMBER_DISABLED(HttpStatus.LOCKED, "잠긴 회원입니다. 관리자에게 문의하세요."),
   MEMBER_DELETED(HttpStatus.FORBIDDEN, "삭제된 회원입니다."),
   TERMS_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 약관입니다."),
+  DELETE_MESSAGE_INVALID(HttpStatus.BAD_REQUEST, "삭제요청 메세지가 누락되었습니다."),
 
   // ==== 사업자 API 조회 관련 ====
   BUSINESS_NUMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "사업자 상태정보가 유효하지 않습니다."),

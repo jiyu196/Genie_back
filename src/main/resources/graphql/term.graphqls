@@ -1,0 +1,19 @@
+# 1. 등록시 가져오는 Terms
+
+input GetTermsRequestDTO {
+  termsCategory: String!
+}
+
+type GetTermsResponseDTO {
+  version: Int!
+  title: String!
+  content: String!
+  isRequired: Boolean!
+  registeredAt: String!
+  termsStatus: String!
+}
+
+extend type Query {
+  # 단일 약관 조회
+  getTerm(input: GetTermsRequestDTO!): GetTermsResponseDTO
+}
