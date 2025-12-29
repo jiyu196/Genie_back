@@ -10,11 +10,15 @@ import com.example.genie_tune_java.domain.member.dto.register.MemberRegisterRequ
 import com.example.genie_tune_java.domain.member.dto.register.MemberRegisterResponseDTO;
 import com.example.genie_tune_java.domain.member.dto.register.biz_check.BusinessValidationCheckRequestDTO;
 import com.example.genie_tune_java.domain.member.dto.register.biz_check.BusinessValidationCheckResponseDTO;
+import com.example.genie_tune_java.domain.member.dto.register.email_check.EmailCheckRequestDTO;
+import com.example.genie_tune_java.domain.member.dto.register.email_check.EmailCheckResponseDTO;
 import com.example.genie_tune_java.domain.member.dto.register.send_code.MemberVerifyEmailRequestDTO;
 import com.example.genie_tune_java.domain.member.dto.register.send_code.MemberVerifyEmailResponseDTO;
 import com.example.genie_tune_java.domain.member.dto.register.verify_code.MemberVerifyCodeRequestDTO;
 import com.example.genie_tune_java.domain.member.dto.register.verify_code.MemberVerifyCodeResponseDTO;
 import com.example.genie_tune_java.domain.member.dto.update.*;
+import com.example.genie_tune_java.domain.member.dto.withdraw.DeleteRequestDTO;
+import com.example.genie_tune_java.domain.member.dto.withdraw.DeleteResponseDTO;
 import com.example.genie_tune_java.domain.member.service.MemberService;
 import com.example.genie_tune_java.security.util.IsMemberUser;
 import jakarta.mail.MessagingException;
@@ -49,11 +53,16 @@ public class MemberController {
   public BusinessValidationCheckResponseDTO checkBizNumber(@Argument("input") BusinessValidationCheckRequestDTO dto) {
     return businessNumberCheckService.checkBusinessValidation(dto);
   }
+  @MutationMapping
+  public EmailCheckResponseDTO checkEmail(@Argument("input") EmailCheckRequestDTO dto) {
+    return memberService.checkEmail(dto);
+  }
 
   @MutationMapping // 최종등록
   public MemberRegisterResponseDTO register(@Argument("input") MemberRegisterRequestDTO dto) {
     return memberService.register(dto);
   }
+
 
   // 2. 조회
   // 내 정보 가져오기
@@ -79,7 +88,7 @@ public class MemberController {
   //기존 비밀번호 체크
   @MutationMapping
   @IsMemberUser
-  public OldPasswordCheckResponseDTO checkPassword(@Argument("input") OldPasswordCheckRequestDTO dto) {
+  public PasswordCheckResponseDTO checkPassword(@Argument("input") PasswordCheckRequestDTO dto) {
     return memberService.checkPassword(dto);
   }
   //비밀번호 수정
@@ -93,5 +102,12 @@ public class MemberController {
   @MutationMapping
   public ResetPasswordResponseDTO resetPassword(@Argument("input") ResetPasswordRequestDTO dto) throws MessagingException, UnsupportedEncodingException {
     return memberService.resetPassword(dto);
+  }
+
+  //4. 탈퇴
+  @MutationMapping
+  @IsMemberUser
+  public DeleteResponseDTO withdraw(@Argument("input") DeleteRequestDTO dto) {
+    return memberService.delete(dto);
   }
 }
