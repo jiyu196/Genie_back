@@ -53,7 +53,7 @@ public class MemberController {
   public BusinessValidationCheckResponseDTO checkBizNumber(@Argument("input") BusinessValidationCheckRequestDTO dto) {
     return businessNumberCheckService.checkBusinessValidation(dto);
   }
-  @MutationMapping
+  @MutationMapping //이메일 중복검사
   public EmailCheckResponseDTO checkEmail(@Argument("input") EmailCheckRequestDTO dto) {
     return memberService.checkEmail(dto);
   }

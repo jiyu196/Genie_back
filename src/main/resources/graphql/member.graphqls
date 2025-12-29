@@ -7,6 +7,7 @@ input MemberRegisterRequestDTO {
   openingDate: String!
   organizationName: String!
   contactName: String!
+  agreedTermsCategory:[String!]
 }
 # 등록 상태 Register ResponseDTO에 값 포함(상태에 따라 다른 페이지 보내줘야하므로)
 enum RegisterStatus {

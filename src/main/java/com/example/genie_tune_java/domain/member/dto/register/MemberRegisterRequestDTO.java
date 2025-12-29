@@ -22,5 +22,4 @@ public record MemberRegisterRequestDTO(
         String contactName,
         @NotBlank
         List<String> agreedTermsCategory
-) {
-}
+) {}
