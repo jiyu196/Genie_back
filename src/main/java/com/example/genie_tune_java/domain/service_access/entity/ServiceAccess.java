@@ -1,0 +1,49 @@
+package com.example.genie_tune_java.domain.service_access.entity;
+
+import com.example.genie_tune_java.domain.member.entity.Member;
+import com.example.genie_tune_java.domain.subscription.entity.Subscription;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+
+@Entity
+@Table(name = "tbl_service_access")
+@Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class ServiceAccess {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  @Column(nullable = false)
+  private String accessId;
+
+  @ManyToOne
+  @JoinColumn(name = "member_id", nullable = false)
+  private Member member;
+
+  @ManyToOne
+  @JoinColumn(name = "subscription_id", nullable = false)
+  private Subscription subscription;
+
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private AccessStatus accessStatus;
+
+  @Column(nullable = false)
+  @Builder.Default
+  private LocalDateTime createdAt = LocalDateTime.now();
+
+  @Column
+  private LocalDateTime deletedAt;
+
+  @Column
+  private LocalDateTime expiredAt;
+}
