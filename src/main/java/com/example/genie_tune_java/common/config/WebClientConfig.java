@@ -1,4 +1,4 @@
-package com.example.genie_tune_java.api.nts.config;
+package com.example.genie_tune_java.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,7 +7,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
   @Bean
-  public WebClient webClient() {
-    return WebClient.builder().build();
+  public WebClient.Builder webClient() {
+    return WebClient.builder();
   }
 }
