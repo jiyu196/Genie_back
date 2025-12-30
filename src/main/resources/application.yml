@@ -82,3 +82,8 @@ jwt:
 nts:
   api:
     key: ${NTS_API_KEY}
+
+openai:
+  api:
+    key: ${OPENAI_API_KEY}
+    url: ${OPENAI_URL}
