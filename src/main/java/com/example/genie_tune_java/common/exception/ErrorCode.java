@@ -19,6 +19,10 @@ public enum ErrorCode {
   TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "유효하지 않은 JWT 토큰입니다."),
   TOKEN_UNKNOWN(HttpStatus.UNAUTHORIZED, "지원하지 않는 JWT 형식입니다."),
 
+  // ==== Service Access Id 발급 이후 DB 저장 관련
+  SERVICE_ACCESS_KEY_ENCRYPT_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Service Access Key 발급 과정에서 문제가 생겼습니다."),
+  SERVICE_ACCESS_KEY_DECRYPT_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Service Access Key 인증 과정에서 문제가 생겼습니다."),
+
   // ==== 공통 ====
   UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증이 필요합니다."),
   FORBIDDEN(HttpStatus.FORBIDDEN, "권한이 없습니다."),

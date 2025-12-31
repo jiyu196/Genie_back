@@ -20,7 +20,7 @@ import com.example.genie_tune_java.domain.member.dto.update.*;
 import com.example.genie_tune_java.domain.member.dto.withdraw.DeleteRequestDTO;
 import com.example.genie_tune_java.domain.member.dto.withdraw.DeleteResponseDTO;
 import com.example.genie_tune_java.domain.member.service.MemberService;
-import com.example.genie_tune_java.security.util.IsMemberUser;
+import com.example.genie_tune_java.security.util.authorize.IsMemberUser;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -67,7 +67,7 @@ public class MemberController {
   // 2. 조회
   // 내 정보 가져오기
   @QueryMapping
-  @PreAuthorize("@auth.isActive(principal)")
+  @IsMemberUser
   public MemberGetResponseDTO me() {
     return memberService.getMember();
   }

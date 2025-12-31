@@ -1,4 +1,4 @@
-package com.example.genie_tune_java.security.util;
+package com.example.genie_tune_java.security.util.authorize;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("@auth.isActive(principal) and @auth.isApproved(principal) and @auth.isNormalUser(principal)")
+@PreAuthorize("@auth.isNormalUser(principal)")
 public @interface IsMemberUser {
 }

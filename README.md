@@ -110,3 +110,9 @@
 ### 📅 251230(화)
 * ChatGPT Open API 연동을 위한 사전 세팅(DTO 2개, Config 설정)
 * ChatGPT 서비스 로직 작성 및 테스트에 필요한 테이블 점검 및 수정 -> 반영하여 JAVA Entity 등록 완료 (Order, Pay, PayMethod, Product, Prompt, Service_Access, Subscription)
+
+### 📅 251231(수)
+* WebClientConfig 공통 추출 이후 나타난 사업자등록증 API 호출 error 해결
+* service_access_id key 접근 Security 설정을 위한 사전 준비 (security 관리 로직 구상 -> table 수정, AES Util 생성)
+* 상품 관련 서비스 로직 구상 중
+* PreAuthorize를 위한 Custom 어노테이션 추가 생성(관리자 전용), 컨트롤러 메서드 개별 권한 점검
