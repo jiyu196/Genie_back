@@ -30,7 +30,10 @@ public class NTSBusinessAPIClient {
   public BusinessValidationResponseDTO checkValidation(BusinessValidationCheckRequestDTO dto) {
 
     return webClient.post()
-            .uri(URI.create("/api/nts-businessman/v1/validate?serviceKey=" + serviceKey))
+            .uri(uriBuilder -> uriBuilder
+                    .path("/api/nts-businessman/v1/validate")
+                    .queryParam("serviceKey", serviceKey)
+                    .build())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .bodyValue(new BusinessValidationRequestDTO(dto))
