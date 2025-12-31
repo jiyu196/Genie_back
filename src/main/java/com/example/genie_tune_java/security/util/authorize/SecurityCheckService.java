@@ -1,4 +1,4 @@
-package com.example.genie_tune_java.security.util;
+package com.example.genie_tune_java.security.util.authorize;
 
 import com.example.genie_tune_java.security.dto.JWTPrincipal;
 import org.springframework.stereotype.Component;
@@ -31,4 +31,10 @@ public class SecurityCheckService {
     return isActive(principal) && isApproved(principal) &&
             hasAnyRole(principal, "MEMBER", "SUBSCRIBER", "ADMIN");
   }
+
+  // 관리자 전용
+  public boolean isAdmin(JWTPrincipal principal) {
+    return isActive(principal) && isApproved(principal) && hasAnyRole(principal, "ADMIN");
+  }
+
 }

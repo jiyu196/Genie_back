@@ -25,6 +25,12 @@ public class ServiceAccess {
   @Column(nullable = false)
   private String accessId;
 
+  @Column(nullable = false)
+  private String accessHash;
+
+  @Column(nullable = false, columnDefinition = "TEXT")
+  private String encryptedKey;
+
   @ManyToOne
   @JoinColumn(name = "member_id", nullable = false)
   private Member member;

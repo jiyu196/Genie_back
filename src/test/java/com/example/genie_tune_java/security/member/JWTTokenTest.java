@@ -1,11 +1,7 @@
-package com.example.genie_tune_java.security;
+package com.example.genie_tune_java.security.member;
 
-import com.example.genie_tune_java.domain.member.entity.Role;
-import com.example.genie_tune_java.security.status.TokenStatus;
 import com.example.genie_tune_java.security.util.JWTUtil;
 import lombok.extern.log4j.Log4j2;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
