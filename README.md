@@ -116,3 +116,7 @@
 * service_access_id key 접근 Security 설정을 위한 사전 준비 (security 관리 로직 구상 -> table 수정, AES Util 생성)
 * 상품 관련 서비스 로직 구상 중
 * PreAuthorize를 위한 Custom 어노테이션 추가 생성(관리자 전용), 컨트롤러 메서드 개별 권한 점검
+
+### 📅 260101(목)
+* tbl_product 누락 컬럼 보완(상품명, 상품 상세설명, 서비스 접근 키 지급 갯수(상품 종류별))
+* Product List 조회 백단 로직 구현 중(구독 상품 갯수가 적어 pageable 및 검색 기능 미반영, 추후 관리자 페이지는 반영 검토)
