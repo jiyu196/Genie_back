@@ -31,6 +31,15 @@ public class Product {
   @Column(nullable = false)
   private int maxWebtoonStorage;
 
+  @Column(nullable = false, length = 80)
+  private String displayName;
+
+  @Column(nullable = false, columnDefinition = "TEXT")
+  private String description;
+
+  @Column(nullable = false)
+  private int maxServiceAccessIdCount;
+
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
   @Builder.Default
