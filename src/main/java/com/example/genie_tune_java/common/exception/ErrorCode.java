@@ -43,7 +43,15 @@ public enum ErrorCode {
   REQUEST_DATA_MALFORMED(HttpStatus.LENGTH_REQUIRED, "필수 입력값이 누락되었습니다."),
   TOO_LARGE_REQUEST(HttpStatus.PAYLOAD_TOO_LARGE, "요청 사업자 번호가 100개 이상입니다."),
   INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 에러입니다."),
-  HTTP_ERROR(HttpStatus.SERVICE_UNAVAILABLE, "국세청 서버 에러입니다. 잠시 후에 다시 시도하여주시기 바랍니다.");
+  HTTP_ERROR(HttpStatus.SERVICE_UNAVAILABLE, "국세청 서버 에러입니다. 잠시 후에 다시 시도하여주시기 바랍니다."),
+
+  // ==== 상품 관련 ====
+  PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "선택하신 상품은 존재하지 않습니다."),
+
+  //==== 주문 관련 ====
+  ORDER_NOT_FOUNT(HttpStatus.NOT_FOUND, "주문 내역을 찾을 수 없습니다."),
+  ORDER_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "주문 권한이 없습니다.");
+
   private final HttpStatus status;
   private final String message;
 
