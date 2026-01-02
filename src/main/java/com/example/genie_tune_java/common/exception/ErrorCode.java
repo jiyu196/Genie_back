@@ -2,6 +2,7 @@ package com.example.genie_tune_java.common.exception;
 
 import lombok.Getter;
 import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
 @Getter
@@ -50,7 +51,16 @@ public enum ErrorCode {
 
   //==== 주문 관련 ====
   ORDER_NOT_FOUNT(HttpStatus.NOT_FOUND, "주문 내역을 찾을 수 없습니다."),
-  ORDER_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "주문 권한이 없습니다.");
+  ORDER_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "주문 권한이 없습니다."),
+
+  //==== 결제 관련 ====
+  PAY_NOT_FOUND(HttpStatus.NOT_FOUND, "결제 내역을 찾을 수 없습니다."),
+  PORTONE_AUTH_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "포트원 결제를 위한 토큰 발급이 실패하였습니다."),
+  PAYMENT_PRE_REGISTER_INVALID_REQUEST_ERROR(HttpStatus.BAD_REQUEST, "입력정보가 올바르지 않습니다."),
+  PAYMENT_PRE_REGISTER_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "포트원 인증정보가 올바르지 않습니다"),
+  PAYMENT_PRE_REGISTER_FORBIDDEN_ERROR(HttpStatus.FORBIDDEN, "포트원 결제 요청이 거절되었습니다."),
+  PAYMENT_PRE_REGISTER_ALREADY_PAID_ERROR(HttpStatus.CONFLICT, "이미 결제가 완료된 결제입니다.");
+
 
   private final HttpStatus status;
   private final String message;
