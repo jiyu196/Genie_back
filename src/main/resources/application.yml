@@ -84,3 +84,8 @@ security:
   aes:
     secret: ${AES_SECRET}
     iv: ${AES_IV}
+
+portone:
+  api-secret: ${PORTONE_SECRET}
+  base-url: ${PORTONE_BASE_URL}
+  store-id: ${PORTONE_STORE_ID}
