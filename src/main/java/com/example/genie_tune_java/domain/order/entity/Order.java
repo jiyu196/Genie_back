@@ -39,4 +39,8 @@ public class Order {
   @Column(nullable = false)
   @Builder.Default
   private Long totalAmount = 0L;
+
+  public void changeOrderStatus(OrderStatus orderStatus) {
+    this.orderStatus = orderStatus;
+  }
 }

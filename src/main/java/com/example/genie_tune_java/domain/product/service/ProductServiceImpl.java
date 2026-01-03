@@ -9,12 +9,14 @@ import com.example.genie_tune_java.domain.product.entity.Product;
 import com.example.genie_tune_java.domain.product.mapper.ProductMapper;
 import com.example.genie_tune_java.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class ProductServiceImpl implements ProductService {
 
   private final ProductRepository productRepository;
@@ -23,6 +25,9 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public ProductListResponseDTO getAllProducts() {
     List<Product> list = productRepository.findAll();
+
+    log.info("현재 담긴 상품 종류 : {}", list);
+    list.stream().map(productMapper::toGetResponseDTO).toList().forEach(log::info);
     return new ProductListResponseDTO(list.stream().map(productMapper::toGetResponseDTO).toList());
   }
 
