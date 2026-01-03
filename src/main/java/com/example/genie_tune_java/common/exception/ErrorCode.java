@@ -50,7 +50,7 @@ public enum ErrorCode {
   PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "선택하신 상품은 존재하지 않습니다."),
 
   //==== 주문 관련 ====
-  ORDER_NOT_FOUNT(HttpStatus.NOT_FOUND, "주문 내역을 찾을 수 없습니다."),
+  ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "주문 내역을 찾을 수 없습니다."),
   ORDER_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "주문 권한이 없습니다."),
 
   //==== 결제 관련 ====

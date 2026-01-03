@@ -1,0 +1,17 @@
+input MakeOrderRequestDTO {
+  productId: ID!
+}
+
+type MakeOrderResponseDTO {
+  orderUuid: String!
+  orderStatus: String!
+  totalAmount: Float!
+  createdAt: String!
+  organizationName: String!
+  # 포트원 호출에 필요한 추가 정보들
+}
+
+extend type Mutation {
+  # 결제 준비 (주문 생성 및 포트원 사전등록)
+  prepareOrder(input: MakeOrderRequestDTO!): MakeOrderResponseDTO!
+}
