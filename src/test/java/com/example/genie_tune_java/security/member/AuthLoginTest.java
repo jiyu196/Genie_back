@@ -1,7 +1,6 @@
-package com.example.genie_tune_java.security;
+package com.example.genie_tune_java.security.member;
 
 import com.example.genie_tune_java.security.service.AuthService;
-import graphql.schema.DataFetchingEnvironment;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,6 +2,7 @@ package com.example.genie_tune_java.common.exception;
 
 import lombok.Getter;
 import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
 @Getter
@@ -18,6 +19,10 @@ public enum ErrorCode {
   TOKEN_MALFORMED(HttpStatus.UNAUTHORIZED, "JWT 토큰이 손상되었습니다."),
   TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "유효하지 않은 JWT 토큰입니다."),
   TOKEN_UNKNOWN(HttpStatus.UNAUTHORIZED, "지원하지 않는 JWT 형식입니다."),
+
+  // ==== Service Access Id 발급 이후 DB 저장 관련
+  SERVICE_ACCESS_KEY_ENCRYPT_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Service Access Key 발급 과정에서 문제가 생겼습니다."),
+  SERVICE_ACCESS_KEY_DECRYPT_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Service Access Key 인증 과정에서 문제가 생겼습니다."),
 
   // ==== 공통 ====
   UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증이 필요합니다."),
@@ -39,7 +44,28 @@ public enum ErrorCode {
   REQUEST_DATA_MALFORMED(HttpStatus.LENGTH_REQUIRED, "필수 입력값이 누락되었습니다."),
   TOO_LARGE_REQUEST(HttpStatus.PAYLOAD_TOO_LARGE, "요청 사업자 번호가 100개 이상입니다."),
   INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 에러입니다."),
-  HTTP_ERROR(HttpStatus.SERVICE_UNAVAILABLE, "국세청 서버 에러입니다. 잠시 후에 다시 시도하여주시기 바랍니다.");
+  HTTP_ERROR(HttpStatus.SERVICE_UNAVAILABLE, "국세청 서버 에러입니다. 잠시 후에 다시 시도하여주시기 바랍니다."),
+
+  // ==== 상품 관련 ====
+  PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "선택하신 상품은 존재하지 않습니다."),
+
+  //==== 주문 관련 ====
+  ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "주문 내역을 찾을 수 없습니다."),
+  ORDER_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "주문 권한이 없습니다."),
+
+  //==== 결제 관련 ====
+  PAY_NOT_FOUND(HttpStatus.NOT_FOUND, "결제 내역을 찾을 수 없습니다."),
+  PORTONE_AUTH_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "포트원 결제를 위한 토큰 발급이 실패하였습니다."),
+  PAYMENT_PRE_REGISTER_INVALID_REQUEST_ERROR(HttpStatus.BAD_REQUEST, "입력정보가 올바르지 않습니다."),
+  PAYMENT_PRE_REGISTER_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "포트원 인증정보가 올바르지 않습니다"),
+  PAYMENT_PRE_REGISTER_FORBIDDEN_ERROR(HttpStatus.FORBIDDEN, "포트원 결제 요청이 거절되었습니다."),
+  PAYMENT_PRE_REGISTER_ALREADY_PAID_ERROR(HttpStatus.CONFLICT, "이미 결제가 완료된 결제입니다."),
+  PAYMENT_GET_INVALID_REQUEST_ERROR(HttpStatus.BAD_REQUEST, "요청된 입력 정보가 유효하지 않습니다."),
+  PAYMENT_GET_UNAUTHORIZED_ERROR(HttpStatus.UNAUTHORIZED, "인증정보가 올바르지 않습니다."),
+  PAYMENT_GET_FORBIDDEN_ERROR(HttpStatus.FORBIDDEN, "요청이 거절되었습니다."),
+  PAYMENT_GET_PAYMENT_NOT_FOUND_ERROR(HttpStatus.NOT_FOUND, "결제 건이 존재하지 않습니다.");
+
+
   private final HttpStatus status;
   private final String message;
 

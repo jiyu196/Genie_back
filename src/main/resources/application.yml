@@ -71,9 +71,6 @@ server:
     include-message: always
     include-stacktrace: always
 
-
-
-
 jwt:
   secret: ${JWT_SECRET}
   access-token-expiration: ${JWT_ACCESS_EXPIRATION}
@@ -83,7 +80,12 @@ nts:
   api:
     key: ${NTS_API_KEY}
 
-openai:
-  api:
-    key: ${OPENAI_API_KEY}
-    url: ${OPENAI_URL}
+security:
+  aes:
+    secret: ${AES_SECRET}
+    iv: ${AES_IV}
+
+portone:
+  api-secret: ${PORTONE_SECRET}
+  base-url: ${PORTONE_BASE_URL}
+  store-id: ${PORTONE_STORE_ID}

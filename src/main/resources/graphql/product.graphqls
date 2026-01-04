@@ -1,0 +1,44 @@
+
+input ProductGetRequestDTO {
+  id: ID!
+}
+
+type ProductGetResponseDTO { # 단일조회
+  id: ID!
+  price: Int!                     # 상품 가격
+  duration: Int!                  # 구독 기간 (일 단위)
+  maxPromptDailyCount: Int!       # 기관 일 최대 프롬프트 수
+  maxWebtoonStorage: Int!         # 웹툰 저장 용량
+  maxServiceAccessIdCount: Int!   # 발급 가능한 ServiceKey 개수
+  productStatus: ProductStatus!   # 상품 상태
+  productGrade: ProductGrade!     # 상품 등급
+  subscriptionCycle: SubscriptionCycle! # 구독 주기
+  displayName: String!            # 화면 표시 상품명
+  description: String             # 상세 설명
+}
+
+type ProductListResponseDTO { # 단일조회용 DTO가 모인 List
+  list: [ProductGetResponseDTO!]
+}
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+  DELETED
+}
+
+enum ProductGrade {
+  BASIC
+  PRO
+  PREMIUM
+}
+
+enum SubscriptionCycle {
+  MONTHLY
+  YEARLY
+}
+
+extend type Query {
+  getAllProducts: ProductListResponseDTO!
+  selectOne(input: ProductGetRequestDTO!): ProductGetResponseDTO!
+}

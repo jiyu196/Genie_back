@@ -110,3 +110,24 @@
 ### 📅 251230(화)
 * ChatGPT Open API 연동을 위한 사전 세팅(DTO 2개, Config 설정)
 * ChatGPT 서비스 로직 작성 및 테스트에 필요한 테이블 점검 및 수정 -> 반영하여 JAVA Entity 등록 완료 (Order, Pay, PayMethod, Product, Prompt, Service_Access, Subscription)
+
+### 📅 251231(수)
+* WebClientConfig 공통 추출 이후 나타난 사업자등록증 API 호출 error 해결
+* service_access_id key 접근 Security 설정을 위한 사전 준비 (security 관리 로직 구상 -> table 수정, AES Util 생성)
+* 상품 관련 서비스 로직 구상 중
+* PreAuthorize를 위한 Custom 어노테이션 추가 생성(관리자 전용), 컨트롤러 메서드 개별 권한 점검
+
+### 📅 260101(목)
+* tbl_product 누락 컬럼 보완(상품명, 상품 상세설명, 서비스 접근 키 지급 갯수(상품 종류별)), 상품 더미데이터 생성
+* Product List 조회 백단 로직 구현 중(구독 상품 갯수가 적어 pageable 및 검색 기능 미반영, 추후 관리자 페이지는 반영 검토)
+* Product 리스트, 단일 조회 백단 로직 구현 완료, OrderService 로직 구현 중, PortOne 연동 준비 중중
+
+### 📅 260103(토)
+* OrderService 내 Make Order 로직 구현, PortOne 관련 연동 설정 완료, 토큰 발급, PreAuthorize 메서드 구현(토큰 Redis 발급 확인 완료)
+* 주문+결제사전정보 (FACADE1) -> 프론트 (결제창) -> 결제 결과에 따른 결제 검증 + 구독 갱신(FACADE2) 구조 구상 중
+
+### 📅 260104(일)
+* 상품 리스트, 단일 정보 조회 프론트 연동 확인, prepareOrder (파사드1) 백단 로직 구현 완료(controller, schema 전부 포함)
+* 상품 단일정보 클릭시 prepareOrder (파사드1) 로직 프론트 연동 테스트 중 (결제창 팝업까지 포함)
+* 결제창 띄우기 및 결제 성공 -> 결제 이후 PortOne 공식 문서 참고하여 백단 로직(DTO, FACADE2, Service 등) 작성 중
+
