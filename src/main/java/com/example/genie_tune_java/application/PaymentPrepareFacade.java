@@ -28,7 +28,7 @@ public class PaymentPrepareFacade {
     //1. 주문 생성
     MakeOrderResponseDTO originalResponse = orderService.makeOrder(dto);
     PortOnePreRegisterRequestDTO preRegisterRequestDTO = new PortOnePreRegisterRequestDTO(storeId, originalResponse.totalAmount()/1000L, 0L, "KRW");
-    //2. Portone PreRegister 메서드 호출
+    //2. PortOne PreRegister 메서드 호출
 
     try {
 
@@ -48,7 +48,7 @@ public class PaymentPrepareFacade {
     }
     return new MakeOrderResponseDTO(
             originalResponse.orderUuid(), originalResponse.orderStatus(),
-            originalResponse.totalAmount()/1000L, originalResponse.createdAt(), originalResponse.organizationName());
+            originalResponse.totalAmount()/1000L, originalResponse.createdAt(), originalResponse.organizationName(), storeId);
   }
 
 }

@@ -8,6 +8,7 @@ type MakeOrderResponseDTO {
   totalAmount: Float!
   createdAt: String!
   organizationName: String!
+  storeId: String!
   # 포트원 호출에 필요한 추가 정보들
 }
 
