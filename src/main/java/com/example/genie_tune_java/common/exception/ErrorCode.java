@@ -59,7 +59,11 @@ public enum ErrorCode {
   PAYMENT_PRE_REGISTER_INVALID_REQUEST_ERROR(HttpStatus.BAD_REQUEST, "입력정보가 올바르지 않습니다."),
   PAYMENT_PRE_REGISTER_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "포트원 인증정보가 올바르지 않습니다"),
   PAYMENT_PRE_REGISTER_FORBIDDEN_ERROR(HttpStatus.FORBIDDEN, "포트원 결제 요청이 거절되었습니다."),
-  PAYMENT_PRE_REGISTER_ALREADY_PAID_ERROR(HttpStatus.CONFLICT, "이미 결제가 완료된 결제입니다.");
+  PAYMENT_PRE_REGISTER_ALREADY_PAID_ERROR(HttpStatus.CONFLICT, "이미 결제가 완료된 결제입니다."),
+  PAYMENT_GET_INVALID_REQUEST_ERROR(HttpStatus.BAD_REQUEST, "요청된 입력 정보가 유효하지 않습니다."),
+  PAYMENT_GET_UNAUTHORIZED_ERROR(HttpStatus.UNAUTHORIZED, "인증정보가 올바르지 않습니다."),
+  PAYMENT_GET_FORBIDDEN_ERROR(HttpStatus.FORBIDDEN, "요청이 거절되었습니다."),
+  PAYMENT_GET_PAYMENT_NOT_FOUND_ERROR(HttpStatus.NOT_FOUND, "결제 건이 존재하지 않습니다.");
 
 
   private final HttpStatus status;

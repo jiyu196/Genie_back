@@ -40,7 +40,7 @@ public class PortOneAuthService {
     if (rt != null) {
       try {
         // [추가될 로직] 포트원의 토큰 재발급 API 호출 (refresh-token API)
-        PortOneAccessTokenResponseDTO dto =portOneWebClient.post()
+        PortOneAccessTokenResponseDTO dto = portOneWebClient.post()
                 .uri("/token/refresh")
                 .bodyValue(Map.of("refreshToken", rt))
                 .retrieve()
