@@ -1,7 +1,7 @@
 package com.example.genie_tune_java.domain.pay.dto.payment_method;
 
 public record PaymentMethod(
-  String type,
+  String pgType,
   PaymentMethodCard paymentMethodCard
 ) {
   public record PaymentMethodCard(

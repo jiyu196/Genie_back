@@ -14,6 +14,8 @@ public interface OrderMapper {
   Order toEntity(OrderInputDTO dto);
 
   @Mapping(target = "organizationName", source = "order.member.organizationName")
+  @Mapping(target = "productId", source = "order.product.id")
+  @Mapping(target = "displayName", source = "order.product.displayName")
   @Mapping(target="storeId", ignore = true)
   MakeOrderResponseDTO toMakeOrderResponseDTO(Order order);
 

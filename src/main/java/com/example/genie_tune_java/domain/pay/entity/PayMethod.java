@@ -40,9 +40,10 @@ public class PayMethod {
 
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
-  private PayMethodStatus payMethodStatus;
+  @Builder.Default
+  private PayMethodStatus payMethodStatus = PayMethodStatus.ACTIVE;
 
-  @Column(nullable = false)
+  @Column
   private String billingKey;
 
   @Column(nullable = false)
@@ -50,5 +51,5 @@ public class PayMethod {
   private LocalDateTime registeredAt = LocalDateTime.now();
 
   @Column
-  private LocalDateTime deleted_at;
+  private LocalDateTime deletedAt;
 }
