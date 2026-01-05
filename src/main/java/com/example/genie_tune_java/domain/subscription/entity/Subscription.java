@@ -62,12 +62,13 @@ public class Subscription {
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
-  public void activate(LocalDateTime startAt) {
+  public void activate() {
+    LocalDateTime now = LocalDateTime.now();
     this.subscriptionStatus = SubscriptionStatus.ACTIVE;
-    this.startDate = startAt;
+    this.startDate = now;
     // 비즈니스 규칙: 구독은 한 달 단위
-    this.nextBillingDate = startAt.plusMonths(1);
-    this.endDate = startAt.plusMonths(1);
+    this.nextBillingDate = now.plusMonths(1);
+    this.endDate = now.plusMonths(1);
   }
 
   // 해지 시 상태만 변경하는 메서드
