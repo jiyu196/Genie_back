@@ -9,6 +9,8 @@ type MakeOrderResponseDTO {
   createdAt: String!
   organizationName: String!
   storeId: String!
+  productId: ID!
+  displayName: String!
   # 포트원 호출에 필요한 추가 정보들
 }
 
