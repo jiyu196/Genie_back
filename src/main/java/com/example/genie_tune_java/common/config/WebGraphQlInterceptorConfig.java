@@ -36,24 +36,32 @@ public class WebGraphQlInterceptorConfig implements WebGraphQlInterceptor {
   public Mono<WebGraphQlResponse> intercept(WebGraphQlRequest request, Chain chain) {
     //수동으로 GraphQL 뮤테이션/쿼리 문 실행할 때 Context의 수동으로 넣어주는 로직
     // ExecutionInput 내에 (Query, Variables, Context 등)
-
     request.configureExecutionInput((executionInput, builder) -> {
       //GraphQL Context에 수동으로 심을 친구들 (HttpServletResponse 및 Request 등)
 
       ServletRequestAttributes reqAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 
-      HttpServletResponse response = reqAttributes.getResponse();
+      HttpServletResponse res = reqAttributes.getResponse();
       HttpServletRequest req = reqAttributes.getRequest();
 
-      log.info("Response: {} Request: {}", response, req);
+      String operationName = request.getOperationName();
+
+      log.info("Response: {} Request: {}", res, req);
+
       builder.graphQLContext(contextBuilder -> {
-        if (response != null) {
-          contextBuilder.put(HttpServletResponse.class, response);
-        }
         contextBuilder.put(HttpServletRequest.class, req);
+        if (res != null) {
+          contextBuilder.put(HttpServletResponse.class, res);
+        }
+        ServiceAccessIdPrincipal principal = validateAndGetPrincipal(operationName, req);
+
+        if(principal != null) {
+          contextBuilder.put(ServiceAccessIdPrincipal.class, principal);
+        }
       });
       return builder.build();
     });
+
     return chain.next(request);
   }
 
@@ -63,13 +71,26 @@ public class WebGraphQlInterceptorConfig implements WebGraphQlInterceptor {
     }
     //1. Session Cookie에서 salt 친 serviceAccessId 꺼냄
     String sessionCookieValue = cookieUtil.getCookieValue(request, "Service_Access_Cookie");
-    String redisValue = redisUtil.get("SA:" + sessionCookieValue);
+
+    //2. 쿠키 value 값 추출 (null 일때 throw)
+    if(sessionCookieValue == null) {
+      throw new GlobalException(ErrorCode.SERVICE_ACCESS_REQUIRED);
+    }
+
+    //3. redis 내 value 값 검증
+    String redisValue = redisUtil.get("SCAI:" + sessionCookieValue);
+    if(redisValue == null) {
+      throw new GlobalException(ErrorCode.SERVICE_ACCESS_RELOGIN_REQUIRED);
+    }
+
+    //4. 성공하면 value 값 문자열 파싱(split) -> 아마 이전에 신규 로직 필요할 듯
     //ACTIVE:7(MEMBER 번호):2026-02-06T12:00:00 형태로 value 값 생성 예정
     String[] parts = redisValue.split(":");
-
+    //5. 문자열 오류시 에러 던짐
     if(parts.length != 3) {
       throw new GlobalException(ErrorCode.SERVICE_ACCESS_MALFORMED);
     }
+    //6. :을 기준으로 파싱
     AccessStatus accessStatus = AccessStatus.valueOf(parts[0]);
     Long memberId = Long.valueOf(parts[1]);
     LocalDateTime expireTime = LocalDateTime.parse(parts[2]);

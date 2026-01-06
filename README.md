@@ -136,3 +136,7 @@
 * 결제창으로 결제 성공 이후 백단 로직 작성 중 (성공/실패/취소) 분기처리 중 (관련 개별 Service 메서드, DTO 작성)
 * 결제 성공 이후 백단 로직 작성 완료, FACADE2 (내게 분기처리 로직 Handler Service로 분리), 프론트 연동 체크 필요
 
+### 📅 260106(화)
+* 결제 성공 이후 백단 프론트 연동 및 오류 수정 -> 결제 성공 이후 구독 흐름 완료
+* Service Access Id 관련 security 로직 작성 중
+* 260106 accessId 기준 GraphQLInterceptor에서 처리하는 로직으로 확정, serviceAccessId 기준 로그인 메서드 작성

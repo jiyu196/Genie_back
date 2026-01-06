@@ -81,17 +81,23 @@ public class AuthService {
   }
 
   public ServiceAccessLoginResponseDTO serviceAccess(ServiceAccessLoginRequestDTO dto, DataFetchingEnvironment env) {
-    String inputAccessId = aesUtil.decrypt(dto.encryptedKey());
-    
-    ServiceAccess serviceAccess = serviceAccessRepository.findByEncryptedKey(dto.encryptedKey()).orElseThrow(() -> new GlobalException(ErrorCode.SERVICE_ACCESS_NOTFOUND));
-
+    // 1. 최초 originalKey 원문
+    String decodedKey = aesUtil.decrypt(dto.encryptedKey());
+    // 2. email 개념의 access_id 추출
+    String accessId = decodedKey.substring(0, 12);
+    // 3. Service Access 객체 생성
+    ServiceAccess serviceAccess = serviceAccessRepository.findByAccessId(accessId).orElseThrow(() -> new GlobalException(ErrorCode.SERVICE_ACCESS_NOTFOUND));
+    // 4. 비밀번호 (hashed 된 친구라고 생각하면 됨)
     String accessHash = serviceAccess.getAccessHash();
-    if(!passwordEncoder.matches(inputAccessId, accessHash)) {
+    // 5. 비밀번호 검증
+    if(!passwordEncoder.matches(decodedKey, accessHash)) {
       throw new GlobalException(ErrorCode.SERVICE_ACCESS_INVALID);
     }
-
-    ResponseCookie serviceAccessCookie = cookieUtil.createServiceAccessCookie(accessHash);
-    redisUtil.set("SA:" + accessHash, serviceAccess.getAccessStatus() + ":" + serviceAccess.getMember().getId() + ":" + serviceAccess.getExpiredAt(), 15 * 60 * 1000L);
+    // 랜덤 uuid 발급
+    String randomUuid = UUID.randomUUID().toString();
+    ResponseCookie serviceAccessCookie = cookieUtil.createServiceAccessCookie(randomUuid);
+    //SessionCookieAccessId라는 뜻의 SCAI
+    redisUtil.set("SCAI:" + randomUuid, serviceAccess.getAccessStatus() + ":" + serviceAccess.getMember().getId() + ":" + serviceAccess.getExpiredAt(), 15 * 60 * 1000L);
 
     return new ServiceAccessLoginResponseDTO (true);
   }
