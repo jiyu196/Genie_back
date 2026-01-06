@@ -8,7 +8,8 @@ public record MakeOrderResponseDTO(
   Long totalAmount, // 총 결제 금액
   String createdAt, // 주문 생성시각
   String organizationName, // 주문자 정보(기관명)
-  String storeId,
+  String storeId, // PortOne에서 발급하는 storeId,
+  String channelKey, // PortOne에서 TEST 결제를 위한 Channel Key
   Long productId,
   String displayName
 ) {}

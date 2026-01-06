@@ -17,6 +17,7 @@ public interface OrderMapper {
   @Mapping(target = "productId", source = "order.product.id")
   @Mapping(target = "displayName", source = "order.product.displayName")
   @Mapping(target="storeId", ignore = true)
+  @Mapping(target="channelKey", ignore = true)
   MakeOrderResponseDTO toMakeOrderResponseDTO(Order order);
 
 }

@@ -22,6 +22,7 @@ import com.example.genie_tune_java.domain.subscription.service.SubscriptionServi
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,8 +35,9 @@ public class PaymentStatusHandler {
   private final SubscriptionService subscriptionService;
   private final ServiceAccessService serviceAccessService;
 
-
+  @Transactional
   public PaymentCheckResponseDTO handlePayment(String status, PaymentCheckRequestDTO dto, PortOneGetPaymentsResponseDTO paymentsResponseDTO) {
+
     switch(status) {
       case "PAID" -> {
         //OrderService로 기존 Order 객체 변경, PayService 및 PayMethodService를 통해 pay table 등록, pay Method 등록
@@ -43,12 +45,14 @@ public class PaymentStatusHandler {
         Order order = orderService.updateOrderStatus(dto.paymentId(), OrderStatus.SUCCESS);
         log.info("주문 멤버: {}, 주문 상품: {}", order.getMember(), order.getProduct().getDisplayName());
         //2. PayService 호출 (성공 Register)
-        PaySuccessRegisterInputDTO paySuccessRegisterInputDTO = new PaySuccessRegisterInputDTO(order, order.getMember(), PayStatus.PAID, paymentsResponseDTO.amount().total(), paymentsResponseDTO.paidPayment());
+        PaySuccessRegisterInputDTO paySuccessRegisterInputDTO = new PaySuccessRegisterInputDTO(order, order.getMember(), PayStatus.PAID,
+                paymentsResponseDTO.amount().total() * 1000, paymentsResponseDTO.transactionId(), paymentsResponseDTO.paidAt(), paymentsResponseDTO.pgTxId(),
+                paymentsResponseDTO.pgResponse(), paymentsResponseDTO.receiptUrl());
         PaySuccessRegisterOutputDTO paySuccessRegisterOutputDTO = payService.paySuccessRegister(paySuccessRegisterInputDTO);
         log.info("결제 상태: {}, 결제시각: {}",paySuccessRegisterOutputDTO.payStatus(), paySuccessRegisterOutputDTO.paidAt());
         //3. PayMethodService 호출 (성공 Register), 정기결제 위해서 추후 BillingKey 호출하는 것도 필요함.
         PaymentMethod paymentMethod = paymentsResponseDTO.paymentMethod();
-        PayMethodRegisterInputDTO payMethodRegisterInputDTO = new PayMethodRegisterInputDTO(order.getMember(), paymentMethod.pgType(),paymentMethod.paymentMethodCard().card().publisher(),paymentMethod.paymentMethodCard().card().number());
+        PayMethodRegisterInputDTO payMethodRegisterInputDTO = new PayMethodRegisterInputDTO(order.getMember(), paymentMethod.type(),paymentMethod.card().publisher(),paymentMethod.card().number());
         PayMethod payMethod = payMethodService.registerPayMethod(payMethodRegisterInputDTO); //반환 값 PayMethod -> 아래 SubsCription이 사용함
 
         //4. SubscriptionService 호출
@@ -59,7 +63,7 @@ public class PaymentStatusHandler {
         ServiceAccessRegisterInputDTO serviceAccessRegisterInputDTO = new ServiceAccessRegisterInputDTO(order.getMember(), subscription);
         serviceAccessService.issueServiceAccess(serviceAccessRegisterInputDTO);
 
-        return new PaymentCheckResponseDTO(order.getOrderUuid(), order.getProduct().getDisplayName(), order.getTotalAmount(), paySuccessRegisterOutputDTO.payStatus().name(), 30, "구독이 완료되었습니다.", paySuccessRegisterOutputDTO.paidAt());
+        return new PaymentCheckResponseDTO(order.getOrderUuid(), order.getProduct().getDisplayName(), order.getTotalAmount(), paySuccessRegisterOutputDTO.payStatus().name(), order.getProduct().getMaxServiceAccessIdCount(), "구독이 완료되었습니다.", paySuccessRegisterOutputDTO.paidAt());
       }
 
       case "PAY_PENDING" -> {
@@ -70,7 +74,7 @@ public class PaymentStatusHandler {
       }
       case "FAILED" -> {
         // 결제 실패 사유(failureReason)를 로그에 남기고 주문을 '실패' 또는 '취소' 처리
-        log.error("결제 실패: {}", paymentsResponseDTO.failedPayment().paymentFailure().reason());
+        log.error("결제 실패: {}", paymentsResponseDTO.paymentFailure().reason());
         return null;
       }
       case "CANCELLED" -> {

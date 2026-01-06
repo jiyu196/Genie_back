@@ -45,18 +45,22 @@ public class ServiceAccess {
   private AccessStatus accessStatus = AccessStatus.ACTIVE;
 
   @Column(nullable = false)
-  @Builder.Default
-  private LocalDateTime createdAt = LocalDateTime.now();
+  private LocalDateTime createdAt;
 
   @Column
   private LocalDateTime deletedAt;
 
-  @Column
+  @Column(nullable = false)
   private LocalDateTime expiredAt;
 
   public void inputAccessId(String accessId, String accessHash, String encryptedKey) {
     this.accessId = accessId;
     this.accessHash = accessHash;
     this.encryptedKey = encryptedKey;
+  }
+
+  public void applySubscriptionPeriod(LocalDateTime createdAt, LocalDateTime expiredAt) {
+    this.createdAt = createdAt;
+    this.expiredAt = expiredAt;
   }
 }

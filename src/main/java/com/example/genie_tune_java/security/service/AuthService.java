@@ -7,6 +7,11 @@ import com.example.genie_tune_java.domain.member.dto.login.MemberLoginRequestDTO
 import com.example.genie_tune_java.domain.member.dto.login.MemberLoginResponseDTO;
 import com.example.genie_tune_java.domain.member.entity.Member;
 import com.example.genie_tune_java.domain.member.repository.MemberRepository;
+import com.example.genie_tune_java.domain.service_access.dto.login.ServiceAccessLoginRequestDTO;
+import com.example.genie_tune_java.domain.service_access.dto.login.ServiceAccessLoginResponseDTO;
+import com.example.genie_tune_java.domain.service_access.entity.ServiceAccess;
+import com.example.genie_tune_java.domain.service_access.repository.ServiceAccessRepository;
+import com.example.genie_tune_java.security.util.AESUtil;
 import com.example.genie_tune_java.security.util.CookieUtil;
 import graphql.schema.DataFetchingEnvironment;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,6 +21,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.UUID;
 
 @Service
@@ -27,6 +33,8 @@ public class AuthService {
   private final PasswordEncoder passwordEncoder;
   private final CookieUtil cookieUtil;
   private final RedisUtil redisUtil;
+  private final AESUtil aesUtil;
+  private final ServiceAccessRepository serviceAccessRepository;
 
 
   public MemberLoginResponseDTO memberLogin(MemberLoginRequestDTO dto, DataFetchingEnvironment env) throws Exception {
@@ -70,5 +78,21 @@ public class AuthService {
     response.addHeader("Set-Cookie", deleteAccessCookie.toString());
     response.addHeader("Set-Cookie", deleteRefreshCookie.toString());
     return true;
+  }
+
+  public ServiceAccessLoginResponseDTO serviceAccess(ServiceAccessLoginRequestDTO dto, DataFetchingEnvironment env) {
+    String inputAccessId = aesUtil.decrypt(dto.encryptedKey());
+    
+    ServiceAccess serviceAccess = serviceAccessRepository.findByEncryptedKey(dto.encryptedKey()).orElseThrow(() -> new GlobalException(ErrorCode.SERVICE_ACCESS_NOTFOUND));
+
+    String accessHash = serviceAccess.getAccessHash();
+    if(!passwordEncoder.matches(inputAccessId, accessHash)) {
+      throw new GlobalException(ErrorCode.SERVICE_ACCESS_INVALID);
+    }
+
+    ResponseCookie serviceAccessCookie = cookieUtil.createServiceAccessCookie(accessHash);
+    redisUtil.set("SA:" + accessHash, serviceAccess.getAccessStatus() + ":" + serviceAccess.getMember().getId() + ":" + serviceAccess.getExpiredAt(), 15 * 60 * 1000L);
+
+    return new ServiceAccessLoginResponseDTO (true);
   }
 }

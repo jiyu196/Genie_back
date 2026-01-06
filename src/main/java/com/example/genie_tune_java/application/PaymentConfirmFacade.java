@@ -17,7 +17,7 @@ public class PaymentConfirmFacade {
   private final PortOneService portOneService;
   private final PaymentStatusHandler paymentStatusHandler;
   @Value("${PORTONE_STORE_ID}")
-  private static String storeId;
+  private String storeId;
 
   public PaymentCheckResponseDTO checkPayment(PaymentCheckRequestDTO dto) {
     //1. 프론트에서 보내준 DTO 값으로 PortOne의 결제정보를 가져올 때 필요한 Record Type의 DTO로 변환
