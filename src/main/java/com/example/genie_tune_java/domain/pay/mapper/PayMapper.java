@@ -10,11 +10,12 @@ import org.mapstruct.Mapping;
 public interface PayMapper {
 
   @Mapping(target = "id", ignore = true)
-  @Mapping(target = "transactionId", source = "dto.paidPayment.transactionId")
-  @Mapping(target = "updatedAt", source = "dto.paidPayment.paidAt")
-  @Mapping(target = "receiptUrl", source = "dto.paidPayment.receiptUrl")
+  @Mapping(target = "transactionId", source = "dto.transactionId")
+  @Mapping(target = "updatedAt", expression = "java(dto.paidAt().toLocalDateTime())")
+  @Mapping(target = "receiptUrl", source = "dto.receiptUrl")
   @Mapping(target = "reason", ignore = true)
   Pay toSuccessEntity(PaySuccessRegisterInputDTO dto);
 
+  @Mapping(target = "paidAt", source = "pay.updatedAt")
   PaySuccessRegisterOutputDTO toSuccessDto(Pay pay);
 }

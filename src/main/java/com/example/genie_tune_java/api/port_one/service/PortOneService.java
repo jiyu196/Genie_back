@@ -70,8 +70,9 @@ public class PortOneService {
                 };
               })
               .bodyToMono(PortOneGetPaymentsResponseDTO.class)
+              .doOnNext(log::info)
               .block();
-      log.info("결제 정보 확인 완료");
+      log.info("결제 정보 확인 완료 : {}", responseDTO);
       return responseDTO;
     } catch (Exception e) {
       log.error("결제정보 조회 실패 {}", e.getMessage());

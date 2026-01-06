@@ -7,6 +7,7 @@ import com.example.genie_tune_java.domain.service_access.entity.ServiceAccess;
 import com.example.genie_tune_java.domain.service_access.mapper.ServiceAccessMapper;
 import com.example.genie_tune_java.domain.service_access.repository.ServiceAccessRepository;
 import com.example.genie_tune_java.security.util.AESUtil;
+import com.example.genie_tune_java.security.util.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,16 +27,16 @@ public class ServiceAccessServiceImpl implements ServiceAccessService {
   private final PasswordEncoder passwordEncoder;
   private final AESUtil aesUtil;
 
-  private static final int PROMPT_UNIT = 30;
+
 
   @Override
   @Transactional
   public void issueServiceAccess(ServiceAccessRegisterInputDTO dto) {
 
-    Integer maxPromptDailyCount = serviceAccessRepository.findMaxPromptDailyCount(dto.subscription().getId()).orElseThrow(() -> new GlobalException(ErrorCode.PRODUCT_MAX_PROMPT_DAILY_COUNT_NOT_FOUNT));
+    Integer maxServiceAccessIdCount = serviceAccessRepository.findMaxServiceAccessIdCount(dto.subscription().getId()).orElseThrow(() -> new GlobalException(ErrorCode.PRODUCT_MAX_PROMPT_DAILY_COUNT_NOT_FOUNT));
     List<ServiceAccess> serviceAccessList = new ArrayList<>();
 
-    for(int i=0; i<maxPromptDailyCount/PROMPT_UNIT; i++) {
+    for(int i=0; i<maxServiceAccessIdCount; i++) {
     ServiceAccess serviceAccess = serviceAccessMapper.toIssueServiceAccess(dto);
       String serviceAccessId = "SAID-" + UUID.randomUUID();
 
@@ -44,6 +45,7 @@ public class ServiceAccessServiceImpl implements ServiceAccessService {
       String accessHash = passwordEncoder.encode(encryptedKey);
 
       serviceAccess.inputAccessId(serviceAccessId, encryptedKey, accessHash);
+      serviceAccess.applySubscriptionPeriod(dto.subscription().getStartDate(), dto.subscription().getEndDate());
 
       serviceAccessList.add(serviceAccess);
     }
