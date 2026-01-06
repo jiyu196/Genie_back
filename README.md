@@ -139,3 +139,4 @@
 ### 📅 260106(화)
 * 결제 성공 이후 백단 프론트 연동 및 오류 수정 -> 결제 성공 이후 구독 흐름 완료
 * Service Access Id 관련 security 로직 작성 중
+* 260106 accessId 기준 GraphQLInterceptor에서 처리하는 로직으로 확정, serviceAccessId 기준 로그인 메서드 작성
