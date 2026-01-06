@@ -48,7 +48,7 @@ public class PaymentPrepareFacade {
     }
     return new MakeOrderResponseDTO(
             originalResponse.orderUuid(), originalResponse.orderStatus(),
-            originalResponse.totalAmount()/1000L, originalResponse.createdAt(), originalResponse.organizationName(), storeId);
+            originalResponse.totalAmount()/1000L, originalResponse.createdAt(), originalResponse.organizationName(), storeId, originalResponse.productId(), originalResponse.displayName());
   }
 
 }

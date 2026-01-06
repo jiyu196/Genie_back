@@ -41,7 +41,8 @@ public class ServiceAccess {
 
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
-  private AccessStatus accessStatus;
+  @Builder.Default
+  private AccessStatus accessStatus = AccessStatus.ACTIVE;
 
   @Column(nullable = false)
   @Builder.Default
@@ -52,4 +53,10 @@ public class ServiceAccess {
 
   @Column
   private LocalDateTime expiredAt;
+
+  public void inputAccessId(String accessId, String accessHash, String encryptedKey) {
+    this.accessId = accessId;
+    this.accessHash = accessHash;
+    this.encryptedKey = encryptedKey;
+  }
 }

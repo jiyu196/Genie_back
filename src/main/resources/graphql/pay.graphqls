@@ -1,0 +1,18 @@
+input PaymentCheckRequestDTO{
+  paymentId: String!
+  transactionType: String!
+  txId: String!
+}
+type PaymentCheckResponseDTO{
+  orderUuid: String!
+  displayName: String!
+  amount: Float!
+  payStatus: String!
+  issuedAccessCount: Int!
+  message: String!
+  paidAt: String!
+}
+
+extend type Mutation {
+  checkPayment(input:PaymentCheckRequestDTO!): PaymentCheckResponseDTO!
+}

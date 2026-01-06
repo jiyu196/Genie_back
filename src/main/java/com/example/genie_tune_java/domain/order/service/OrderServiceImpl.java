@@ -54,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
     //3. Order 객체 생성 및 Table에 저장
     String orderUuid = "ORD-" + UUID.randomUUID().toString();
 
-    OrderInputDTO orderInputDTO = new OrderInputDTO(orderUuid, member, OrderStatus.PENDING, totalAmount);
+    OrderInputDTO orderInputDTO = new OrderInputDTO(orderUuid, member, product, OrderStatus.PENDING, totalAmount);
 
     Order order = orderRepository.save(orderMapper.toEntity(orderInputDTO));
 
@@ -62,12 +62,14 @@ public class OrderServiceImpl implements OrderService {
     return orderMapper.toMakeOrderResponseDTO(order);
   }
 
-  @Transactional()
-  public void updateOrderStatus(String orderUuid, OrderStatus orderStatus) {
+  @Transactional
+  public Order updateOrderStatus(String orderUuid, OrderStatus orderStatus) {
     // 1. Uuid를 통한 order 객체 가져오기 (OrderUuid에 인덱스 걸어놨음, 비교적 성능 준수할 듯)
     Order order = orderRepository.findByOrderUuid(orderUuid).orElseThrow(() -> new GlobalException(ErrorCode.ORDER_NOT_FOUND));
     // 2. orderStatus를 바꾸는 엔티티 메서드 생성
     order.changeOrderStatus(orderStatus);
 
+    return order;
   }
+
 }

@@ -48,6 +48,7 @@ public enum ErrorCode {
 
   // ==== 상품 관련 ====
   PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "선택하신 상품은 존재하지 않습니다."),
+  PRODUCT_MAX_PROMPT_DAILY_COUNT_NOT_FOUNT(HttpStatus.NOT_FOUND, "프롬프트 일일 최대 사용량을 찾을 수 없습니다."),
 
   //==== 주문 관련 ====
   ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "주문 내역을 찾을 수 없습니다."),

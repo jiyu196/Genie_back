@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "tbl_pay")
 @Builder
@@ -28,19 +30,22 @@ public class Pay {
   private Member member;
 
   @Column(nullable = false)
-  private String paymentId;
+  private String transactionId;
 
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
   private PayStatus payStatus;
 
   @Column(nullable = false)
+  private LocalDateTime updatedAt;
+
+  @Column(nullable = false)
   private Long amount;
 
-  @Column(nullable = false, columnDefinition = "TEXT")
+  @Column(columnDefinition = "TEXT")
   private String receiptUrl;
 
-  @Column(nullable = false, columnDefinition = "TEXT")
-  private String failReason;
+  @Column(columnDefinition = "TEXT")
+  private String reason;
 
 }

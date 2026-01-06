@@ -1,6 +1,7 @@
 package com.example.genie_tune_java.domain.order.entity;
 
 import com.example.genie_tune_java.domain.member.entity.Member;
+import com.example.genie_tune_java.domain.product.entity.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +27,10 @@ public class Order {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "member_id", nullable = false)
   private Member member;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name="product_id", nullable = false)
+  private Product product;
 
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
