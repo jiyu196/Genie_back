@@ -38,13 +38,15 @@ public class ServiceAccessServiceImpl implements ServiceAccessService {
 
     for(int i=0; i<maxServiceAccessIdCount; i++) {
     ServiceAccess serviceAccess = serviceAccessMapper.toIssueServiceAccess(dto);
-      String serviceAccessId = "SAID-" + UUID.randomUUID();
+      String serviceAccessIdOriginal = "SAID-" + UUID.randomUUID();
 
-      String encryptedKey = aesUtil.encrypt(serviceAccessId);
+      String encryptedKey = aesUtil.encrypt(serviceAccessIdOriginal);
 
-      String accessHash = passwordEncoder.encode(encryptedKey);
+      String accessHash = passwordEncoder.encode(serviceAccessIdOriginal);
 
-      serviceAccess.inputAccessId(serviceAccessId, encryptedKey, accessHash);
+      String accessId = serviceAccessIdOriginal.substring(0, 12);
+
+      serviceAccess.inputAccessId(accessId, encryptedKey, accessHash);
       serviceAccess.applySubscriptionPeriod(dto.subscription().getStartDate(), dto.subscription().getEndDate());
 
       serviceAccessList.add(serviceAccess);

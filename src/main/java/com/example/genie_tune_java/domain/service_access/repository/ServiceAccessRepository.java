@@ -20,4 +20,6 @@ public interface ServiceAccessRepository extends JpaRepository<ServiceAccess, Lo
   boolean existsByEncryptedKey(String s);
 
   Optional<ServiceAccess> findByEncryptedKey(String encryptedKey);
+
+  Optional<ServiceAccess> findByAccessId(String accessId);
 }
