@@ -68,6 +68,7 @@ public class JWTUtil {
               .getPayload();
   }
   // 파싱 및 검증 성공 이후에 JWTToken Subject에 심어놓은 pk 값 추출
+  public String getSubject(String token) {return getClaims(token).getSubject();}
   public Long getMemberId(String token) {
     return Long.parseLong(getClaims(token).getSubject());
   }

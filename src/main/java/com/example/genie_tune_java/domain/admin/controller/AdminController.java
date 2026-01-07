@@ -31,4 +31,5 @@ public class AdminController {
   public JoinApplyResponseDTO handleRegister(@Argument("input") JoinApplyRequestDTO dto) {
     return registerRequestService.handleRegister(dto);
   }
+
 }

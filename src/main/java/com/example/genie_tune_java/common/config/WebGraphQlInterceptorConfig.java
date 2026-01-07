@@ -66,10 +66,12 @@ public class WebGraphQlInterceptorConfig implements WebGraphQlInterceptor {
   }
 
   private ServiceAccessIdPrincipal validateAndGetPrincipal(String operationName, HttpServletRequest request) {
+
     if(operationName == null || !isSecurityTarget(operationName)) {
       return null;
     }
-    //1. Session Cookie에서 salt 친 serviceAccessId 꺼냄
+
+    //1. Session Cookie에서 발급한 UUID 꺼냄
     String sessionCookieValue = cookieUtil.getCookieValue(request, "Service_Access_Cookie");
 
     //2. 쿠키 value 값 추출 (null 일때 throw)
@@ -81,6 +83,13 @@ public class WebGraphQlInterceptorConfig implements WebGraphQlInterceptor {
     String redisValue = redisUtil.get("SCAI:" + sessionCookieValue);
     if(redisValue == null) {
       throw new GlobalException(ErrorCode.SERVICE_ACCESS_RELOGIN_REQUIRED);
+    }
+
+    // 3-1. redis 내 value의 TTL 값 확인
+    long ttl = redisUtil.getTtl("SCAI:" + sessionCookieValue);
+
+    if(ttl <= 3 * 60 * 1000 && ttl > 0) { //redis는 key가 없으면 ttl이 -2, ttl이 없으면 -1로 반환한다.
+      redisUtil.expire("SCAI:" + sessionCookieValue, 15 * 60 * 1000);
     }
 
     //4. 성공하면 value 값 문자열 파싱(split) -> 아마 이전에 신규 로직 필요할 듯

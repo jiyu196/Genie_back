@@ -24,4 +24,8 @@ public class JWTService {
     return cookieUtil.createCookie(refreshToken, "Refresh_Cookie");
   }
 
+  public String getSubject(String token) {
+    return jwtUtil.getSubject(token);
+  }
+
 }
