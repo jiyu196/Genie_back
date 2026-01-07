@@ -66,15 +66,17 @@ public enum ErrorCode {
   PAYMENT_GET_FORBIDDEN_ERROR(HttpStatus.FORBIDDEN, "요청이 거절되었습니다."),
   PAYMENT_GET_PAYMENT_NOT_FOUND_ERROR(HttpStatus.NOT_FOUND, "결제 건이 존재하지 않습니다."),
 
-  // ====Service Access 관련====
+  //==== Service Access 관련 ====
   SERVICE_ACCESS_REQUIRED(HttpStatus.UNAUTHORIZED , "Service Access ID가 필요합니다. "),
   SERVICE_ACCESS_RELOGIN_REQUIRED(HttpStatus.UNAUTHORIZED, "Service Access로 다시 로그인 하여 주시기 바랍니다."),
   SERVICE_ACCESS_NOTFOUND(HttpStatus.BAD_REQUEST, "ServiceAccess ID가 존재하지 않습니다."),
   SERVICE_ACCESS_INVALID(HttpStatus.UNAUTHORIZED, "ServiceAccess key가 일치하지 않습니다."),
   PAYMENT_REQUIRED(HttpStatus.PAYMENT_REQUIRED, "구독이 만료되었습니다. 재 결제가 필요합니다."),
   SERVICE_ACCESS_MALFORMED(HttpStatus.UNAUTHORIZED, "Service Access 검증에 실패하였습니다."),
-  SERVICE_ACCESS_NOT_ALLOWED(HttpStatus.UNAUTHORIZED, "Service Access ID가 활성화 상태가 아닙니다.");
+  SERVICE_ACCESS_NOT_ALLOWED(HttpStatus.UNAUTHORIZED, "Service Access ID가 활성화 상태가 아닙니다."),
 
+  //==== Subscription 관련 ====
+  SUBSCRIPTION_EXPIRED(HttpStatus.UNAUTHORIZED, "구독이 만료되었습니다.");
 
   private final HttpStatus status;
   private final String message;

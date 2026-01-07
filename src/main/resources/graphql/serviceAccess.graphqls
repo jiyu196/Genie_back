@@ -1,0 +1,11 @@
+input ServiceAccessLoginRequestDTO {
+  encryptedKey: String!
+}
+
+type ServiceAccessLoginResponseDTO {
+  result: Boolean!
+}
+
+extend type Mutation {
+  serviceAccessLogin(input: ServiceAccessLoginRequestDTO!): ServiceAccessLoginResponseDTO!
+}
