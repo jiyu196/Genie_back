@@ -62,4 +62,16 @@ public class CookieUtil {
     //일단 Cookie 내에 Access_Cookie 없으면 null 반환
     return null;
   }
+
+  public ResponseCookie createServiceAccessCookie(String securedServiceAccessId) {
+    ResponseCookie sessionCookie = ResponseCookie.from("Service_Access_Cookie", securedServiceAccessId)
+            .httpOnly(true)
+            .secure(false)
+            .sameSite("Lax")
+            .path("/")
+            .build();
+    log.info(sessionCookie.toString());
+    return sessionCookie;
+  }
+
 }

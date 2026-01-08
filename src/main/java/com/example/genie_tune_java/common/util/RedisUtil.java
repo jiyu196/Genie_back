@@ -33,6 +33,10 @@ public class RedisUtil {
   }
 
   public long getTtl(String key) {
-    return redisTemplate.getExpire(key);
+    return redisTemplate.getExpire(key, TimeUnit.MILLISECONDS);
+  }
+
+  public void expire(String key, long timeoutMillis) {
+    redisTemplate.expire(key, timeoutMillis, TimeUnit.MILLISECONDS);
   }
 }

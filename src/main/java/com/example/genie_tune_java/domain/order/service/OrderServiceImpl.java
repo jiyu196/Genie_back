@@ -17,6 +17,7 @@ import com.example.genie_tune_java.domain.product.entity.Product;
 import com.example.genie_tune_java.domain.product.repository.ProductRepository;
 import com.example.genie_tune_java.security.dto.JWTPrincipal;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class OrderServiceImpl implements OrderService {
   private final OrderRepository orderRepository;
   private final OrderMapper orderMapper;
@@ -57,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
     OrderInputDTO orderInputDTO = new OrderInputDTO(orderUuid, member, product, OrderStatus.PENDING, totalAmount);
 
     Order order = orderRepository.save(orderMapper.toEntity(orderInputDTO));
-
+    log.info("productId: {}",orderMapper.toMakeOrderResponseDTO(order).productId());
     //4. MakeOrderResponseDTO 반환(mapper 반환)
     return orderMapper.toMakeOrderResponseDTO(order);
   }

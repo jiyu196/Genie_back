@@ -2,6 +2,8 @@ package com.example.genie_tune_java.security.controller;
 
 import com.example.genie_tune_java.domain.member.dto.login.MemberLoginRequestDTO;
 import com.example.genie_tune_java.domain.member.dto.login.MemberLoginResponseDTO;
+import com.example.genie_tune_java.domain.service_access.dto.login.ServiceAccessLoginRequestDTO;
+import com.example.genie_tune_java.domain.service_access.dto.login.ServiceAccessLoginResponseDTO;
 import com.example.genie_tune_java.security.service.AuthService;
 import graphql.schema.DataFetchingEnvironment;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,11 @@ public class AuthController {
   public Boolean logout(DataFetchingEnvironment env) throws Exception {
     log.info(env);
     return authService.memberLogout(env);
+  }
+
+  @MutationMapping
+  public ServiceAccessLoginResponseDTO serviceAccessLogin(ServiceAccessLoginRequestDTO dto, DataFetchingEnvironment env) {
+    return authService.serviceAccessLogin(dto, env);
   }
 
 }

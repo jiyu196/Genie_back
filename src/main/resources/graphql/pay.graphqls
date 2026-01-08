@@ -13,6 +13,35 @@ type PaymentCheckResponseDTO{
   paidAt: String!
 }
 
+input GetPaymentRequestDTO {
+  page: Int!
+  size: Int!
+}
+
+type GetPaymentResponseDTO {
+  orderUuid: String!
+  amount: Float!
+  paidAt: String!
+  payStatus: String!
+  cardCompany: String!
+  cardNumberMask: String!
+  receiptUrl: String!
+}
+
+
+type MyPaymentPageResponse {
+  content: [GetPaymentResponseDTO!]!
+  totalPages: Int!
+  totalElements: Int!
+  currentPage: Int!
+  isFirst: Boolean!
+  isLast: Boolean!
+}
+
 extend type Mutation {
   checkPayment(input:PaymentCheckRequestDTO!): PaymentCheckResponseDTO!
+}
+
+extend type Query {
+  getPaymentHistory(input: GetPaymentRequestDTO!): MyPaymentPageResponse!
 }

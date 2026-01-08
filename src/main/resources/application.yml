@@ -26,6 +26,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_batch_fetch_size: 100
+
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   graphql:
     schema:
@@ -89,3 +91,4 @@ portone:
   api-secret: ${PORTONE_SECRET}
   base-url: ${PORTONE_BASE_URL}
   store-id: ${PORTONE_STORE_ID}
+  channel-key: ${PORTONE_CHANNEL_KEY}

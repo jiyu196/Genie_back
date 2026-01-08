@@ -136,3 +136,15 @@
 * 결제창으로 결제 성공 이후 백단 로직 작성 중 (성공/실패/취소) 분기처리 중 (관련 개별 Service 메서드, DTO 작성)
 * 결제 성공 이후 백단 로직 작성 완료, FACADE2 (내게 분기처리 로직 Handler Service로 분리), 프론트 연동 체크 필요
 
+### 📅 260106(화)
+* 결제 성공 이후 백단 프론트 연동 및 오류 수정 -> 결제 성공 이후 구독 흐름 완료
+* Service Access Id 관련 security 로직 작성 중
+* 260106 accessId 기준 GraphQLInterceptor에서 처리하는 로직으로 확정, serviceAccessId 기준 로그인 메서드 작성
+
+### 📅 260107(수)
+* GraphQLInterceptor 내 accessId 검증 로직 추가, 서비스 로그인시 sessionCookie 및 Redis data (RandomUUID 기반) 발급
+* 서비스 로그인/서비스 로그아웃 백단 로직 추가
+
+### 📅 260108(목)
+* MyPage 내 accessId 조회(페이지네이션), 결제내역(페이지네이션), 구독정보(단일 조회) -> 프론트 연동 확인 완료
+* ServiceAccessId 발급 로직 내 encrypt password와 hashed password 메서드 저장 로직 수정 (메서드 argument 순서 이슈 해결)
