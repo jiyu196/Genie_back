@@ -33,7 +33,7 @@ public class AuthController {
   }
 
   @MutationMapping
-  public ServiceAccessLoginResponseDTO serviceAccessLogin(ServiceAccessLoginRequestDTO dto, DataFetchingEnvironment env) {
+  public ServiceAccessLoginResponseDTO serviceAccessLogin(@Argument("input") ServiceAccessLoginRequestDTO dto, DataFetchingEnvironment env) {
     return authService.serviceAccessLogin(dto, env);
   }
 

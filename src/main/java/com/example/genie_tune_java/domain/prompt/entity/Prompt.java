@@ -1,5 +1,6 @@
 package com.example.genie_tune_java.domain.prompt.entity;
 
+import com.example.genie_tune_java.domain.service_access.entity.ServiceAccess;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,18 +22,29 @@ public class Prompt {
 
   //Service Access 객체 들어갈 자리
 
+  @ManyToOne
+  @JoinColumn(name = "service_access_id", nullable = false)
+  private ServiceAccess serviceAccess;
+
   @Column(nullable = false, columnDefinition = "TEXT")
   private String originalContent;
 
-  @Column
+  @Column(columnDefinition = "TEXT")
   private String filteredContent;
 
-  @Column
+  @Column(columnDefinition = "TEXT")
   private String refinedContent;
+
+  @Column(nullable = false, columnDefinition = "TEXT")
+  private String revisedContent;
+
+  @Column
+  private boolean isSlang;
 
   @Column
   @Enumerated(EnumType.STRING)
-  PromptStatus promptStatus;
+  @Builder.Default
+  PromptStatus promptStatus = PromptStatus.WAITING;
 
   @Column
   @Builder.Default
