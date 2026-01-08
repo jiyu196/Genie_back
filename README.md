@@ -148,3 +148,5 @@
 ### 📅 260108(목)
 * MyPage 내 accessId 조회(페이지네이션), 결제내역(페이지네이션), 구독정보(단일 조회) -> 프론트 연동 확인 완료
 * ServiceAccessId 발급 로직 내 encrypt password와 hashed password 메서드 저장 로직 수정 (메서드 argument 순서 이슈 해결)
+* Service Access Id 활용한 서비스 페이지 로그인 성공 확인(프론트 세션쿠키 발급 확인)
+* Python 연동 준비 및 prompt 등록 method 준비
