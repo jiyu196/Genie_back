@@ -22,7 +22,7 @@ public class OpenAIService {
   // 1. 순수하게 파이썬 서버에 데이터를 던지고 결과를 받는 기능
   public Mono<String> requestPythonProcessing(OpenAIRequestDTO dto) {
     return pythonWebClient.post()
-            .uri("/process")
+            .uri("/image/generate")
             .bodyValue(dto)
             .retrieve()
             .bodyToMono(String.class);

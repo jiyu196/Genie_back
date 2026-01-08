@@ -23,8 +23,6 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -99,7 +97,7 @@ public class AuthService {
 
   @Transactional
   public ServiceAccessLoginResponseDTO serviceAccessLogin(ServiceAccessLoginRequestDTO dto, DataFetchingEnvironment env) {
-    // 0. 기존에 sessiionCookie 있을 경우 삭제 로직 sessionCookie는 새로 발급해야함/ redis도 삭제
+    // 0. 기존에 session Cookie 있을 경우 삭제 로직 sessionCookie는 새로 발급해야함/ redis도 삭제
     // service access id 하나는 단 하나의 세션만 유지
     HttpServletRequest request = env.getGraphQlContext().get(HttpServletRequest.class);
     HttpServletResponse response = env.getGraphQlContext().get(HttpServletResponse.class);
@@ -111,7 +109,7 @@ public class AuthService {
     }
 
     // 1. 최초 originalKey 원문
-    String decodedKey = aesUtil.decrypt(dto.encryptedKey());
+    String decodedKey = dto.decryptedKey();
     // 2. email 개념의 access_id 추출
     String accessId = decodedKey.substring(0, 12);
     // 3. Service Access 객체 생성
@@ -126,6 +124,7 @@ public class AuthService {
     if(serviceAccess.getAccessStatus() != AccessStatus.ACTIVE) {
       throw new GlobalException(ErrorCode.PAYMENT_REQUIRED);
     }
+
 
     // 7. 구독 만료 시간 check
     if(serviceAccess.getExpiredAt().isBefore(LocalDateTime.now())) {

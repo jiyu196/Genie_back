@@ -1,5 +1,5 @@
 input ServiceAccessLoginRequestDTO {
-  encryptedKey: String!
+  decryptedKey: String!
 }
 
 type ServiceAccessLoginResponseDTO {
