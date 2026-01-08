@@ -46,6 +46,8 @@ public class WebGraphQlInterceptorConfig implements WebGraphQlInterceptor {
 
       String operationName = request.getOperationName();
 
+      log.info("mutation/query 명: {}", operationName);
+
       log.info("Response: {} Request: {}", res, req);
 
       builder.graphQLContext(contextBuilder -> {

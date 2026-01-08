@@ -6,6 +6,31 @@ type ServiceAccessLoginResponseDTO {
   result: Boolean!
 }
 
+input MyAccessIdPageRequestDTO {
+  page: Int!
+  size: Int!
+}
+
+type GetMyAccessIdResponseDTO {
+  decryptedKey: String!
+  accessStatus: String!
+  createdAt: String!
+  expiredAt: String!
+}
+
+type MyAccessIdPageResponseDTO {
+  content: [GetMyAccessIdResponseDTO!]!
+  totalPages: Int!
+  totalElements: Int!
+  currentPage: Int!
+  isFirst: Boolean!
+  isLast: Boolean!
+}
+
+extend type Query {
+  getMyAccessIdPage(input: MyAccessIdPageRequestDTO!): MyAccessIdPageResponseDTO!
+}
+
 extend type Mutation {
   serviceAccessLogin(input: ServiceAccessLoginRequestDTO!): ServiceAccessLoginResponseDTO!
 }

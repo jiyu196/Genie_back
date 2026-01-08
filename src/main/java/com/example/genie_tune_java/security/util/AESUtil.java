@@ -3,6 +3,7 @@ package com.example.genie_tune_java.security.util;
 import com.example.genie_tune_java.common.exception.ErrorCode;
 import com.example.genie_tune_java.common.exception.GlobalException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 @Component
+@Log4j2
 public class AESUtil {
   // ServiceAccessKey를 암호화해서 저장하여 MyPage에서 복호화 해서 보여주는 역할을 위해 별도로 DB에 저장하기 위해 설정하는 값
 
@@ -22,6 +24,8 @@ public class AESUtil {
   private final SecretKeySpec secretKey;
 
   public AESUtil(@Value("${security.aes.iv}") String iv, @Value("${security.aes.secret}") String secret) {
+    log.info("주입된 iv: {}", iv);
+    log.info("iv의 길이: {}",iv.length());
     this.ivSpec = createIvParameterSpec(iv);
     this.secretKey = createKeySpec(secret); //
   }

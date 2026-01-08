@@ -1,0 +1,13 @@
+type GetSubscriptionResponseDTO {
+  productName: String!
+  productGrade: String!
+  subscriptionCycle: String!
+  startedAt: String!
+  endedAt: String!
+  issuedAccessCount: Int!
+  status: String!
+}
+
+extend type Query {
+  getMySubscription: GetSubscriptionResponseDTO!
+}
