@@ -1,6 +1,9 @@
 package com.example.genie_tune_java.domain.service_access.repository;
 
 import com.example.genie_tune_java.domain.service_access.entity.ServiceAccess;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,8 +19,10 @@ public interface ServiceAccessRepository extends JpaRepository<ServiceAccess, Lo
           "WHERE s.id = :subscriptionId")
   Optional<Integer> findMaxServiceAccessIdCount(@Param("subscriptionId") Long subscriptionId);
 
-
-  boolean existsByEncryptedKey(String s);
+  @EntityGraph(attributePaths = {"member"})
+  @Query(value = "SELECT s FROM ServiceAccess s WHERE s.member.id = :memberId",
+          countQuery = "SELECT count(s) FROM ServiceAccess s WHERE s.member.id = :memberId")
+  Page<ServiceAccess> findAllMyServiceAccessByMemberId(@Param("memberId") Long memberId, Pageable pageable);
 
   Optional<ServiceAccess> findByEncryptedKey(String encryptedKey);
 

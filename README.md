@@ -144,3 +144,7 @@
 ### 📅 260107(수)
 * GraphQLInterceptor 내 accessId 검증 로직 추가, 서비스 로그인시 sessionCookie 및 Redis data (RandomUUID 기반) 발급
 * 서비스 로그인/서비스 로그아웃 백단 로직 추가
+
+### 📅 260108(목)
+* MyPage 내 accessId 조회(페이지네이션), 결제내역(페이지네이션), 구독정보(단일 조회) -> 프론트 연동 확인 완료
+* ServiceAccessId 발급 로직 내 encrypt password와 hashed password 메서드 저장 로직 수정 (메서드 argument 순서 이슈 해결)

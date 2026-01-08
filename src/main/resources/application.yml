@@ -26,6 +26,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_batch_fetch_size: 100
+
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   graphql:
     schema:
