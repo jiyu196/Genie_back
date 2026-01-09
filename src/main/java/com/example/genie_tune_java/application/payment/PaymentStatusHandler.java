@@ -1,4 +1,4 @@
-package com.example.genie_tune_java.application;
+package com.example.genie_tune_java.application.payment;
 
 import com.example.genie_tune_java.api.port_one.dto.PortOneGetPaymentsResponseDTO;
 import com.example.genie_tune_java.domain.order.entity.Order;

@@ -1,0 +1,16 @@
+input GenerateStoryRequestDTO {
+  accessIdCharacter: [String!]!
+  originalContent: [String!]!
+}
+
+type GenerateStoryResponseDTO {
+  originalContent: String!
+  refinedContent: String!
+  revisedPrompt: String!
+  imageUrl: String
+  errorMessage: String
+}
+
+extend type Mutation {
+  generateStory(input: GenerateStoryRequestDTO!): GenerateStoryResponseDTO!
+}

@@ -139,7 +139,7 @@ public class AuthService {
     // redis value에서 serviceAccess expiredAt = subscription 의 유효기간
     // 9. redis에 uuid 저장 -> SessionCookieAccessId라는 뜻의 SCAI
     // 쿠키는 기본적으로 name과 domain, path가 동일하므로 새로 만들어도 덮어씌워지는 구조다. -> 즉, 한 브라우저 내에서는 한 개의 accessId만 허용
-    redisUtil.set("SCAI:" + randomUuid, serviceAccess.getAccessStatus() + ":" + serviceAccess.getMember().getId() + ":" + serviceAccess.getExpiredAt(), 15 * 60 * 1000L);
+    redisUtil.set("SCAI:" + randomUuid, serviceAccess.getAccessStatus() + ":" + accessId + ":" + serviceAccess.getExpiredAt(), 20 * 60 * 1000L);
 
     // 10. response header에 만든 세션쿠키 저장
 

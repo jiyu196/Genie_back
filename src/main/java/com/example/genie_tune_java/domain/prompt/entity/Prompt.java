@@ -49,4 +49,11 @@ public class Prompt {
   @Column
   @Builder.Default
   private LocalDateTime createdAt = LocalDateTime.now();
+
+  public void update(String filteredContent, String refinedContent, String revisedContent, PromptStatus promptStatus) {
+    this.filteredContent = filteredContent;
+    this.refinedContent = refinedContent;
+    this.revisedContent = revisedContent;
+    this.promptStatus = promptStatus;
+  }
 }

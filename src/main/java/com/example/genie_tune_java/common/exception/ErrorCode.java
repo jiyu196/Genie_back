@@ -66,6 +66,9 @@ public enum ErrorCode {
   PAYMENT_GET_FORBIDDEN_ERROR(HttpStatus.FORBIDDEN, "요청이 거절되었습니다."),
   PAYMENT_GET_PAYMENT_NOT_FOUND_ERROR(HttpStatus.NOT_FOUND, "결제 건이 존재하지 않습니다."),
 
+  //==== GraphQLInterceptor ==== 관련
+  GRAPHQL_INTERCEPTOR_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "GraphQLInterceptor 에서 내부 에러가 터졌습니다."),
+
   // ==== 결제 수단 관련 ====
   PAYMETHOD_NOT_FOUND(HttpStatus.NOT_FOUND, "결제 수단을 찾을 수 없습니다."),
 
@@ -80,7 +83,14 @@ public enum ErrorCode {
 
   //==== Subscription 관련 ====
   SUBSCRIPTION_EXPIRED(HttpStatus.UNAUTHORIZED, "구독이 만료되었습니다."),
-  SUBSCRIPTION_NOTFOUND(HttpStatus.NOT_FOUND, "구독 내역이 없습니다.");
+  SUBSCRIPTION_NOTFOUND(HttpStatus.NOT_FOUND, "구독 내역이 없습니다."),
+
+  //==== 파이썬 호출시 발생 에러 ====
+  OPENAI_PYTHON_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "웹툰 제작 서버가 불안정합니다. 다시 시도하여 주시기 바랍니다." ),
+  IMAGE_GENERATION_FAILED(HttpStatus.FORBIDDEN, "정책에 위배된 프롬프트 입니다."),
+
+  //==== 프롬프트 관련 ====
+  PROMPT_NOT_FOUND(HttpStatus.NOT_FOUND, "저장된 프롬프트를 찾을 수 없습니다.");
 
   private final HttpStatus status;
   private final String message;

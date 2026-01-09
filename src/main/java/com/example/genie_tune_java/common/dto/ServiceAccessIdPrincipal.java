@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @Getter
 public class ServiceAccessIdPrincipal {
-  private final Long memberId;
+  private final String accessId;
   private final AccessStatus accessStatus;
   private final LocalDateTime expiredAt;
 }

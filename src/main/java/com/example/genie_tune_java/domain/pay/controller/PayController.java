@@ -1,6 +1,6 @@
 package com.example.genie_tune_java.domain.pay.controller;
 
-import com.example.genie_tune_java.application.PaymentConfirmFacade;
+import com.example.genie_tune_java.application.payment.PaymentConfirmFacade;
 import com.example.genie_tune_java.domain.pay.dto.PaymentCheckRequestDTO;
 import com.example.genie_tune_java.domain.pay.dto.PaymentCheckResponseDTO;
 import com.example.genie_tune_java.domain.pay.dto.pageable.GetPaymentRequestDTO;
