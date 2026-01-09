@@ -150,3 +150,7 @@
 * ServiceAccessId 발급 로직 내 encrypt password와 hashed password 메서드 저장 로직 수정 (메서드 argument 순서 이슈 해결)
 * Service Access Id 활용한 서비스 페이지 로그인 성공 확인(프론트 세션쿠키 발급 확인)
 * Python 연동 준비 및 prompt 등록 method 준비
+
+### 📅 260109(금)
+* 프론트, 자바, 파이썬, GPT API 연동 성공(tbl_prompt, tbl_prompt_log 저장), 프론트에서 이미지 수신 완료
+* 보완사항 우선순위 선정 및 보완 필요 (일일 토큰량 제한, 주문-결제 파트 예외처리, 구독 해제, 정기 결제, 웹툰 저장(S3연동) 등)
