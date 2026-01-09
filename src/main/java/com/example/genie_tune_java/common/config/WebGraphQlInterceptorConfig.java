@@ -19,6 +19,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Set;
 
 @Component
@@ -29,7 +30,7 @@ public class WebGraphQlInterceptorConfig implements WebGraphQlInterceptor {
   private final CookieUtil cookieUtil;
   private final RedisUtil redisUtil;
   private final static Set<String> checkPoint = Set.of(
-    "generateImage", "savePrompt"
+    "GenerateStory", "savePrompt"
   );
 
   @Override
@@ -56,8 +57,8 @@ public class WebGraphQlInterceptorConfig implements WebGraphQlInterceptor {
           contextBuilder.put(HttpServletResponse.class, res);
         }
         ServiceAccessIdPrincipal principal = validateAndGetPrincipal(operationName, req);
-
         if(principal != null) {
+          log.info("accessId: {} accessStatus: {} 만료기간: {}" , principal.getAccessId(), principal.getAccessStatus(), principal.getExpiredAt());
           contextBuilder.put(ServiceAccessIdPrincipal.class, principal);
         }
       });
@@ -72,6 +73,8 @@ public class WebGraphQlInterceptorConfig implements WebGraphQlInterceptor {
     if(operationName == null || !isSecurityTarget(operationName)) {
       return null;
     }
+
+    log.info("validation 진입");
 
     //1. Session Cookie에서 발급한 UUID 꺼냄
     String sessionCookieValue = cookieUtil.getCookieValue(request, "Service_Access_Cookie");
@@ -91,26 +94,27 @@ public class WebGraphQlInterceptorConfig implements WebGraphQlInterceptor {
     long ttl = redisUtil.getTtl("SCAI:" + sessionCookieValue);
 
     if(ttl <= 3 * 60 * 1000 && ttl > 0) { //redis는 key가 없으면 ttl이 -2, ttl이 없으면 -1로 반환한다.
-      redisUtil.expire("SCAI:" + sessionCookieValue, 15 * 60 * 1000);
+      redisUtil.expire("SCAI:" + sessionCookieValue, 20 * 60 * 1000);
     }
 
     //4. 성공하면 value 값 문자열 파싱(split) -> 아마 이전에 신규 로직 필요할 듯
-    //ACTIVE:7(MEMBER 번호):2026-02-06T12:00:00 형태로 value 값 생성 예정
-    String[] parts = redisValue.split(":");
+    //ACTIVE:SAID-1a2b3c4(accessId 번호):2026-02-06T12:00:00 형태로 value 값 생성 예정
+    String[] parts = redisValue.split(":", 3); // LocalDateTime 뒤의 : 는
+    Arrays.stream(parts).forEach(log::info);
     //5. 문자열 오류시 에러 던짐
     if(parts.length != 3) {
       throw new GlobalException(ErrorCode.SERVICE_ACCESS_MALFORMED);
     }
     //6. :을 기준으로 파싱
     AccessStatus accessStatus = AccessStatus.valueOf(parts[0]);
-    Long memberId = Long.valueOf(parts[1]);
+    String accessId = String.valueOf(parts[1]);
     LocalDateTime expireTime = LocalDateTime.parse(parts[2]);
 
     if(accessStatus != AccessStatus.ACTIVE || expireTime.isBefore(LocalDateTime.now())) {
       throw new GlobalException(ErrorCode.PAYMENT_REQUIRED);
     }
 
-    return new ServiceAccessIdPrincipal(memberId, accessStatus, expireTime);
+    return new ServiceAccessIdPrincipal(accessId, accessStatus, expireTime);
 
   }
 
