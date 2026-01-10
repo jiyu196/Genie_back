@@ -107,9 +107,10 @@ public class PromptServiceImpl implements PromptService {
   }
 
   @Transactional
-  public void finalSave(OpenAIResponseDTO dto) {
+  public Prompt finalSave(OpenAIResponseDTO dto) {
     Prompt savedPrompt = promptRepository.findByOriginalContentAndServiceAccess(dto.originalContent(), dto.accessId()).orElseThrow(() -> new GlobalException(ErrorCode.PROMPT_NOT_FOUND));
     savedPrompt.update(dto.filteredContent(), dto.refinedContent(), dto.revisedPrompt(), PromptStatus.APPROVED);
+    return savedPrompt;
   }
 
 }

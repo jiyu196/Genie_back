@@ -92,3 +92,12 @@ portone:
   base-url: ${PORTONE_BASE_URL}
   store-id: ${PORTONE_STORE_ID}
   channel-key: ${PORTONE_CHANNEL_KEY}
+
+cloud:
+  aws:
+    region: ${AWS_REGION}
+    s3:
+      bucket: ${AWS_S3_BUCKET}
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}

@@ -90,7 +90,17 @@ public enum ErrorCode {
   IMAGE_GENERATION_FAILED(HttpStatus.FORBIDDEN, "정책에 위배된 프롬프트 입니다."),
 
   //==== 프롬프트 관련 ====
-  PROMPT_NOT_FOUND(HttpStatus.NOT_FOUND, "저장된 프롬프트를 찾을 수 없습니다.");
+  PROMPT_NOT_FOUND(HttpStatus.NOT_FOUND, "저장된 프롬프트를 찾을 수 없습니다."),
+
+  //==== 첨부파일, S3 관련 ====
+  ATTACH_NOT_FOUND(HttpStatus.NOT_FOUND, "저장된 첨부파일을 찾을 수 없습니다."),
+  FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "업로드 된 파일이 없습니다."),
+  INVALID_FILE_EXTENSION(HttpStatus.BAD_REQUEST , "유효하지 않은 파일 확장자 입니다."),
+  INVALID_CONTENT_TYPE(HttpStatus.BAD_REQUEST,"허용되지 않은 파일입니다."),
+  FILE_SIZE_EXCEEDED(HttpStatus.BAD_REQUEST, "파일 용량 제한을 초과하였습니다."),
+  IMAGE_GET_FAILED(HttpStatus.BAD_REQUEST, "OPEN API에서 image를 가져오는 것을 실패하였습니다."),
+  S3_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "첨부파일 업로드에 실패하였습니다."),
+  S3_GET_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "첨부파일 가져오기에 실패하였습니다.");
 
   private final HttpStatus status;
   private final String message;
