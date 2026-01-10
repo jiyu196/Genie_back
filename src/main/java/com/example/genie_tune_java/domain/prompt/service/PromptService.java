@@ -9,5 +9,5 @@ import graphql.schema.DataFetchingEnvironment;
 
 public interface PromptService {
   OpenAIRequestDTO checkWord (GenerateStoryRequestDTO dto, DataFetchingEnvironment env);
-  void finalSave(OpenAIResponseDTO dto);
+  Prompt finalSave(OpenAIResponseDTO dto);
 }
