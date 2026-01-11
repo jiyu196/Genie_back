@@ -15,7 +15,7 @@ public class PortOneWebClientConfig {
 
     @Bean
     public WebClient portOneWebClient(WebClient.Builder webClientBuilder) {
-      return webClientBuilder
+      return webClientBuilder.clone()
               .baseUrl(baseUrl)
               .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
               // 필요하다면 여기서 타임아웃이나 로깅 필터를 추가 설정

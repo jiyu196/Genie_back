@@ -11,6 +11,7 @@ import com.example.genie_tune_java.domain.member.dto.register.biz_check.Business
 import com.example.genie_tune_java.domain.member.dto.register.biz_check.BusinessValidationCheckResponseDTO;
 import com.example.genie_tune_java.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class BusinessNumberCheckService {
   private final NTSBusinessAPIClient ntsClient;
   private final MemberRepository memberRepository;
@@ -47,7 +49,7 @@ public class BusinessNumberCheckService {
 
   private void checkDataValidation(String statusCode) {
     switch (statusCode) {
-      case "OK" -> {} // OK면 그냥 통과
+      case "OK" -> {log.info("통과!");} // OK면 그냥 통과
       case "BAD_JSON_REQUEST" ->
               throw new GlobalException(ErrorCode.BAD_JSON_REQUEST);
 
@@ -60,8 +62,9 @@ public class BusinessNumberCheckService {
       case "INTERNAL_ERROR" ->
               throw new GlobalException(ErrorCode.INTERNAL_ERROR);
 
-      default ->
-              throw new GlobalException(ErrorCode.HTTP_ERROR);
+      default -> {
+        log.info(statusCode); throw new GlobalException(ErrorCode.HTTP_ERROR);
+      }
 
     }
   }

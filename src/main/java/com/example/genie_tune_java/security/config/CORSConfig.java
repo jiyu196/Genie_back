@@ -24,7 +24,8 @@ public class CORSConfig {
     ));
     config.setAllowedHeaders(List.of(
             "Content-Type",
-            "Authorization"
+            "Authorization",
+            "Apollo-Require-Preflight"
     ));
     config.setExposedHeaders(List.of(
             "Set-Cookie"

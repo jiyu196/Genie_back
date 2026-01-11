@@ -29,7 +29,7 @@ public class DownloadImageService {
     HttpClient httpClient = HttpClient.create().followRedirect(true);
 
     // 2. Builder를 활용하여 설정을 추가한 WebClient 빌드
-    WebClient client = WebClient.builder()
+    WebClient client = webClientBuilder.clone()
             .clientConnector(new ReactorClientHttpConnector(httpClient))
             .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(10 * 1024 * 1024)) // 10MB
             .build();
