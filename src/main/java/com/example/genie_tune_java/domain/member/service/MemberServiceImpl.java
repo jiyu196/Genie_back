@@ -6,7 +6,7 @@ import com.example.genie_tune_java.common.util.RedisUtil;
 import com.example.genie_tune_java.domain.admin.entity.RegisterRequest;
 import com.example.genie_tune_java.domain.admin.repository.RegisterRequestRepository;
 import com.example.genie_tune_java.domain.attach.dto.AttachRequestDTO;
-import com.example.genie_tune_java.domain.attach.entity.TargetType;
+import com.example.genie_tune_java.domain.attach.entity.AttachTargetType;
 import com.example.genie_tune_java.domain.attach.service.AttachService;
 import com.example.genie_tune_java.domain.member.dto.MemberGetResponseDTO;
 import com.example.genie_tune_java.domain.member.dto.find.FindEmailRequestDTO;
@@ -107,10 +107,12 @@ public class MemberServiceImpl implements MemberService {
 
     //9. 사업자등록증/재직증명서 첨부파일 저장
     // 9-1. 사업자등록증 upload
-    AttachRequestDTO attachRequestDTO = new AttachRequestDTO(TargetType.MEMBER, member.getId());
-    attachService.upload(attachRequestDTO, dto.businessFile());
+    AttachRequestDTO businessDto = new AttachRequestDTO(AttachTargetType.MEMBER_BUSINESS, member.getId());
+    AttachRequestDTO employDto = new AttachRequestDTO(AttachTargetType.MEMBER_EMPLOYMENT, member.getId());
+
+    attachService.upload(businessDto, dto.businessFile());
     // 9-2. 재직증명서 upload
-    attachService.upload(attachRequestDTO, dto.employmentFile());
+    attachService.upload(employDto, dto.employmentFile());
 
     //10. 회원가입하고 프론트에 뿌릴 정보 들을 담은 DTO로 변환 및 반환
     return memberMapper.toRegisterResponseDTO(member);

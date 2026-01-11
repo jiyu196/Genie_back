@@ -24,7 +24,7 @@ public class Attach {
 
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
-  TargetType targetType;
+  AttachTargetType attachTargetType;
 
   @Column(nullable = false, name = "s3_key")
   String s3Key;

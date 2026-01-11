@@ -1,11 +1,11 @@
 package com.example.genie_tune_java.domain.attach.dto;
 
-import com.example.genie_tune_java.domain.attach.entity.TargetType;
+import com.example.genie_tune_java.domain.attach.entity.AttachTargetType;
 
 import java.time.LocalDateTime;
 
 public record AttachResponseDTO(
-  TargetType targetType,
+  AttachTargetType attachTargetType,
   Long targetId, // Member Webtoon
 
   String originName,

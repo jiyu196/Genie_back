@@ -1,8 +1,8 @@
 package com.example.genie_tune_java.domain.attach.dto;
 
-import com.example.genie_tune_java.domain.attach.entity.TargetType;
+import com.example.genie_tune_java.domain.attach.entity.AttachTargetType;
 
 public record AttachRequestDTO(
-  TargetType targetType,
+  AttachTargetType attachTargetType,
   Long targetId
 ) {}

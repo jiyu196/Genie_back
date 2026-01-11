@@ -16,6 +16,8 @@ public interface RegisterRequestMapper {
   @Mapping(source = "member.role", target = "role")
   @Mapping(source = "member.accountStatus", target = "accountStatus")
   @Mapping(source = "member.approvedAt", target = "approvedAt")
+  @Mapping(target = "businessLicenseUrl", ignore = true)
+  @Mapping(target = "employmentCertUrl", ignore = true)
   RegisterRequestResponseDTO toDto(RegisterRequest registerRequest);
 
 }

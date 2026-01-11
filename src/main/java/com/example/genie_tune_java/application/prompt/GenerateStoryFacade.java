@@ -9,7 +9,7 @@ import com.example.genie_tune_java.common.exception.ErrorCode;
 import com.example.genie_tune_java.common.exception.GlobalException;
 import com.example.genie_tune_java.domain.attach.dto.AttachRequestDTO;
 import com.example.genie_tune_java.domain.attach.dto.AttachResponseDTO;
-import com.example.genie_tune_java.domain.attach.entity.TargetType;
+import com.example.genie_tune_java.domain.attach.entity.AttachTargetType;
 import com.example.genie_tune_java.domain.attach.service.AttachService;
 import com.example.genie_tune_java.domain.prompt.dto.GenerateStoryRequestDTO;
 import com.example.genie_tune_java.domain.prompt.dto.GenerateStoryResponseDTO;
@@ -61,7 +61,7 @@ public class GenerateStoryFacade {
     DownloadImageDTO imageDTO = downloadImageService.download(openAIResponseDTO.imageUrl());
 
     // 7. 메서드 호출을 위해 MultipartFile 형태로 변환 WEBTOON 객체의 Pk 주입 -> (현재 1L로 적혀있는 것 수정 필요)
-    AttachResponseDTO attachResponseDTO = attachService.uploadGeneratedImage(new AttachRequestDTO(TargetType.WEBTOON, webtoon.getId()), imageDTO);
+    AttachResponseDTO attachResponseDTO = attachService.uploadGeneratedImage(new AttachRequestDTO(AttachTargetType.WEBTOON, webtoon.getId()), imageDTO);
     log.info("프론트에 내려주는 주소: {}", attachResponseDTO.fileUrl());
     return new GenerateStoryResponseDTO(
             openAIResponseDTO.originalContent(), openAIResponseDTO.refinedContent(), openAIResponseDTO.revisedPrompt(),
