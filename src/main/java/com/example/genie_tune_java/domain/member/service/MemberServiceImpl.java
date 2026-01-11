@@ -5,6 +5,9 @@ import com.example.genie_tune_java.common.exception.GlobalException;
 import com.example.genie_tune_java.common.util.RedisUtil;
 import com.example.genie_tune_java.domain.admin.entity.RegisterRequest;
 import com.example.genie_tune_java.domain.admin.repository.RegisterRequestRepository;
+import com.example.genie_tune_java.domain.attach.dto.AttachRequestDTO;
+import com.example.genie_tune_java.domain.attach.entity.TargetType;
+import com.example.genie_tune_java.domain.attach.service.AttachService;
 import com.example.genie_tune_java.domain.member.dto.MemberGetResponseDTO;
 import com.example.genie_tune_java.domain.member.dto.find.FindEmailRequestDTO;
 import com.example.genie_tune_java.domain.member.dto.find.FindEmailResponseDTO;
@@ -64,6 +67,8 @@ public class MemberServiceImpl implements MemberService {
   private final MailService mailService;
   // mail 인증 코드 로직
   private final RedisUtil redisUtil;
+  //첨부파일 저장 로직
+  private final AttachService attachService;
 
   @Override
   @Transactional
@@ -90,15 +95,24 @@ public class MemberServiceImpl implements MemberService {
 
     //5. Member Register Request Entity 객체 생성 및 db 등록
     registerRequestRepository.save(RegisterRequest.createRequest(member));
-    //6. 약관 동의 목록 가져오기
 
+    //6. 약관 동의 목록 가져오기
     List<Terms> agreedTerms = dto.agreedTermsCategory().stream().map(category -> termsRepository.findLatestByCategory(Enum.valueOf(TermsCategory.class, category.toUpperCase())).orElseThrow(() -> new GlobalException(ErrorCode.TERMS_NOT_FOUND))).toList();
     
     //7. MemberTerms 객체 만들기 및 저장
     List<MemberTerms> memberTerms = agreedTerms.stream().map(terms -> memberTermsMapper.toEntity(member, terms)).toList();
-    //JPA에서 리스트 형태로 저장하는 방법 (해당 객체 일괄 테이블에 저장)
+
+    //8. JPA에서 리스트 형태로 저장하는 방법 (해당 객체 일괄 테이블에 저장)
     memberTermsRepository.saveAll(memberTerms);
 
+    //9. 사업자등록증/재직증명서 첨부파일 저장
+    // 9-1. 사업자등록증 upload
+    AttachRequestDTO attachRequestDTO = new AttachRequestDTO(TargetType.MEMBER, member.getId());
+    attachService.upload(attachRequestDTO, dto.businessFile());
+    // 9-2. 재직증명서 upload
+    attachService.upload(attachRequestDTO, dto.employmentFile());
+
+    //10. 회원가입하고 프론트에 뿌릴 정보 들을 담은 DTO로 변환 및 반환
     return memberMapper.toRegisterResponseDTO(member);
   }
 

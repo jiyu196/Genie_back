@@ -41,6 +41,7 @@ public class SecurityConfig {
             auth
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .requestMatchers("/graphql").permitAll()
+                    .requestMatchers("/graphql-upload").permitAll()
                     .requestMatchers("/graphiql/**", "/graphiql").permitAll()
                     .anyRequest().denyAll() // Rest API 엔드포인트 차단
             )

@@ -28,12 +28,11 @@ public class NTSBusinessAPIClient {
   }
 
   public BusinessValidationResponseDTO checkValidation(BusinessValidationCheckRequestDTO dto) {
-
+    URI uri = URI.create(
+            "https://api.odcloud.kr/api/nts-businessman/v1/validate?serviceKey=" + serviceKey
+    );
     return webClient.post()
-            .uri(uriBuilder -> uriBuilder
-                    .path("/api/nts-businessman/v1/validate")
-                    .queryParam("serviceKey", serviceKey)
-                    .build())
+            .uri(uri)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .bodyValue(new BusinessValidationRequestDTO(dto))

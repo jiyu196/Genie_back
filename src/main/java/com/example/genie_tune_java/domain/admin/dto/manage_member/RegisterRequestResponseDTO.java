@@ -16,5 +16,7 @@ public record RegisterRequestResponseDTO(
   //기존 RegisterRequest에 등록된 정보 중 필요한 정보
   String rejectReason, RegisterStatus registerStatus,
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime createdAt,
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime checkedAt
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime checkedAt,
+  String businessLicenseUrl, // 사업자등록증 정보
+  String employmentCertUrl // 재직증명서 정보
 ) {}
