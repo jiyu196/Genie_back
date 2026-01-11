@@ -4,13 +4,17 @@ import com.example.genie_tune_java.common.exception.ErrorCode;
 import com.example.genie_tune_java.common.exception.GlobalException;
 import com.example.genie_tune_java.domain.admin.dto.manage_member.JoinApplyRequestDTO;
 import com.example.genie_tune_java.domain.admin.dto.manage_member.JoinApplyResponseDTO;
-import com.example.genie_tune_java.domain.admin.dto.manage_member.page.MemberPageResponse;
 import com.example.genie_tune_java.domain.admin.dto.manage_member.RegisterRequestResponseDTO;
+import com.example.genie_tune_java.domain.admin.dto.manage_member.page.MemberPageResponse;
 import com.example.genie_tune_java.domain.admin.dto.manage_member.page.MemberSearchCondition;
 import com.example.genie_tune_java.domain.admin.dto.manage_member.page.MemberSearchType;
 import com.example.genie_tune_java.domain.admin.entity.RegisterRequest;
 import com.example.genie_tune_java.domain.admin.mapper.RegisterRequestMapper;
 import com.example.genie_tune_java.domain.admin.repository.RegisterRequestRepository;
+import com.example.genie_tune_java.domain.attach.entity.Attach;
+import com.example.genie_tune_java.domain.attach.entity.AttachTargetType;
+import com.example.genie_tune_java.domain.attach.repository.AttachRepository;
+import com.example.genie_tune_java.domain.attach.service.AttachService;
 import com.example.genie_tune_java.domain.member.entity.Member;
 import com.example.genie_tune_java.domain.member.entity.RegisterStatus;
 import com.example.genie_tune_java.domain.member.entity.Role;
@@ -24,8 +28,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -35,6 +40,8 @@ public class RegisterRequestServiceImpl implements RegisterRequestService {
   private final RegisterRequestRepository registerRequestRepository;
   private final RegisterRequestMapper registerRequestMapper;
   private final MemberRepository memberRepository;
+  private final AttachRepository attachRepository;
+  private final AttachService attachService;
 
   @Override
   @Transactional(readOnly = true)
@@ -50,9 +57,35 @@ public class RegisterRequestServiceImpl implements RegisterRequestService {
     RegisterStatus status = (condition != null) ? condition.getRegisterStatus() : null;
     Role role = (condition != null) ? condition.getRole() : null;
 
-    //4. repository를 이용해서 연결
+    //4. repository를 이용해서 연결 RegisterRequest가 담긴 Page 객체 생성
     Page<RegisterRequest> entityPage = registerRequestRepository.findAllWithMember(typeString, keyword, status, role, pageable);
-    List<RegisterRequestResponseDTO> list = entityPage.stream().map(registerRequestMapper::toDto).toList();
+
+    //5. page 객체에서 attach 목록에 필요한 Member Id 뽑아오기
+    List<Long> memberIds = entityPage.stream().map(rr -> rr.getMember().getId()).toList();
+    List<AttachTargetType> targetTypes = List.of(AttachTargetType.MEMBER_BUSINESS, AttachTargetType.MEMBER_EMPLOYMENT);
+
+    Map<Long, Map<AttachTargetType, String>> memberFileMap = attachRepository.findByAttachTargetTypeInAndTargetIdIn(targetTypes, memberIds).stream()
+            .collect(Collectors.groupingBy(
+                    Attach::getTargetId, // 첫 번째 키: Member ID
+                    Collectors.toMap(
+                            Attach::getAttachTargetType, // 두 번째 키: 파일 타입 (ENUM)
+                            Attach::getS3Key, // value: URL(경로)
+                            (existing, replacement) -> existing // 혹시 중복 데이터 있으면 기존 것 유지
+                    )
+            ));
+    //7. Member Id와 type에 해당하는 첨부파일 전부 조회
+
+    List<RegisterRequestResponseDTO> list = entityPage.stream().map(rr-> {
+      // 7-1) Page 객체에서 RegisterRequest가 iterable 하므로 얘를 stream -> map 해서 mapper에 전부 mapping 다만, attach 주소는 여기에 포함 x
+      RegisterRequestResponseDTO dto = registerRequestMapper.toDto(rr);
+      // 7-2) Member Id 가져오기
+      Long memberId = rr.getMember().getId();
+      // 7-3) Member Id를 key 값으로 사용하여 value 값인 Map을 가져온다. ex) <MEMBER_BUSINESS, "S3Key"> 형태로 되어 있음
+      Map<AttachTargetType, String> targetTypeMap = memberFileMap.getOrDefault(memberId, Map.of());
+
+      dto.insertAttach(attachService.buildFileUrl(targetTypeMap.get(AttachTargetType.MEMBER_BUSINESS)),attachService.buildFileUrl(targetTypeMap.get(AttachTargetType.MEMBER_EMPLOYMENT)));
+      return dto;
+    }).toList();
 
     return new MemberPageResponse(list, entityPage.getTotalPages(), entityPage.getTotalElements(), entityPage.getNumber() + 1,
             entityPage.isFirst(), entityPage.isLast());

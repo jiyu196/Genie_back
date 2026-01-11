@@ -8,7 +8,7 @@ import com.example.genie_tune_java.domain.attach.dto.AttachRegisterDTO;
 import com.example.genie_tune_java.domain.attach.dto.AttachRequestDTO;
 import com.example.genie_tune_java.domain.attach.dto.AttachResponseDTO;
 import com.example.genie_tune_java.domain.attach.entity.Attach;
-import com.example.genie_tune_java.domain.attach.entity.TargetType;
+import com.example.genie_tune_java.domain.attach.entity.AttachTargetType;
 import com.example.genie_tune_java.domain.attach.mapper.AttachMapper;
 import com.example.genie_tune_java.domain.attach.repository.AttachRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +51,7 @@ public class AttachServiceImpl implements AttachService {
     // 4. S3 저장용 파일명 (UUID + 확장자)
     String fileName = UUID.randomUUID() + "." + extension;
     // 5. s3 Key 생성 (일종의 path)
-    String key = generateKey(dto.targetType(), dto.targetId(), fileName);
+    String key = generateKey(dto.attachTargetType(), dto.targetId(), fileName);
 
     // 6. S3 업로드
     try {
@@ -64,7 +64,7 @@ public class AttachServiceImpl implements AttachService {
     }
     //7. Attach 객체로 저장을 위한, DTO 신규 생성
     AttachRegisterDTO registerDTO = new AttachRegisterDTO(
-            dto.targetType(), dto.targetId(), key, fileName, originName, extension,
+            dto.attachTargetType(), dto.targetId(), key, fileName, originName, extension,
             file.getContentType(), file.getSize()
     );
     Attach attach = attachRepository.save(attachMapper.toAttachForRegister(registerDTO));
@@ -84,7 +84,7 @@ public class AttachServiceImpl implements AttachService {
     //3. fileName 지정 (UUID + 확장자)
     String fileName = UUID.randomUUID() + "." + extension;
     // 4. s3 Key 생성 (일종의 path)
-    String key = generateKey(dto.targetType(), dto.targetId(), fileName);
+    String key = generateKey(dto.attachTargetType(), dto.targetId(), fileName);
 
     try {
       // S3Util을 이용해서 실제로 업로드
@@ -96,7 +96,7 @@ public class AttachServiceImpl implements AttachService {
     }
 
     AttachRegisterDTO registerDTO = new AttachRegisterDTO(
-            dto.targetType(), dto.targetId(), key, fileName, originName, extension,
+            dto.attachTargetType(), dto.targetId(), key, fileName, originName, extension,
             imageDto.contentType(), imageDto.fileSize()
     );
     Attach attach = attachRepository.save(attachMapper.toAttachForRegister(registerDTO));
@@ -131,8 +131,8 @@ public class AttachServiceImpl implements AttachService {
 
   //S3 key 생성 규칙
   //genie_tune/{targetType}/{targetId}/{uuid}.{ext}
-  private String generateKey(TargetType targetType, Long targetId, String fileName) {
-    return String.format("genie_tune/%s/%d/%s", targetType.name().toLowerCase(), targetId, fileName);
+  private String generateKey(AttachTargetType attachTargetType, Long targetId, String fileName) {
+    return String.format("genie_tune/%s/%d/%s", attachTargetType.name().toLowerCase(), targetId, fileName);
   }
 
   // 파일 확장자 추출 (.txt, .jpg 등)
@@ -144,7 +144,7 @@ public class AttachServiceImpl implements AttachService {
   }
 
   // S3 URL 조립
-  private String buildFileUrl(String s3Key) {
+  public String buildFileUrl(String s3Key) {
     if (s3Key == null) return null;
     return String.format("https://%s.s3.%s.amazonaws.com/%s", bucket, region, s3Key);
   }

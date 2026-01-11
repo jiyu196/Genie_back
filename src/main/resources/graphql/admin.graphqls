@@ -15,6 +15,9 @@ type RegisterRequestResponseDTO {
   registerStatus: RegisterStatus!
   createdAt: String!
   checkedAt: String
+
+  businessLicenseUrl: String
+  employmentCertUrl: String
 }
 # 검색어 타입
 enum MemberSearchType {
