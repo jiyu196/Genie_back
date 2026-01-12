@@ -48,4 +48,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     return new GetSubscriptionResponseDTO(selectedProduct.getDisplayName(), selectedProduct.getProductGrade().name(), selectedProduct.getSubscriptionCycle().name(),
             subscription.getStartDate(), subscription.getEndDate(), selectedProduct.getMaxServiceAccessIdCount(), subscription.getSubscriptionStatus().name());
   }
+
+  @Transactional
+  public boolean checkSubscription() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+    JWTPrincipal jwtPrincipal = (JWTPrincipal) authentication.getPrincipal();
+
+    Long memberId = jwtPrincipal.getMemberId();
+
+    return subscriptionRepository.existsActiveSubscription(memberId);
+  }
 }

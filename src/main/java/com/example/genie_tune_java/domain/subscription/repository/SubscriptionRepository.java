@@ -15,4 +15,13 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
           "AND s.subscriptionStatus = 'ACTIVE' " + // 현재 활성화된 구독만
           "ORDER BY s.startDate DESC") // 만약 여러개라면 가장 최근 것)
   Optional<Subscription> findActiveSubscriptionWithProduct(@Param("memberId") Long memberId);
+
+  @Query("""
+    select case when count(s) > 0 then true else false end
+    from Subscription s
+    where s.member.id = :memberId
+      and s.subscriptionStatus = 'ACTIVE'
+  """)
+  boolean existsActiveSubscription(@Param("memberId") Long memberId);
+
 }

@@ -64,7 +64,7 @@ public class GenerateStoryFacade {
     Prompt prompt = promptService.finalSave(openAIResponseDTO);
     String title = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " 웹툰";
     // 5. WebToon 객체 생성
-    Webtoon webtoon = webtoonService.register(new WebtoonRegisterDTO(title, prompt, WebtoonStatus.COMPLETED));
+    Webtoon webtoon = webtoonService.register(new WebtoonRegisterDTO(title, prompt, WebtoonStatus.COMPLETED, dto.webtoonGroupId()));
     // 6. webtoon 이미지 파일 가져오기
     DownloadImageDTO imageDTO = downloadImageService.download(openAIResponseDTO.imageUrl());
 
