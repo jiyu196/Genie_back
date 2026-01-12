@@ -1,0 +1,32 @@
+extend type Query {
+  # 웹툰 갤러리 페이지 조회
+  getWebtoonPage(input: WebtoonPageRequestDTO!): WebtoonPageResponseDTO
+}
+
+# 페이징 요청 Input
+input WebtoonPageRequestDTO {
+  page: Int!
+  size: Int!
+}
+
+# 페이징 응답 Output
+type WebtoonPageResponseDTO {
+  content: [WebtoonGroupResponseDTO!]
+  totalPages: Int!
+  totalElements: Float!
+  currentPage: Int!
+  isFirst: Boolean!
+  isLast: Boolean!
+}
+
+# 웹툰 그룹 데이터
+type WebtoonGroupResponseDTO {
+  webtoonGroupId: String!
+  title: String
+  cuts: [WebtoonCutDTO!]!
+}
+
+# 개별 웹툰 컷 데이터
+type WebtoonCutDTO {
+  imageUrl: String
+}
