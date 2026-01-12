@@ -5,5 +5,6 @@ public record GenerateStoryResponseDTO(
   String refinedContent,
   String revisedPrompt,
   String imageUrl,
-  String errorMessage
+  String errorMessage,
+  int promptCount
 ) {}
