@@ -161,3 +161,5 @@
 * 회원가입시 첨부파일 백단 저장 로직 구현 완료(프론트 연동 확인), 관련 트러블 슈팅 -> GraphQL은 MultiPart 지원이 원활하지 않아 별도의 Controller를 만들어놓고 front appolo client에서 fetch로 붙여서 처리 -> 유일하게 RestController 활용(관련 Security, CORS 설정 등 조정)
 * 회원가입 요청 이후 관리자 페이지 내 첨부파일 조회 기능 추가 (프론트 연동 확인)
 
+### 📅 260112(월)
+* 하루 사용량 제한 로직(테이블, 엔티티, 서비스) 및 generateStory facade 내에 로직 추가

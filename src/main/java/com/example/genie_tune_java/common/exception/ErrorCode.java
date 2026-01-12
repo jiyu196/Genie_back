@@ -100,8 +100,11 @@ public enum ErrorCode {
   FILE_SIZE_EXCEEDED(HttpStatus.BAD_REQUEST, "파일 용량 제한을 초과하였습니다."),
   IMAGE_GET_FAILED(HttpStatus.BAD_REQUEST, "OPEN API에서 image를 가져오는 것을 실패하였습니다."),
   S3_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "첨부파일 업로드에 실패하였습니다."),
-  S3_GET_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "첨부파일 가져오기에 실패하였습니다.");
+  S3_GET_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "첨부파일 가져오기에 실패하였습니다."),
 
+  //==== Daily Usage ====
+  DAILY_USAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "현재 accessId의 사용량 정보를 가져올 수 없습니다."),
+  DAILY_USAGE_EXCEEDED(HttpStatus.BAD_REQUEST, "일일 토큰 사용량을 초과하였습니다.");
   private final HttpStatus status;
   private final String message;
 

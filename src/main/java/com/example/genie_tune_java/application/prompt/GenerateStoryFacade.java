@@ -11,6 +11,8 @@ import com.example.genie_tune_java.domain.attach.dto.AttachRequestDTO;
 import com.example.genie_tune_java.domain.attach.dto.AttachResponseDTO;
 import com.example.genie_tune_java.domain.attach.entity.AttachTargetType;
 import com.example.genie_tune_java.domain.attach.service.AttachService;
+import com.example.genie_tune_java.domain.daily_usage.dto.DailyUsageResponseDTO;
+import com.example.genie_tune_java.domain.daily_usage.service.DailyUsageService;
 import com.example.genie_tune_java.domain.prompt.dto.GenerateStoryRequestDTO;
 import com.example.genie_tune_java.domain.prompt.dto.GenerateStoryResponseDTO;
 import com.example.genie_tune_java.domain.prompt.entity.Prompt;
@@ -38,9 +40,15 @@ public class GenerateStoryFacade {
   private final DownloadImageService downloadImageService;
   private final AttachService attachService;
   private final WebtoonService webtoonService;
+  private final DailyUsageService dailyUsageService;
 
   @Transactional
   public GenerateStoryResponseDTO generateWebtoon(GenerateStoryRequestDTO dto, DataFetchingEnvironment env) {
+
+    if(!dailyUsageService.checkDailyUsage(env)){
+      throw new GlobalException(ErrorCode.DAILY_USAGE_EXCEEDED);
+    }
+
     //1. 파이썬에 집어넣을 DTO 생성
     OpenAIRequestDTO openAIRequestDTO = promptService.checkWord(dto, env);
     //2. 파이썬에서 보내준 결과값
@@ -60,11 +68,15 @@ public class GenerateStoryFacade {
     // 6. webtoon 이미지 파일 가져오기
     DownloadImageDTO imageDTO = downloadImageService.download(openAIResponseDTO.imageUrl());
 
-    // 7. 메서드 호출을 위해 MultipartFile 형태로 변환 WEBTOON 객체의 Pk 주입 -> (현재 1L로 적혀있는 것 수정 필요)
+    // 7. 메서드 호출을 위해 MultipartFile 형태로 변환 WEBTOON 객체의 Pk 주입
     AttachResponseDTO attachResponseDTO = attachService.uploadGeneratedImage(new AttachRequestDTO(AttachTargetType.WEBTOON, webtoon.getId()), imageDTO);
+
+    //8. Prompt 일일 사용량 차감
+    DailyUsageResponseDTO dailyUsageResponseDTO = dailyUsageService.recordDailyUsage(env);
+
     log.info("프론트에 내려주는 주소: {}", attachResponseDTO.fileUrl());
     return new GenerateStoryResponseDTO(
             openAIResponseDTO.originalContent(), openAIResponseDTO.refinedContent(), openAIResponseDTO.revisedPrompt(),
-            attachResponseDTO.fileUrl(), openAIResponseDTO.errorMessage());
+            attachResponseDTO.fileUrl(), openAIResponseDTO.errorMessage(), dailyUsageResponseDTO.promptCount());
   }
 }

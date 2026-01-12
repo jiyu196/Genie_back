@@ -18,7 +18,7 @@ import java.util.Map;
 public class OpenAIService {
   private final WebClient pythonWebClient;
 
-  public OpenAIService(WebClient.Builder builder, @Value("http://localhost:8000") String pythonUrl) {
+  public OpenAIService(WebClient.Builder builder, @Value("${PYTHON_ADDRESS}") String pythonUrl) {
 
     this.pythonWebClient = builder.clone()
             .baseUrl(pythonUrl)
