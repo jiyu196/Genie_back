@@ -11,5 +11,5 @@ import java.util.Map;
 public interface AttachRepository extends CrudRepository<Attach, Long> {
 
 
-  List<Attach> findByAttachTargetTypeInAndTargetIdIn(List<AttachTargetType> targetTypes, List<Long> memberIds);
+  List<Attach> findByAttachTargetTypeInAndTargetIdIn(List<AttachTargetType> targetTypes, List<Long> targetIds);
 }
