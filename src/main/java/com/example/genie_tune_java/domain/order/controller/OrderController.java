@@ -3,6 +3,7 @@ package com.example.genie_tune_java.domain.order.controller;
 import com.example.genie_tune_java.application.payment.PaymentPrepareFacade;
 import com.example.genie_tune_java.domain.order.dto.MakeOrderRequestDTO;
 import com.example.genie_tune_java.domain.order.dto.MakeOrderResponseDTO;
+import com.example.genie_tune_java.security.util.authorize.IsMemberUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -16,6 +17,7 @@ public class OrderController {
   private final PaymentPrepareFacade  paymentPrepareFacade;
 
   @MutationMapping
+  @IsMemberUser
   public MakeOrderResponseDTO prepareOrder(@Argument("input") MakeOrderRequestDTO dto) {
     return paymentPrepareFacade.preparePayment(dto);
   }

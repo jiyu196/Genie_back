@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -72,6 +73,18 @@ public class OrderServiceImpl implements OrderService {
     order.changeOrderStatus(orderStatus);
 
     return order;
+  }
+
+  @Transactional
+  public Optional<Order> checkOrder(MakeOrderRequestDTO dto) {
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+    JWTPrincipal principal = (JWTPrincipal) authentication.getPrincipal();
+
+    Long memberId = principal.getMemberId();
+
+    return orderRepository.findTopByMemberIdAndProductIdAndOrderStatusOrderByCreatedAtDesc(memberId, dto.productId(), OrderStatus.PENDING);
   }
 
 }

@@ -1,6 +1,7 @@
 input GenerateStoryRequestDTO {
   accessIdCharacter: [String!]!
   originalContent: [String!]!
+  webtoonGroupId: String!
 }
 
 type GenerateStoryResponseDTO {

@@ -6,5 +6,6 @@ import com.example.genie_tune_java.domain.webtoon.entity.WebtoonStatus;
 public record WebtoonRegisterDTO(
   String title,
   Prompt prompt,
-  WebtoonStatus webtoonStatus
+  WebtoonStatus webtoonStatus,
+  String webtoonGroupId
 ) {}

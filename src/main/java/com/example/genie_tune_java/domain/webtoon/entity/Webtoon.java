@@ -33,6 +33,9 @@ public class Webtoon {
   private WebtoonStatus webtoonStatus;
 
   @Column(nullable = false)
+  private String webtoonGroupId;
+
+  @Column(nullable = false)
   @Builder.Default
   private LocalDateTime createdAt = LocalDateTime.now();
 }

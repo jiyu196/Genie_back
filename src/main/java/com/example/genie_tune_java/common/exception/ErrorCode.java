@@ -84,6 +84,7 @@ public enum ErrorCode {
   //==== Subscription 관련 ====
   SUBSCRIPTION_EXPIRED(HttpStatus.UNAUTHORIZED, "구독이 만료되었습니다."),
   SUBSCRIPTION_NOTFOUND(HttpStatus.NOT_FOUND, "구독 내역이 없습니다."),
+  SUBSCRIPTION_EXIST(HttpStatus.BAD_REQUEST, "기존 구독 내역이 존재합니다."),
 
   //==== 파이썬 호출시 발생 에러 ====
   OPENAI_PYTHON_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "웹툰 제작 서버가 불안정합니다. 다시 시도하여 주시기 바랍니다." ),
