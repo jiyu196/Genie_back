@@ -37,4 +37,9 @@ public class AuthController {
     return authService.serviceAccessLogin(dto, env);
   }
 
+  @MutationMapping
+  public boolean serviceAccessLogout(DataFetchingEnvironment env) {
+    return authService.serviceAccessLogout(env);
+  }
+
 }

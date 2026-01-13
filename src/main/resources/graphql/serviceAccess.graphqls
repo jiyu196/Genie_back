@@ -27,10 +27,14 @@ type MyAccessIdPageResponseDTO {
   isLast: Boolean!
 }
 
+
+
 extend type Query {
   getMyAccessIdPage(input: MyAccessIdPageRequestDTO!): MyAccessIdPageResponseDTO!
 }
 
 extend type Mutation {
   serviceAccessLogin(input: ServiceAccessLoginRequestDTO!): ServiceAccessLoginResponseDTO!
+  serviceAccessLogout: Boolean!
 }
+

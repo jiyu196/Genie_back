@@ -30,7 +30,7 @@ public class WebGraphQlInterceptorConfig implements WebGraphQlInterceptor {
   private final CookieUtil cookieUtil;
   private final RedisUtil redisUtil;
   private final static Set<String> checkPoint = Set.of(
-    "GenerateStory", "savePrompt"
+    "GenerateStory", "getWebtoonPage", "serviceAccessLogout"
   );
 
   @Override
@@ -113,6 +113,8 @@ public class WebGraphQlInterceptorConfig implements WebGraphQlInterceptor {
     if(accessStatus != AccessStatus.ACTIVE || expireTime.isBefore(LocalDateTime.now())) {
       throw new GlobalException(ErrorCode.PAYMENT_REQUIRED);
     }
+
+    log.error("🔥 accessId = {}", accessId);
 
     return new ServiceAccessIdPrincipal(accessId, accessStatus, expireTime);
 
