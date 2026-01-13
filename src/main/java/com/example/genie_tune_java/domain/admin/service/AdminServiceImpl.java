@@ -8,6 +8,7 @@ import com.example.genie_tune_java.domain.admin.dto.manage_member.RegisterReques
 import com.example.genie_tune_java.domain.admin.dto.manage_member.page.MemberPageResponse;
 import com.example.genie_tune_java.domain.admin.dto.manage_member.page.MemberSearchCondition;
 import com.example.genie_tune_java.domain.admin.dto.manage_member.page.MemberSearchType;
+import com.example.genie_tune_java.domain.admin.dto.manage_subscription.*;
 import com.example.genie_tune_java.domain.admin.entity.RegisterRequest;
 import com.example.genie_tune_java.domain.admin.mapper.RegisterRequestMapper;
 import com.example.genie_tune_java.domain.admin.repository.RegisterRequestRepository;
@@ -19,6 +20,10 @@ import com.example.genie_tune_java.domain.member.entity.Member;
 import com.example.genie_tune_java.domain.member.entity.RegisterStatus;
 import com.example.genie_tune_java.domain.member.entity.Role;
 import com.example.genie_tune_java.domain.member.repository.MemberRepository;
+import com.example.genie_tune_java.domain.pay.entity.Pay;
+import com.example.genie_tune_java.domain.pay.entity.PayStatus;
+import com.example.genie_tune_java.domain.pay.mapper.PayMapper;
+import com.example.genie_tune_java.domain.pay.repository.PayRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -28,6 +33,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,13 +41,15 @@ import java.util.stream.Collectors;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class RegisterRequestServiceImpl implements RegisterRequestService {
+public class AdminServiceImpl implements AdminService {
 
   private final RegisterRequestRepository registerRequestRepository;
   private final RegisterRequestMapper registerRequestMapper;
   private final MemberRepository memberRepository;
   private final AttachRepository attachRepository;
   private final AttachService attachService;
+  private final PayRepository payRepository;
+  private final PayMapper payMapper;
 
   @Override
   @Transactional(readOnly = true)
@@ -114,5 +122,35 @@ public class RegisterRequestServiceImpl implements RegisterRequestService {
     rr.handleRegisterRequest(dto.registerStatus(), dto.rejectReason());
 
     return new JoinApplyResponseDTO(true);
+  }
+
+  public AdminSalesPageResponseDTO findAllSales(AdminSalesPageRequestDTO dto) {
+    //0. 자주쓰는 condition 객체 꺼내기
+    SalesSearchCondition condition = dto.salesSearchCondition();
+    //1. page index 조절
+    int pageIndex = Math.max(dto.page() - 1, 0);
+
+    //2. pageable 생성
+    Pageable pageable = PageRequest.of(pageIndex, dto.size() ,Sort.by(Sort.Direction.DESC, "updatedAt"));
+
+    //3. 날짜 변환
+    LocalDateTime from = condition.from() != null ? LocalDateTime.parse(condition.from()) : null;
+    LocalDateTime to = condition.to() != null ? LocalDateTime.parse(condition.to()) : null;
+
+    //4. 카드 결제가 아니면 cardCompany 무시
+    String cardCompany = (condition.pgType() != null && condition.pgType().equalsIgnoreCase("CARD")) ? condition.cardCompany() : null;
+
+    //5. type, keyword, payStatus 관련 타입 형변환 처리
+    String typeString = (condition.salesSearchType() != null) ? condition.salesSearchType().name() : SalesSearchType.ORGANIZATION_NAME.name();
+    String keyword = (condition.keyword() != null) ? condition.keyword() : null;
+    PayStatus payStatus = (condition.payStatus() != null) ? condition.payStatus() : null;
+
+    //6. page 조회 (Repository)
+    Page<Pay> pageResult = payRepository.searchAdminSales(
+      typeString, keyword, payStatus, condition.pgType(), cardCompany, from, to, condition.displayName(), pageable);
+
+    List<PayInfoResponseDTO> content = pageResult.getContent().stream().map(payMapper::toResponseForAdminPage).toList();
+
+    return new AdminSalesPageResponseDTO(content, pageResult.getTotalPages(), pageResult.getTotalElements(), pageResult.getNumber() + 1 , pageResult.isFirst(), pageResult.isLast());
   }
 }

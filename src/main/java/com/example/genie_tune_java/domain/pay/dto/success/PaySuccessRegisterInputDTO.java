@@ -15,5 +15,8 @@ public record PaySuccessRegisterInputDTO(
         OffsetDateTime paidAt, // 지불 시점
         String pgTxId, // PG사 거래 아이디 -> tbl_pay 기록
         String pgResponse, // PG사 거래 응답 본문
-        String receiptUrl // 거래 영수증 URL
+        String receiptUrl, // 거래 영수증 URL
+        // 결제 정보에 필요한 수단 2가지 추가
+        String pgType,
+        String cardCompany
 ) {}
