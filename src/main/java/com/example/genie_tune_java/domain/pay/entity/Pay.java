@@ -48,4 +48,10 @@ public class Pay {
   @Column(columnDefinition = "TEXT")
   private String reason;
 
+  @Column
+  private String pgType;
+
+  @Column
+  private String cardCompany;
+
 }

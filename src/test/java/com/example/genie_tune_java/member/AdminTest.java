@@ -1,10 +1,7 @@
 package com.example.genie_tune_java.member;
 
-import com.example.genie_tune_java.domain.admin.dto.manage_member.page.MemberSearchCondition;
-import com.example.genie_tune_java.domain.admin.service.RegisterRequestService;
-import com.example.genie_tune_java.domain.member.entity.Role;
+import com.example.genie_tune_java.domain.admin.service.AdminService;
 import lombok.extern.log4j.Log4j2;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @Log4j2
 public class AdminTest {
   @Autowired
-  RegisterRequestService registerRequestService;
+  AdminService adminService;
 
   @Test
   public void getMemberList(){

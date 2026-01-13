@@ -1,5 +1,6 @@
 package com.example.genie_tune_java.domain.pay.mapper;
 
+import com.example.genie_tune_java.domain.admin.dto.manage_subscription.PayInfoResponseDTO;
 import com.example.genie_tune_java.domain.pay.dto.pageable.GetPaymentResponseDTO;
 import com.example.genie_tune_java.domain.pay.dto.success.PaySuccessRegisterInputDTO;
 import com.example.genie_tune_java.domain.pay.dto.success.PaySuccessRegisterOutputDTO;
@@ -26,4 +27,11 @@ public interface PayMapper {
   @Mapping(target = "cardCompany", source = "payMethod.cardCompany")
   @Mapping(target = "cardNumberMask", source = "payMethod.cardNumberMask")
   GetPaymentResponseDTO toGetPaymentDto(Pay pay, PayMethod payMethod);
+
+  @Mapping(target = "organizationName", source = "pay.member.organizationName")
+  @Mapping(target = "payStatus", source = "pay.payStatus")
+  @Mapping(target = "amount", source = "pay.amount")
+  @Mapping(target = "reason", source = "pay.reason")
+  @Mapping(target = "displayName", source = "pay.order.product.displayName")
+  PayInfoResponseDTO toResponseForAdminPage(Pay pay);
 }

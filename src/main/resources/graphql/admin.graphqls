@@ -63,9 +63,63 @@ type JoinApplyResponseDTO {
   result: Boolean!
 }
 
+## 매출 조회 관련
+
+# 2. 요청(Input) 타입 정의
+input AdminSalesPageRequestDTO {
+  page: Int!
+  size: Int!
+  salesSearchCondition: SalesSearchCondition
+}
+
+input SalesSearchCondition {
+  salesSearchType: SalesSearchType
+  keyword: String
+  payStatus: PayStatus
+  pgType: String
+  cardCompany: String
+  from: String
+  to: String
+  displayName: String
+}
+
+# 3. 응답(Type) 타입 정의
+type AdminSalesPageResponseDTO {
+  content: [PayInfoResponseDTO!]
+  totalPages: Int
+  totalElements: Float!
+  currentPage: Int
+  isFirst: Boolean
+  isLast: Boolean
+}
+
+type PayInfoResponseDTO {
+  organizationName: String!
+  payStatus: PayStatus!
+  amount: Float!
+  pgType: String!
+  cardCompany: String
+  reason: String
+  displayName: String!
+}
+
+# 4. Enum 및 스칼라 정의
+enum SalesSearchType {
+  ORDER_ID
+  ORGANIZATION_NAME
+}
+
+enum PayStatus {
+  PAID
+  FAILED
+  CANCELLED
+  PAY_PENDING
+}
+
 extend type Query {
   # page는 1부터 시작하도록 프론트와 약속
   getAllMembers(input:MemberPageRequest!): MemberPageResponse!
+  getAllSales(input: AdminSalesPageRequestDTO): AdminSalesPageResponseDTO
 }
 
 extend type Mutation {

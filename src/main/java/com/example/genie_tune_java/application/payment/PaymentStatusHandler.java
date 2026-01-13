@@ -44,16 +44,17 @@ public class PaymentStatusHandler {
         //1. OrderService changeStatus 호출
         Order order = orderService.updateOrderStatus(dto.paymentId(), OrderStatus.SUCCESS);
         log.info("주문 멤버: {}, 주문 상품: {}", order.getMember(), order.getProduct().getDisplayName());
-        //2. PayService 호출 (성공 Register)
-        PaySuccessRegisterInputDTO paySuccessRegisterInputDTO = new PaySuccessRegisterInputDTO(order, order.getMember(), PayStatus.PAID,
-                paymentsResponseDTO.amount().total() * 1000, paymentsResponseDTO.transactionId(), paymentsResponseDTO.paidAt(), paymentsResponseDTO.pgTxId(),
-                paymentsResponseDTO.pgResponse(), paymentsResponseDTO.receiptUrl());
-        PaySuccessRegisterOutputDTO paySuccessRegisterOutputDTO = payService.paySuccessRegister(paySuccessRegisterInputDTO);
-        log.info("결제 상태: {}, 결제시각: {}",paySuccessRegisterOutputDTO.payStatus(), paySuccessRegisterOutputDTO.paidAt());
-        //3. PayMethodService 호출 (성공 Register), 정기결제 위해서 추후 BillingKey 호출하는 것도 필요함.
+        //2. PayMethodService 호출 (성공 Register), 정기결제 위해서 추후 BillingKey 호출하는 것도 필요함.
         PaymentMethod paymentMethod = paymentsResponseDTO.paymentMethod();
         PayMethodRegisterInputDTO payMethodRegisterInputDTO = new PayMethodRegisterInputDTO(order.getMember(), paymentMethod.type(),paymentMethod.card().publisher(),paymentMethod.card().number());
         PayMethod payMethod = payMethodService.registerPayMethod(payMethodRegisterInputDTO); //반환 값 PayMethod -> 아래 SubsCription이 사용함
+
+        //3. PayService 호출 (성공 Register)
+        PaySuccessRegisterInputDTO paySuccessRegisterInputDTO = new PaySuccessRegisterInputDTO(order, order.getMember(), PayStatus.PAID,
+                paymentsResponseDTO.amount().total() * 1000, paymentsResponseDTO.transactionId(), paymentsResponseDTO.paidAt(), paymentsResponseDTO.pgTxId(),
+                paymentsResponseDTO.pgResponse(), paymentsResponseDTO.receiptUrl(), payMethod.getPgType().name(), payMethod.getCardCompany());
+        PaySuccessRegisterOutputDTO paySuccessRegisterOutputDTO = payService.paySuccessRegister(paySuccessRegisterInputDTO);
+        log.info("결제 상태: {}, 결제시각: {}",paySuccessRegisterOutputDTO.payStatus(), paySuccessRegisterOutputDTO.paidAt());
 
         //4. SubscriptionService 호출
         SubscriptionRegisterInputDTO subscriptionRegisterInputDTO = new SubscriptionRegisterInputDTO(order.getMember(), order, order.getProduct(), payMethod);
