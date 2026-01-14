@@ -1,5 +1,6 @@
 package com.example.genie_tune_java.domain.webtoon.service;
 
+import com.example.genie_tune_java.domain.service_access.entity.ServiceAccess;
 import com.example.genie_tune_java.domain.webtoon.dto.page.WebtoonGroupResponseDTO;
 import com.example.genie_tune_java.domain.webtoon.dto.WebtoonRegisterDTO;
 import com.example.genie_tune_java.domain.webtoon.dto.page.WebtoonPageRequestDTO;
@@ -11,6 +12,6 @@ import java.util.List;
 
 public interface WebtoonService {
   Webtoon register(WebtoonRegisterDTO dto);
-  List<WebtoonGroupResponseDTO> getWebtoonGallery(DataFetchingEnvironment env);
-  WebtoonPageResponseDTO getWebtoonGalleryPage(WebtoonPageRequestDTO dto, List<WebtoonGroupResponseDTO> allContent);
+  List<WebtoonGroupResponseDTO> getWebtoonGallery(ServiceAccess serviceAccess);
+  WebtoonPageResponseDTO getWebtoonGalleryPage(int page, int size, List<WebtoonGroupResponseDTO> content);
 }

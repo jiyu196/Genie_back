@@ -1,5 +1,8 @@
 package com.example.genie_tune_java.domain.webtoon.controller;
 
+import com.example.genie_tune_java.domain.service_access.entity.ServiceAccess;
+import com.example.genie_tune_java.domain.service_access.service.ServiceAccessService;
+import com.example.genie_tune_java.domain.webtoon.dto.page.MyPageWebtoonRequestDTO;
 import com.example.genie_tune_java.domain.webtoon.dto.page.WebtoonGroupResponseDTO;
 import com.example.genie_tune_java.domain.webtoon.dto.page.WebtoonPageRequestDTO;
 import com.example.genie_tune_java.domain.webtoon.dto.page.WebtoonPageResponseDTO;
@@ -18,11 +21,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebtoonController {
   private final WebtoonService webtoonService;
+  private final ServiceAccessService serviceAccessService;
 
   @QueryMapping
   public WebtoonPageResponseDTO getWebtoonPage(@Argument("input") WebtoonPageRequestDTO dto, DataFetchingEnvironment env) {
+    List<WebtoonGroupResponseDTO> content =  webtoonService.getWebtoonGallery(serviceAccessService.getServiceAccessInEnv(env));
+    return webtoonService.getWebtoonGalleryPage(dto.page(), dto.size(), content);
+  }
 
-    List<WebtoonGroupResponseDTO> content =  webtoonService.getWebtoonGallery(env);
-    return webtoonService.getWebtoonGalleryPage(dto, content);
+  @QueryMapping
+  public WebtoonPageResponseDTO getWebtoonForMyPage(@Argument("input") MyPageWebtoonRequestDTO dto) {
+    List<WebtoonGroupResponseDTO> content =  webtoonService.getWebtoonGallery(serviceAccessService.getServiceAccessFromKey(dto.decryptedKey()));
+    return webtoonService.getWebtoonGalleryPage(dto.page(), dto.size(), content);
   }
 }
