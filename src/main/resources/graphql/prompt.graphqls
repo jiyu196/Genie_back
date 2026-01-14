@@ -10,6 +10,7 @@ type GenerateStoryResponseDTO {
   revisedPrompt: String!
   imageUrl: String
   errorMessage: String
+  promptCount:Int
 }
 
 extend type Mutation {
