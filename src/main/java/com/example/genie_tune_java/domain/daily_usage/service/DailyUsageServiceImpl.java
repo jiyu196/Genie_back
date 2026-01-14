@@ -37,7 +37,7 @@ public class DailyUsageServiceImpl implements DailyUsageService {
     //upsert 수행 없으면 insert 있으면 update 전부 repository(db)에 위임
     dailyUsageRepository.upsertAndIncrease(serviceAccess.getId());
 
-    DailyUsage dailyUsage = dailyUsageRepository.findByServiceAccess(serviceAccess).orElseThrow(() -> new GlobalException(ErrorCode.DAILY_USAGE_NOT_FOUND));
+    DailyUsage dailyUsage = dailyUsageRepository.findByServiceAccessAndUsageDate(serviceAccess, LocalDate.now()).orElseThrow(() -> new GlobalException(ErrorCode.DAILY_USAGE_NOT_FOUND));
 
     return dailyUsageMapper.toDTO(dailyUsage);
   }

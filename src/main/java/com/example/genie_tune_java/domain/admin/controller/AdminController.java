@@ -1,5 +1,7 @@
 package com.example.genie_tune_java.domain.admin.controller;
 
+import com.example.genie_tune_java.domain.admin.dto.manage_member.HandleStatusRequestDTO;
+import com.example.genie_tune_java.domain.admin.dto.manage_member.HandleStatusResponseDTO;
 import com.example.genie_tune_java.domain.admin.dto.manage_member.JoinApplyRequestDTO;
 import com.example.genie_tune_java.domain.admin.dto.manage_member.JoinApplyResponseDTO;
 import com.example.genie_tune_java.domain.admin.dto.manage_member.page.MemberPageRequest;
@@ -38,6 +40,12 @@ public class AdminController {
   @IsAdminUser
   public AdminSalesPageResponseDTO getAllSales(@Argument("input") AdminSalesPageRequestDTO dto) {
     return adminService.findAllSales(dto);
+  }
+
+  @MutationMapping
+  @IsAdminUser
+  public HandleStatusResponseDTO handleMemberRole(@Argument("input") HandleStatusRequestDTO dto) {
+    return adminService.changeMemberStatus(dto);
   }
 
 }

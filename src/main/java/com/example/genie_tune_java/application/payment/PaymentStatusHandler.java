@@ -1,6 +1,7 @@
 package com.example.genie_tune_java.application.payment;
 
 import com.example.genie_tune_java.api.port_one.dto.PortOneGetPaymentsResponseDTO;
+import com.example.genie_tune_java.domain.member.entity.Role;
 import com.example.genie_tune_java.domain.order.entity.Order;
 import com.example.genie_tune_java.domain.order.entity.OrderStatus;
 import com.example.genie_tune_java.domain.order.service.OrderService;
@@ -56,11 +57,14 @@ public class PaymentStatusHandler {
         PaySuccessRegisterOutputDTO paySuccessRegisterOutputDTO = payService.paySuccessRegister(paySuccessRegisterInputDTO);
         log.info("결제 상태: {}, 결제시각: {}",paySuccessRegisterOutputDTO.payStatus(), paySuccessRegisterOutputDTO.paidAt());
 
-        //4. SubscriptionService 호출
+        //4. member 상태값 구독자로 변경
+        order.getMember().changeMemberRole(Role.SUBSCRIBER);
+
+        //5. SubscriptionService 호출
         SubscriptionRegisterInputDTO subscriptionRegisterInputDTO = new SubscriptionRegisterInputDTO(order.getMember(), order, order.getProduct(), payMethod);
         Subscription subscription = subscriptionService.registerSubscription(subscriptionRegisterInputDTO);
 
-        //5. AccessIdService 호출
+        //6. AccessIdService 호출
         ServiceAccessRegisterInputDTO serviceAccessRegisterInputDTO = new ServiceAccessRegisterInputDTO(order.getMember(), subscription);
         serviceAccessService.issueServiceAccess(serviceAccessRegisterInputDTO);
 
@@ -75,12 +79,16 @@ public class PaymentStatusHandler {
       }
       case "FAILED" -> {
         // 결제 실패 사유(failureReason)를 로그에 남기고 주문을 '실패' 또는 '취소' 처리
+        //1. Order 객체 취소 처리 -> 이후 로직 다시 주문으로 해야함
+        Order order = orderService.updateOrderStatus(dto.paymentId(), OrderStatus.CANCELED);
+
+        //2. 실패시 내려주는 값으로 매칭해서 pay table 기록
         log.error("결제 실패: {}", paymentsResponseDTO.paymentFailure().reason());
         return null;
       }
       case "CANCELLED" -> {
         // 이미 완료된 결제가 취소된 경우 (환불 등)
-        // 환불 테이블에 기록하고 주문 상태를 '취소'로 변경
+
         return null;
       }
       default -> {

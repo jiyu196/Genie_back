@@ -103,4 +103,9 @@ public class Member {
     this.accountStatus = AccountStatus.ACTIVE;
     this.deletedAt = null;
   }
+
+  //Member 권한 설정
+  public void changeMemberRole(Role role) {
+    this.role = role;
+  }
 }

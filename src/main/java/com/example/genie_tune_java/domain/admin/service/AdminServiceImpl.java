@@ -2,9 +2,7 @@ package com.example.genie_tune_java.domain.admin.service;
 
 import com.example.genie_tune_java.common.exception.ErrorCode;
 import com.example.genie_tune_java.common.exception.GlobalException;
-import com.example.genie_tune_java.domain.admin.dto.manage_member.JoinApplyRequestDTO;
-import com.example.genie_tune_java.domain.admin.dto.manage_member.JoinApplyResponseDTO;
-import com.example.genie_tune_java.domain.admin.dto.manage_member.RegisterRequestResponseDTO;
+import com.example.genie_tune_java.domain.admin.dto.manage_member.*;
 import com.example.genie_tune_java.domain.admin.dto.manage_member.page.MemberPageResponse;
 import com.example.genie_tune_java.domain.admin.dto.manage_member.page.MemberSearchCondition;
 import com.example.genie_tune_java.domain.admin.dto.manage_member.page.MemberSearchType;
@@ -152,5 +150,13 @@ public class AdminServiceImpl implements AdminService {
     List<PayInfoResponseDTO> content = pageResult.getContent().stream().map(payMapper::toResponseForAdminPage).toList();
 
     return new AdminSalesPageResponseDTO(content, pageResult.getTotalPages(), pageResult.getTotalElements(), pageResult.getNumber() + 1 , pageResult.isFirst(), pageResult.isLast());
+  }
+
+  @Transactional
+  public HandleStatusResponseDTO changeMemberStatus(HandleStatusRequestDTO dto) {
+    Member member = memberRepository.findByEmail(dto.email()).orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
+    Role role =  dto.role().equals("MEMBER") ? Role.MEMBER : Role.ADMIN;
+    member.changeMemberRole(role);
+    return new HandleStatusResponseDTO(true);
   }
 }

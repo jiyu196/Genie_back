@@ -116,6 +116,16 @@ enum PayStatus {
   PAY_PENDING
 }
 
+input HandleStatusRequestDTO {
+  email: String!
+  role: String!
+}
+
+type HandleStatusResponseDTO {
+  result: Boolean!
+}
+
+
 extend type Query {
   # page는 1부터 시작하도록 프론트와 약속
   getAllMembers(input:MemberPageRequest!): MemberPageResponse!
@@ -124,4 +134,5 @@ extend type Query {
 
 extend type Mutation {
   handleRegister(input:JoinApplyRequestDTO): JoinApplyResponseDTO
+  handleMemberRole(input:HandleStatusRequestDTO): HandleStatusResponseDTO!
 }
