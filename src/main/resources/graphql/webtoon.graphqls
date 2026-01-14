@@ -1,6 +1,7 @@
 extend type Query {
   # 웹툰 갤러리 페이지 조회
-  getWebtoonPage(input: WebtoonPageRequestDTO!): WebtoonPageResponseDTO
+  getWebtoonPage(input: WebtoonPageRequestDTO!): WebtoonPageResponseDTO!
+  getWebtoonForMyPage(input:MyPageWebtoonRequestDTO!): WebtoonPageResponseDTO!
 }
 
 # 페이징 요청 Input
@@ -29,4 +30,11 @@ type WebtoonGroupResponseDTO {
 # 개별 웹툰 컷 데이터
 type WebtoonCutDTO {
   imageUrl: String
+}
+
+# MyPage 조회용 DTO
+input MyPageWebtoonRequestDTO {
+  page: Int!
+  size: Int!
+  decryptedKey: String!
 }

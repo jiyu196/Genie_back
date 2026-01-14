@@ -49,21 +49,15 @@ public class WebtoonServiceImpl implements WebtoonService {
 
   @Override
   @Transactional
-  public List<WebtoonGroupResponseDTO> getWebtoonGallery(DataFetchingEnvironment env) {
-    //1. GraphQL Context에서 principal 꺼내기 (serviceAccessId의 앞부분 반환)
-    ServiceAccessIdPrincipal principal = env.getGraphQlContext().get(ServiceAccessIdPrincipal.class);
-    String accessId = principal.getAccessId();
+  public List<WebtoonGroupResponseDTO> getWebtoonGallery(ServiceAccess serviceAccess) {
 
-    //2. ServiceAccess 객체 반환
-    ServiceAccess serviceAccess = serviceAccessRepository.findByAccessId(accessId).orElseThrow(() -> new GlobalException(ErrorCode.SERVICE_ACCESS_NOTFOUND));
-
-    //3. Service Access Id -> Prompt Id -> Webtoon Id 연결연결해서 한 serviceAccessId가 만든 webtoonList 전부 가져옴
+    //1. Service Access Id -> Prompt Id -> Webtoon Id 연결연결해서 한 serviceAccessId가 만든 webtoonList 전부 가져옴
     List<Webtoon> webtoonList = webtoonRepository.findAllByServiceAccessId(serviceAccess.getId());
 
-    //4. Attach에서 가져오기 위한 webtoonIds 모아놓은 list
+    //2. Attach에서 가져오기 위한 webtoonIds 모아놓은 list
     List<Long> webtoonIds = webtoonList.stream().map(Webtoon::getId).toList();
 
-    //5. Attach 관련 정보를 미리 Map형태로 저장시키기
+    //3. Attach 관련 정보를 미리 Map형태로 저장시키기
     // MAP<WEBTOON_ID, S3Key> 형태로 미리 저장
     Map<Long, String> attachMap = attachRepository.findByAttachTargetTypeInAndTargetIdIn(List.of(AttachTargetType.WEBTOON), webtoonIds).stream()
             .collect(Collectors.toMap(
@@ -71,14 +65,14 @@ public class WebtoonServiceImpl implements WebtoonService {
                     Attach::getS3Key
             ));
 
-    //6. webtoonGroupId(UUID) 기준으로 그룹화
+    //4. webtoonGroupId(UUID) 기준으로 그룹화
     Map<String, List<Webtoon>> groupedWebtoon = webtoonList.stream()
             .collect(Collectors.groupingBy(
                     Webtoon::getWebtoonGroupId, // key 값 -> 개별 Webtoon 객체의 필드 중에서 어떤 값을 기준으로 Grouping을 할 것인가?
                     LinkedHashMap::new, // GroupingBy의 본질은 key 값을 기분으로 분류하는 것이다. 그래서 Map의 형태가 되어야만 한다. 데이터가 들어온 순서를 기억하기 위해 -> Linked
                     Collectors.toList() // Map안에 들어갈 값은 어떠한 형태인가?
             ));
-    //7. 만든 Map을 -> entrySet으로 바꿔서 -> 개별 맵핑 -> WebToonGroupResponseDTO를 최종적으로 반환하는 것이 목표
+    //5. 만든 Map을 -> entrySet으로 바꿔서 -> 개별 맵핑 -> WebToonGroupResponseDTO를 최종적으로 반환하는 것이 목표
     return groupedWebtoon.entrySet().stream()
             .map((Map.Entry<String, List<Webtoon>> entry) -> {
 
@@ -105,11 +99,11 @@ public class WebtoonServiceImpl implements WebtoonService {
   }
   @Override
   @Transactional(readOnly = true)
-  public WebtoonPageResponseDTO getWebtoonGalleryPage(WebtoonPageRequestDTO dto, List<WebtoonGroupResponseDTO> content) {
+  public WebtoonPageResponseDTO getWebtoonGalleryPage(int page, int size, List<WebtoonGroupResponseDTO> content) {
     // 1. 페이지 인덱스 보정 (1-based -> 0-based)
-    int pageIndex = Math.max(0, dto.page() - 1);
+    int pageIndex = Math.max(0, page - 1);
     //2. Pageable 객체
-    Pageable pageable = PageRequest.of(pageIndex, dto.size());
+    Pageable pageable = PageRequest.of(pageIndex, size);
 
     // 3. subList를 위한 start, end 계산 (이게 있어야 진짜 페이징이 됨)
     int start = (int) pageable.getOffset();
@@ -133,4 +127,6 @@ public class WebtoonServiceImpl implements WebtoonService {
             pageResult.isLast()               // 마지막 페이지 여부
     );
   }
+
+
 }

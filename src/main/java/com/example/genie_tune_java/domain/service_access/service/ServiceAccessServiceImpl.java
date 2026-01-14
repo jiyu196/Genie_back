@@ -1,5 +1,6 @@
 package com.example.genie_tune_java.domain.service_access.service;
 
+import com.example.genie_tune_java.common.dto.ServiceAccessIdPrincipal;
 import com.example.genie_tune_java.common.exception.ErrorCode;
 import com.example.genie_tune_java.common.exception.GlobalException;
 import com.example.genie_tune_java.domain.service_access.dto.ServiceAccessRegisterInputDTO;
@@ -12,6 +13,7 @@ import com.example.genie_tune_java.domain.service_access.repository.ServiceAcces
 import com.example.genie_tune_java.security.dto.JWTPrincipal;
 import com.example.genie_tune_java.security.util.AESUtil;
 import com.example.genie_tune_java.security.util.CookieUtil;
+import graphql.schema.DataFetchingEnvironment;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -81,5 +83,21 @@ public class ServiceAccessServiceImpl implements ServiceAccessService {
     List<GetMyAccessIdResponseDTO> content = serviceAccessPage.stream().map(serviceAccess -> serviceAccessMapper.toGetMyAccessIdResponse(serviceAccess, aesUtil)).toList();
 
     return new MyAccessIdPageResponseDTO(content, serviceAccessPage.getTotalPages(), serviceAccessPage.getTotalElements(), serviceAccessPage.getNumber() + 1, serviceAccessPage.isFirst(), serviceAccessPage.isLast());
+  }
+
+  public ServiceAccess getServiceAccessInEnv(DataFetchingEnvironment env) {
+
+    //1. GraphQL Context에서 principal 꺼내기 (serviceAccessId의 앞부분 반환)
+    ServiceAccessIdPrincipal principal = env.getGraphQlContext().get(ServiceAccessIdPrincipal.class);
+    String accessId = principal.getAccessId();
+
+    //2. ServiceAccess 객체 반환
+    return  serviceAccessRepository.findByAccessId(accessId).orElseThrow(() -> new GlobalException(ErrorCode.SERVICE_ACCESS_NOTFOUND));
+  }
+
+  public ServiceAccess getServiceAccessFromKey(String decryptedKey) {
+    String encryptedKey = aesUtil.encrypt(decryptedKey);
+
+    return serviceAccessRepository.findByEncryptedKey(encryptedKey).orElseThrow(() -> new GlobalException(ErrorCode.SERVICE_ACCESS_NOTFOUND));
   }
 }
