@@ -25,13 +25,15 @@ public class WebtoonController {
 
   @QueryMapping
   public WebtoonPageResponseDTO getWebtoonPage(@Argument("input") WebtoonPageRequestDTO dto, DataFetchingEnvironment env) {
-    List<WebtoonGroupResponseDTO> content =  webtoonService.getWebtoonGallery(serviceAccessService.getServiceAccessInEnv(env));
-    return webtoonService.getWebtoonGalleryPage(dto.page(), dto.size(), content);
+    ServiceAccess serviceAccess = serviceAccessService.getServiceAccessInEnv(env);
+    List<WebtoonGroupResponseDTO> content =  webtoonService.getWebtoonGallery(serviceAccess);
+    return webtoonService.getWebtoonGalleryPage(dto.page(), dto.size(), content, serviceAccess.getId());
   }
 
   @QueryMapping
   public WebtoonPageResponseDTO getWebtoonForMyPage(@Argument("input") MyPageWebtoonRequestDTO dto) {
-    List<WebtoonGroupResponseDTO> content =  webtoonService.getWebtoonGallery(serviceAccessService.getServiceAccessFromKey(dto.decryptedKey()));
-    return webtoonService.getWebtoonGalleryPage(dto.page(), dto.size(), content);
+    ServiceAccess serviceAccess = serviceAccessService.getServiceAccessFromKey(dto.decryptedKey());
+    List<WebtoonGroupResponseDTO> content =  webtoonService.getWebtoonGallery(serviceAccess);
+    return webtoonService.getWebtoonGalleryPage(dto.page(), dto.size(), content, serviceAccess.getId());
   }
 }
