@@ -18,6 +18,7 @@ type WebtoonPageResponseDTO {
   currentPage: Int!
   isFirst: Boolean!
   isLast: Boolean!
+  serviceAccessId: Float!
 }
 
 # 웹툰 그룹 데이터

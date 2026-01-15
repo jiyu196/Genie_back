@@ -13,5 +13,5 @@ import java.util.List;
 public interface WebtoonService {
   Webtoon register(WebtoonRegisterDTO dto);
   List<WebtoonGroupResponseDTO> getWebtoonGallery(ServiceAccess serviceAccess);
-  WebtoonPageResponseDTO getWebtoonGalleryPage(int page, int size, List<WebtoonGroupResponseDTO> content);
+  WebtoonPageResponseDTO getWebtoonGalleryPage(int page, int size, List<WebtoonGroupResponseDTO> content, Long serviceAccessId);
 }

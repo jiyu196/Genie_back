@@ -8,5 +8,6 @@ public record WebtoonPageResponseDTO(
   long totalElements,                       // 전체 데이터 개수
   int currentPage,                          // 현재 페이지 번호
   boolean isFirst,                          // 첫 페이지 여부
-  boolean isLast                            // 마지막 페이지 여부
+  boolean isLast,                            // 마지막 페이지 여부
+  Long serviceAccessId // ServiceAccess table의 pk
 ) {}

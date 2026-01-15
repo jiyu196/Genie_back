@@ -99,7 +99,7 @@ public class WebtoonServiceImpl implements WebtoonService {
   }
   @Override
   @Transactional(readOnly = true)
-  public WebtoonPageResponseDTO getWebtoonGalleryPage(int page, int size, List<WebtoonGroupResponseDTO> content) {
+  public WebtoonPageResponseDTO getWebtoonGalleryPage(int page, int size, List<WebtoonGroupResponseDTO> content, Long serviceAccessId) {
     // 1. 페이지 인덱스 보정 (1-based -> 0-based)
     int pageIndex = Math.max(0, page - 1);
     //2. Pageable 객체
@@ -124,7 +124,9 @@ public class WebtoonServiceImpl implements WebtoonService {
             pageResult.getTotalElements(),    // 전체 데이터 개수
             pageResult.getNumber() + 1,       // 현재 페이지 (1부터 시작하도록)
             pageResult.isFirst(),             // 첫 페이지 여부
-            pageResult.isLast()               // 마지막 페이지 여부
+            pageResult.isLast(),              // 마지막 페이지 여부
+            serviceAccessId
+
     );
   }
 

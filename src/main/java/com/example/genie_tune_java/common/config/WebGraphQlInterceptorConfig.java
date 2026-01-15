@@ -30,7 +30,7 @@ public class WebGraphQlInterceptorConfig implements WebGraphQlInterceptor {
   private final CookieUtil cookieUtil;
   private final RedisUtil redisUtil;
   private final static Set<String> checkPoint = Set.of(
-    "GenerateStory", "getWebtoonPage", "serviceAccessLogout"
+    "generateStory", "getWebtoonPage", "serviceAccessLogout"
   );
 
   @Override
@@ -90,13 +90,6 @@ public class WebGraphQlInterceptorConfig implements WebGraphQlInterceptor {
       throw new GlobalException(ErrorCode.SERVICE_ACCESS_RELOGIN_REQUIRED);
     }
 
-    // 3-1. redis 내 value의 TTL 값 확인
-    long ttl = redisUtil.getTtl("SCAI:" + sessionCookieValue);
-
-    if(ttl <= 3 * 60 * 1000 && ttl > 0) { //redis는 key가 없으면 ttl이 -2, ttl이 없으면 -1로 반환한다.
-      redisUtil.expire("SCAI:" + sessionCookieValue, 20 * 60 * 1000);
-    }
-
     //4. 성공하면 value 값 문자열 파싱(split) -> 아마 이전에 신규 로직 필요할 듯
     //ACTIVE:SAID-1a2b3c4(accessId 번호):2026-02-06T12:00:00 형태로 value 값 생성 예정
     String[] parts = redisValue.split(":", 3); // LocalDateTime 뒤의 : 는
@@ -114,7 +107,14 @@ public class WebGraphQlInterceptorConfig implements WebGraphQlInterceptor {
       throw new GlobalException(ErrorCode.PAYMENT_REQUIRED);
     }
 
-    log.error("🔥 accessId = {}", accessId);
+    // 7. 검증 성공 이후에 redis 내 value의 TTL 값 확인
+    long ttl = redisUtil.getTtl("SCAI:" + sessionCookieValue);
+
+    if(ttl <= 3 * 60 * 1000 && ttl > 0) { //redis는 key가 없으면 ttl이 -2, ttl이 없으면 -1로 반환한다.
+      redisUtil.expire("SCAI:" + sessionCookieValue, 20 * 60 * 1000);
+    }
+
+    log.info("accessId = {}", accessId);
 
     return new ServiceAccessIdPrincipal(accessId, accessStatus, expireTime);
 
