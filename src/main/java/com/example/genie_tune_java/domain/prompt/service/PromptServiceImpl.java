@@ -56,6 +56,10 @@ public class PromptServiceImpl implements PromptService {
     List<String> characterDescription = dto.accessIdCharacter();
     List<String> originalContentList = dto.originalContent();
 
+    //1-2. 원본 문장 저장 시스템 필요
+    String originalSentence = String.join(" ", originalContentList);
+
+
     //2. cashing 시켜놓은 Map<String, GetWordRuleResponseDTO> 에 있는 Key값과 비교하여 대체 시켜버림 cashing method 확인
     // WordFilterResult는 -> forbiddenWord, cleanWord, isSlang, reason 4개 필드 존재
     List<WordFilterResult> characterFilterResults = characterDescription.stream().map(wordRuleCache::filterWord).toList();
