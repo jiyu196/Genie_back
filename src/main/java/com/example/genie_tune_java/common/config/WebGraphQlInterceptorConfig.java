@@ -30,7 +30,7 @@ public class WebGraphQlInterceptorConfig implements WebGraphQlInterceptor {
   private final CookieUtil cookieUtil;
   private final RedisUtil redisUtil;
   private final static Set<String> checkPoint = Set.of(
-    "generateStory", "getWebtoonPage", "serviceAccessLogout"
+    "GenerateStory", "getWebtoonPage", "serviceAccessLogout"
   );
 
   @Override
